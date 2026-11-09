@@ -1,0 +1,10 @@
+{
+  "name": "alat-cek-keuangan",
+  "private": true,
+  "description": "Alat pemeriksa otomatis untuk pengembangan (bukan bagian aplikasi): uji jsdom, uji Chrome, ESLint, banding tangkapan layar.",
+  "devDependencies": {
+    "eslint": "9.39.1",
+    "globals": "16.5.0",
+    "jsdom": "26.1.0"
+  }
+}
