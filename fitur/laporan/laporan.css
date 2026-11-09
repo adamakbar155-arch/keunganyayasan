@@ -1,0 +1,182 @@
+/* fitur/laporan/laporan.css: gaya menu Laporan (PRD 7, dari foto menu Laporan Accurate).
+   Kiri: kategori (yang dipilih berwarna merah muda seperti Accurate); kanan: judul, Impor, Cari, kartu laporan dalam
+   dua kolom. Kartu biru = laporan ringkasan, kartu ungu = laporan rincian. Di layar sempit kategori pindah ke atas
+   (bisa digeser ke samping) dan kartu menjadi satu kolom. */
+
+.lap-menu { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 16px; align-items: start; }
+
+/* ----- Kategori ----- */
+.lap-kategori { display: flex; flex-direction: column; gap: 2px; padding: 8px; background-color: var(--putih);
+    border: 1px solid var(--garis); border-radius: 12px; }
+.lap-kat { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border: 0; border-radius: 8px;
+    background: none; color: var(--teks); font: inherit; font-size: 0.95rem; text-align: left; cursor: pointer; white-space: nowrap; }
+.lap-kat:hover { background-color: #f1f5fb; }
+.lap-kat.aktif { background-color: #e8436b; color: var(--putih); }
+.lap-kat-ikon svg { display: block; width: 20px; height: 20px; }
+
+/* ----- Panel kanan ----- */
+.lap-panel { min-width: 0; padding: 14px 20px 20px; background-color: var(--putih); border: 1px solid var(--garis); border-radius: 12px; }
+.lap-atas { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lap-judul { flex: 1 1 auto; margin: 0; font-size: 1.5rem; font-weight: 500; color: #374151; }
+.lap-impor { display: flex; align-items: center; justify-content: center; width: 42px; height: 38px; padding: 0;
+    border: 1px solid var(--biru); border-radius: 8px; background-color: var(--putih); color: var(--biru); cursor: pointer; }
+.lap-impor[hidden] { display: none; }
+.lap-impor svg { width: 20px; height: 20px; }
+.lap-cari { flex: 0 1 380px; min-width: 0; padding: 9px 12px; border: 1px solid var(--garis); border-radius: 8px; font: inherit; }
+
+/* ----- Kelompok dan kartu ----- */
+.lap-kelompok h3 { margin: 18px 0 6px; font-size: 1.2rem; font-weight: 500; color: var(--teks); }
+.lap-kisi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 24px; }
+.lap-kartu { display: flex; align-items: flex-start; gap: 14px; width: 100%; padding: 10px 8px; border: 0; border-radius: 10px;
+    background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.lap-kartu:hover, .lap-kartu:focus-visible { background-color: #f1f5fb; }
+.lap-kartu-ikon svg { display: block; width: 52px; height: 52px; }
+.lap-kartu.ringkasan .lap-kartu-ikon { color: var(--biru); }
+.lap-kartu.rincian .lap-kartu-ikon { color: #7b4fc2; }
+.lap-kartu-teks { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding-top: 4px; }
+.lap-kartu-nama { font-size: 1.02rem; font-weight: 500; color: var(--teks); }
+.lap-kartu-ket { font-size: 0.82rem; line-height: 1.4; color: var(--teks-redup); }
+/* Nama Accurate sebagai label kecil (Neraca, Laba Rugi, Perubahan Modal) */
+.lap-label { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 8px; background-color: #e8f0fb;
+    color: var(--biru); font-size: 0.7rem; font-weight: 700; vertical-align: 2px; white-space: nowrap; }
+.lap-kosong { margin: 22px 4px; color: var(--teks-redup); line-height: 1.5; }
+
+/* ----- Popup Parameter Laporan (fitur/laporan/parameter.js) -----
+   Memakai gaya popup .dialog-detail (fitur/jurnal/jurnal.css) dan kotak label .pemilih-akun (umum/popup-dan-preferensi.css).
+   Selector diawali .dialog-parameter-laporan supaya mengalahkan gaya dasar itu walaupun file ini dimuat lebih dulu. */
+.dialog-parameter-laporan { width: min(620px, calc(100vw - 24px)); }
+.dialog-parameter-laporan .dialog-detail-isi { min-height: 0; padding-top: 8px; }
+.param-nama-laporan { margin: 6px 0 0; font-weight: 600; color: var(--biru-tua); }
+/* Subjudul "Tanggal" dan "Parameter Tambahan" bergaris bawah, seperti Accurate */
+.param-subjudul { margin: 16px 0 12px; padding-bottom: 6px; font-size: 1.15rem; font-weight: 500; color: #374151;
+    border-bottom: 1px solid var(--garis); }
+.dialog-parameter-laporan .baris-form { grid-template-columns: 110px minmax(0, 1fr); margin-bottom: 12px; }
+/* Label Divisi/Program berderet ke samping lalu turun, kolom cari mengisi sisa baris */
+.dialog-parameter-laporan .param-pilih { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; }
+.dialog-parameter-laporan .param-pilih .pemilih-chip { display: contents; }
+.dialog-parameter-laporan .param-pilih .pemilih-cari { flex: 1 1 140px; min-width: 0; }
+.param-centang { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.param-centang label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.param-centang input { width: 18px; height: 18px; margin: 0; accent-color: var(--biru); }
+
+/* ----- Kertas hasil laporan (fitur/laporan/kertas.js; PRD 7, gaya profesional khas aplikasi) -----
+   Kertas putih, tetap jelas kalau dicetak hitam-putih. Ciri aplikasi hanya garis biru tua di atas kertas dengan potongan
+   oranye di kirinya, dan judul biru tua. */
+/* Ukuran kertas di layar sama dengan A4 (794 px tegak, 1123 px mendatar), jadi tampilan layar dan cetak serupa */
+/* Bilah ikon di atas kertas, seperti Accurate: di tengah, nama tombol muncul saat disentuh (data-tooltip) */
+.lap-hasil-alat { display: flex; justify-content: center; gap: 6px; margin: 0 auto 10px; padding: 4px; background-color: #f1f3f6;
+    border: 1px solid var(--garis); border-radius: 8px; }
+.lap-alat { position: relative; display: flex; align-items: center; justify-content: center; width: 42px; height: 36px; padding: 0;
+    color: var(--biru-tua); background: none; border: 0; border-radius: 6px; cursor: pointer; }
+.lap-alat svg { width: 22px; height: 22px; }
+.lap-alat:hover, .lap-alat:focus-visible { background-color: #dfe7f3; outline: none; }
+.lap-alat::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; z-index: 20; padding: 5px 10px;
+    font-size: 0.8rem; font-weight: 600; color: var(--biru-tua); white-space: nowrap; background-color: #ffe9b8;
+    border: 1px solid var(--aksen); border-radius: 8px; transform: translateX(-50%); opacity: 0; pointer-events: none; }   /* warna sama dengan petunjuk menu samping */
+.lap-alat:hover::after, .lap-alat:focus-visible::after { opacity: 1; }
+/* Menu Unduh: PDF, Excel, CSV */
+.lap-alat-bungkus { position: relative; }
+.lap-alat-menu { width: 54px; gap: 2px; }
+.lap-alat .lap-panah { width: 12px; height: 12px; }
+.lap-alat[aria-expanded="true"]::after { opacity: 0; }   /* petunjuk tidak menutupi menu yang terbuka */
+.lap-menu-unduh { position: absolute; top: calc(100% + 6px); right: 0; z-index: 30; display: flex; flex-direction: column; min-width: 120px;
+    padding: 4px; background-color: var(--putih); border: 1px solid var(--garis); border-radius: 8px; box-shadow: 0 8px 22px rgba(11, 42, 91, 0.18); }
+.lap-menu-unduh[hidden] { display: none; }
+.lap-menu-unduh button { padding: 8px 12px; font: inherit; font-size: 0.88rem; color: var(--teks); text-align: left; background: none;
+    border: 0; border-radius: 6px; cursor: pointer; }
+.lap-menu-unduh button:hover, .lap-menu-unduh button:focus-visible { background-color: #eaf2fd; outline: none; }
+/* Ukuran dan margin kertas dari jendela Modifikasi (fitur/laporan/modifikasi.js) */
+.lap-kertas { position: relative; max-width: var(--lap-lebar, 794px); margin: 0 auto;
+    padding: var(--lap-atas, 38px) var(--lap-kanan, 38px) var(--lap-bawah, 38px) var(--lap-kiri, 38px); color: #111827;
+    background-color: #fff; border-top: 4px solid var(--biru-tua); box-shadow: 0 2px 12px rgba(11, 42, 91, 0.12);
+}
+.lap-kertas::before { content: ""; position: absolute; top: -4px; left: 0; width: 96px; height: 4px; background-color: var(--aksen); }
+.lap-k-kepala { margin-bottom: 16px; text-align: center; line-height: 1.3; }
+.lap-k-kepala p { margin: 0; }
+.lap-k-yayasan { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+.lap-k-judul { margin: 4px 0 2px; font-size: 1.25rem; font-weight: 700; color: var(--biru-tua); }
+.lap-k-periode { font-size: 0.82rem; }
+.lap-k-mata { font-size: 0.74rem; font-style: italic; color: #4b5563; }
+.lap-k-filter { min-height: 1em; margin: 0 0 4px; padding-right: 10px; font-size: 0.7rem; color: #4b5563; text-align: right; }
+/* Tabel yang lebih lebar dari kertas (layar HP) digeser di dalam kertas, halaman tidak ikut melebar */
+.lap-k-isi { min-height: 60px; overflow-x: auto; }
+.lap-k-catatan p { margin: 10px 10px 0; font-size: 0.72rem; color: #4b5563; }
+.lap-k-kaki { display: flex; justify-content: space-between; margin-top: 22px; padding-top: 6px; font-size: 0.7rem;
+    color: #4b5563; border-top: 1px solid #d1d5db; }
+
+/* Tabel laporan (fitur/laporan/pohon.js): rapi seperti Accurate dan memakai garis akuntansi baku.
+   Lebar kolom tetap (aturLebarTabel): tabel selebar jumlah kolom yang tampil dan berada di tengah kertas, tidak melar
+   mengikuti kertas (--lebar-tabel). border-spacing memberi jarak seragam antarkolom, jadi garis
+   judul kolom dan garis jumlah terpisah per kolom. Garis tipis di atas angka subtotal (Jumlah <induk>), garis tegas di
+   atas total bagian, garis dobel di bawah total akhir. Angka rata kanan dengan lebar digit sama (tabular-nums) supaya
+   ribuan sejajar. Sel kosong tidak bergaris. */
+.lap-tabel { width: var(--lebar-tabel, 100%); max-width: 100%; margin: 0 auto; table-layout: fixed; border-collapse: separate;
+    border-spacing: 12px 0; font-size: 0.78rem; line-height: 1.35; font-variant-numeric: tabular-nums; }
+.lap-tabel th, .lap-tabel td { padding: 2.5px 0; text-align: left; overflow-wrap: anywhere; }
+.lap-tabel .lap-n { text-align: right; white-space: nowrap; }
+.lap-tabel .lap-n-judul { white-space: normal; }   /* judul panjang seperti "Dengan pembatasan" boleh dua baris */
+.lap-tabel th { padding: 4px 0 5px; font-size: 0.76rem; font-weight: 700; color: var(--biru-tua); vertical-align: bottom;
+    white-space: normal; border-bottom: 1px solid #111827; }
+.lap-b-bagian td { padding-top: 11px; font-weight: 700; letter-spacing: 0.3px; }
+.lap-b-judul td { font-weight: 600; }
+.lap-b-jumlah td { font-weight: 600; }
+.lap-b-jumlah .lap-n:not(:empty) { border-top: 1px solid #9ca3af; }
+.lap-b-total td { font-weight: 700; }
+.lap-b-total .lap-n:not(:empty) { border-top: 1px solid #111827; }
+.lap-b-akhir td { font-weight: 700; }
+.lap-b-akhir .lap-n:not(:empty) { border-top: 1px solid #111827; border-bottom: 3px double #111827; }
+/* Tabel rincian (buatTabelRincian): teks boleh turun baris; kolom pendek tidak terlipat; baris transaksi bisa diklik */
+.lap-rincian td { vertical-align: top; }
+.lap-rincian th { text-align: left; }
+.lap-tabel .lap-rapat { white-space: nowrap; }
+/* Tabel berkelompok (seperti foto Accurate): baris data menjorok di bawah nama kelompok, jumlah kelompok biru tua */
+.lap-berkelompok thead th:first-child, .lap-berkelompok tbody tr:not(.lap-b-bagian):not(.lap-b-akhir) td:first-child { padding-left: 16px; }
+.lap-berkelompok .lap-b-bagian td { padding-top: 7px; }
+.lap-berkelompok .lap-b-jumlah .lap-n { color: var(--biru-tua); font-weight: 700; }
+.lap-berkelompok .lap-b-jumlah .lap-n:not(:empty) { border-top-color: #111827; }
+.lap-berkelompok .lap-b-akhir td { padding-top: 9px; }
+.lap-berkelompok .lap-b-akhir .lap-n:not(:empty) { border-top: 0; }   /* tidak menumpuk dengan jumlah kelompok terakhir */
+.lap-klik { cursor: pointer; }
+.lap-klik:hover, .lap-klik:focus-visible { background-color: #f1f5fb; }
+.lap-klik:focus-visible { outline: 2px solid var(--biru); outline-offset: -2px; }
+
+/* Kartu Laporan Tersimpan: tombol hapus di pojok kartu */
+.lap-kartu-bungkus { position: relative; }
+.lap-tersimpan-hapus { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; padding: 0; color: var(--teks-redup);
+    font-size: 1.1rem; line-height: 1; background: none; border: 0; border-radius: 6px; cursor: pointer; }
+.lap-tersimpan-hapus:hover, .lap-tersimpan-hapus:focus-visible { color: #d92d20; background-color: #fdecea; }
+/* Popup daftar transaksi di balik satu baris laporan (fitur/laporan/rincian-baris.js) */
+.dialog-rincian-baris-laporan { width: min(1000px, calc(100vw - 24px)); }
+.dialog-rincian-baris-laporan .dialog-detail-isi { min-height: 0; padding-top: 12px; }
+/* Popup Modifikasi (fitur/laporan/modifikasi.js): dua kolom seperti foto Accurate */
+.dialog-modifikasi-laporan { width: min(780px, calc(100vw - 24px)); }
+.dialog-modifikasi-laporan .dialog-detail-isi { min-height: 0; }
+.dialog-modifikasi-laporan .dialog-detail-tab { margin-bottom: 4px; }
+.mod-dua-kolom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.mod-dua-kolom[hidden] { display: none; }
+.mod-daftar-kolom { display: flex; flex-direction: column; max-height: 320px; overflow-y: auto; border: 1px solid var(--garis); border-radius: 8px; }
+.mod-daftar-kolom label { display: flex; align-items: center; gap: 12px; padding: 9px 12px; cursor: pointer; }
+.mod-daftar-kolom label:has(input:disabled) { color: var(--teks-redup); cursor: default; }
+.mod-daftar-kolom input { width: 18px; height: 18px; margin: 0; accent-color: var(--biru); }
+.mod-daftar-kolom .lap-kosong { margin: 12px; }
+.dialog-modifikasi-laporan .baris-form { grid-template-columns: 96px minmax(0, 1fr); }
+.mod-orientasi { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; }
+.mod-orientasi label { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.mod-orientasi input { width: 18px; height: 18px; margin: 0; accent-color: var(--biru); }
+.mod-margin { display: grid; grid-template-columns: 52px 70px 28px; gap: 10px 8px; align-items: center; }
+.mod-margin input { width: 100%; padding: 8px; font: inherit; text-align: right; border: 1px solid var(--garis); border-radius: 8px; }
+.dialog-simpan-laporan .dialog-detail-isi { min-height: 0; padding-top: 18px; }
+.dialog-simpan-laporan .baris-form { grid-template-columns: 80px minmax(0, 1fr); margin-bottom: 0; }
+
+/* ----- Layar sempit ----- */
+@media (max-width: 760px) {
+    .lap-menu { grid-template-columns: minmax(0, 1fr); }
+    .lap-kategori { flex-direction: row; overflow-x: auto; }
+    .lap-kat { width: auto; }
+    .lap-kisi { grid-template-columns: minmax(0, 1fr); }
+    .lap-cari { flex-basis: 100%; }
+    .lap-kertas { padding: 24px 10px 14px; }   /* margin Modifikasi hanya berlaku di layar lebar dan saat dicetak */
+    .mod-dua-kolom { grid-template-columns: minmax(0, 1fr); }
+    /* Layar HP: lebar kolom tetap terlalu besar; tabel mengikuti isinya dan digeser di dalam kertas */
+    .lap-tabel { width: 100%; table-layout: auto; border-spacing: 6px 0; font-size: 0.72rem; }
+}

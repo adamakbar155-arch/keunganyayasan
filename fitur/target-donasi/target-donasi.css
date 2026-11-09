@@ -1,0 +1,23 @@
+/* fitur/target-donasi/target-donasi.css: gaya khusus Target Donasi (PRD 6.1).
+   Formulir dan daftar memakai gaya bersama (form-pref, baris-form, tabel daftar); di sini hanya tambahan khusus. */
+
+/* Periode: tanggal mulai, "s/d", tanggal selesai sebaris; turun ke bawah kalau layarnya sempit */
+.periode-td { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.periode-td .grup-tanggal { flex: 1 1 180px; }
+
+/* Kolom Periode tetap satu baris ("1 Jan 2026 - 31 Des 2026"); tabel bisa digeser ke samping di layar sempit */
+.sel-satu-baris-td { white-space: nowrap; }
+
+/* Kolom Status: label kecil berwarna (Belum Mulai kuning, Berjalan biru, Selesai abu-abu), seperti gambar contoh */
+.status-td { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+.status-td-berjalan { background-color: #dbeafe; color: #1e40af; }
+.status-td-selesai { background-color: #e5e7eb; color: #374151; }
+.status-td-belum { background-color: #fef3c7; color: #92400e; }
+
+/* Kolom Capaian: bar dan persen. Biru; hijau dengan ✓ kalau target tercapai (berhenti di 100%) */
+.capaian-td { display: flex; align-items: center; gap: 10px; min-width: 160px; }
+.capaian-td-bar { flex: 1; height: 10px; background-color: #e5e7eb; border-radius: 999px; overflow: hidden; }
+.capaian-td-bar span { display: block; height: 100%; background-color: var(--biru); border-radius: 999px; }
+.capaian-td-persen { min-width: 52px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.capaian-td.tercapai .capaian-td-bar span { background-color: #16a34a; }
+.capaian-td.tercapai .capaian-td-persen { color: #16a34a; }

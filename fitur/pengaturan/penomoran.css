@@ -1,0 +1,56 @@
+/* fitur/pengaturan/penomoran.css: gaya halaman Penomoran (penyusun komponen nomor dan contohnya).
+   Dimuat oleh index.html tepat sesudah umum/halaman-daftar.css (posisi lamanya). */
+
+/* ---------- Penomoran ---------- */
+
+/* Pilihan komponen + kolom teks + tombol tambah, berderet */
+.grup-komponen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.grup-komponen select {
+    flex: 1 1 200px;
+    width: auto;
+}
+
+.grup-komponen input {
+    flex: 1 1 160px;
+    width: auto;
+}
+
+.grup-komponen input[hidden] {
+    display: none;
+}
+
+/* Komponen yang sudah ditambahkan berderet ke samping (bukan menumpuk ke bawah seperti kolom akun) */
+.daftar-komponen {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+/* Tombol geser dalam label komponen yang dinonaktifkan (ujung kiri/kanan) tampak pudar */
+.chip-hapus:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+/* Hasil contoh nomor: huruf lebar tetap agar mudah dibaca */
+.nomor-contoh {
+    margin-top: 6px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--biru-tua);
+    overflow-wrap: anywhere;
+}
+
+/* Kolom angka sempit (misalnya jumlah digit) */
+.baris-form .kolom-angka {
+    width: 110px;
+    text-align: right;
+}

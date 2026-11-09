@@ -1,0 +1,26 @@
+/* fitur/monitor-anggaran/monitor-anggaran.css: gaya khusus Monitor Anggaran (PRD 6.5, dari foto Accurate). */
+.mang-saring { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.mang-saring .pilih-filter { flex: 0 1 150px; min-width: 0; height: 42px; font-size: 0.95rem; }
+.mang-cari { flex: 0 1 340px; min-width: 200px; }
+.mang-cari-kecil { flex-basis: 240px; }
+/* Kolom cari di luar formulir belum mendapat gaya isian, jadi disamakan dengan pilihan di sebelahnya */
+.mang-cari input { width: 100%; height: 42px; padding: 0 40px 0 14px; font: inherit; font-size: 0.95rem; color: var(--teks);
+    background-color: var(--putih); border: 1px solid var(--garis); border-radius: 8px; }
+.mang-cari input:disabled { background-color: var(--latar, #f1f4f8); }
+.mang-muat { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 42px; padding: 0; }
+.mang-muat svg { width: 18px; height: 18px; }
+
+/* Lebar kolom seperti foto; angka selalu satu baris */
+.mang-tabel { width: 100%; min-width: 760px; table-layout: fixed; }
+.mang-tabel th { color: var(--putih); text-align: center; background-color: #5b6f8a; }
+.mang-tabel th:nth-child(2) { width: 130px; }
+.mang-tabel th:nth-child(n+3) { width: 19%; }
+.mang-tabel td.sel-kanan { white-space: nowrap; }
+.mang-tabel td { overflow-wrap: anywhere; }
+.mang-kosong { text-align: center; }
+
+@media (max-width: 760px) {
+    .mang-saring .pilih-filter { flex: 1 1 120px; }
+    .mang-cari, .mang-cari-kecil { flex: 1 1 100%; }
+    .mang-kosong { text-align: left; }   /* tabel lebih lebar dari layar: tulisan di tengah tidak terlihat */
+}

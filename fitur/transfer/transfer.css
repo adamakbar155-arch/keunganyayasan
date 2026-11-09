@@ -1,0 +1,15 @@
+/* fitur/transfer/transfer.css: gaya tambahan Transfer Bank (di atas gaya Jurnal Umum, fitur/jurnal/jurnal.css).
+   Dimuat oleh index.html sesudah fitur/pembayaran/pembayaran.css. */
+
+/* Judul panel "Transfer Uang" seperti foto Accurate */
+.transfer-judul { margin: 4px 0 16px; font-size: 1.25rem; font-weight: 500; color: var(--teks); }
+
+/* Dari Kas/Bank dan Ke Kas/Bank berdampingan di layar lebar; Nilai Transfer di baris berikutnya */
+.transfer-isian { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+.transfer-isian .baris-form:last-child { grid-column: 1; }
+.transfer-nilai { max-width: 260px; }
+
+/* Layar sempit: semua isian satu kolom */
+@media (max-width: 760px) {
+    .transfer-isian { grid-template-columns: minmax(0, 1fr); }
+}

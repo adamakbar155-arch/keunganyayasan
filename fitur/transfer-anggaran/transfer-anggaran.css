@@ -1,0 +1,14 @@
+/* fitur/transfer-anggaran/transfer-anggaran.css: gaya khusus Transfer Anggaran (PRD 6.5, dari foto Accurate).
+   Dua bagian berdampingan: Transfer Dari Anggaran dan Ke Anggaran. */
+#tang-tahun { width: 100%; height: 42px; padding: 0 12px; font: inherit; background-color: var(--putih);
+    border: 1px solid var(--garis); border-radius: 8px; }
+.tang-dua:not([hidden]) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+.tang-judul { margin: 4px 0 16px; padding-bottom: 8px; font-size: 1.25rem; font-weight: 500; color: var(--biru); border-bottom: 1px solid var(--garis); }
+.tang-sisi .baris-form[hidden] { display: none; }
+.tang-sisi .pilih-filter { width: 100%; height: 42px; font-size: 0.95rem; }
+.tang-sisa { font-weight: 600; }
+.tang-nilai { max-width: 260px; }
+
+@media (max-width: 760px) {
+    .tang-dua:not([hidden]) { grid-template-columns: minmax(0, 1fr); row-gap: 16px; }
+}

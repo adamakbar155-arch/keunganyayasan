@@ -1,0 +1,48 @@
+/* fitur/rekonsiliasi-bank/rekonsiliasi-bank.css: gaya tambahan Rekonsiliasi Bank.
+   Baris atas (Kas/Bank, tanggal, segarkan) memakai gaya bersama .histori-alat dari umum/histori.css.
+   Dimuat oleh index.html sesudah umum/histori.css. */
+
+/* Centang "Tampilkan yang sudah cocok" di ujung kanan baris atas */
+.rekon-tampil-cocok { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; color: var(--teks-redup); cursor: pointer; }
+
+/* Dua kolom sama lebar seperti Accurate: kiri Catatan Aplikasi, kanan Rekening Bank.
+   Judul dan baris kartu memakai kolom yang sama, jadi tombol selalu sejajar di bawah judul Rekening Bank. */
+.rekon-kepala, .rekon-baris { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 36px; }
+.rekon-kepala { margin-bottom: 12px; }
+/* Kotak judul: garis warna di atas, judul besar berikon, bilah abu-abu di bawah */
+.rekon-kotak-judul { overflow: hidden; border-top: 5px solid; border-radius: 4px 4px 8px 8px; background-color: var(--putih); }
+.rekon-kotak-kiri { border-top-color: #e8436a; }
+.rekon-kotak-kanan { border-top-color: var(--biru); }
+.rekon-judul { display: flex; align-items: center; gap: 8px; margin: 0; padding: 14px 12px; font-size: 1.4em; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--teks); }
+.rekon-judul svg { flex: 0 0 auto; width: 26px; height: 26px; }
+.rekon-bilah { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; min-height: 40px; padding: 8px 12px; background-color: #e3e6ea; }
+.rekon-saldo { font-weight: 600; }
+.rekon-saldo strong { margin-left: 18px; }
+.rekon-belum { color: #b45309; font-weight: 600; }
+
+/* Satu baris = kartu transaksi (kolom kiri) + tombol (kolom kanan) */
+.rekon-daftar { display: flex; flex-direction: column; gap: 8px; }
+.rekon-baris { align-items: center; }
+.rekon-baris > .tombol { justify-self: start; }
+.rekon-kartu { padding: 10px 12px; border: 1px solid var(--garis); border-radius: 8px; background-color: var(--putih); cursor: pointer; }
+.rekon-kartu-atas { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.rekon-tanggal { white-space: nowrap; color: var(--teks-redup); }
+.rekon-tipe { flex: 1 1 auto; font-weight: 600; }
+.rekon-nilai { margin-left: auto; white-space: nowrap; font-weight: 600; }
+.rekon-keterangan, .rekon-nomor { margin-top: 4px; color: var(--teks-redup); font-size: 0.92em; overflow-wrap: anywhere; }
+/* Tidak ada data yang perlu dicocokkan: gambar dan tulisan abu-abu di tengah (dari foto Accurate) */
+.rekon-kosong { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 56px 16px; color: var(--teks-redup); text-align: center; }
+.rekon-kosong[hidden] { display: none; }
+.rekon-kosong svg { width: 150px; height: auto; color: #a3a9b3; }
+/* Kaca pembesar berisi putih (dulu atribut style di HTML; dipindah ke sini supaya lolos Content-Security-Policy) */
+.rekon-kosong .rekon-kaca { fill: var(--putih); }
+.rekon-kosong p { margin: 0; font-size: 1.05em; }
+
+/* Yang sudah cocok (hanya tampil kalau dicentang): kartunya diredupkan */
+.rekon-cocok .rekon-kartu { opacity: 0.6; }
+
+/* Layar sempit: kotak judul bertumpuk, tombol pindah ke bawah kartu */
+@media (max-width: 640px) {
+    .rekon-kepala, .rekon-baris { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .rekon-judul { font-size: 1.15em; }
+}

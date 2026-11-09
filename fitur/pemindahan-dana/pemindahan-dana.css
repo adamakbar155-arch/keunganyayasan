@@ -1,0 +1,53 @@
+/* fitur/pemindahan-dana/pemindahan-dana.css: gaya khusus Pemindahan Dana (PRD 6.1).
+   Formulir, tabel, dan popup memakai gaya Jurnal Umum dan Pencatatan Donasi (jurnal-*, dialog-detail-*). */
+
+/* Bagian atas dirapikan (permintaan pengguna 2026-10-29): satu kotak berbingkai, label sedikit lebih lebar dari Jurnal
+   (150px) supaya "Nilai Pemindahan" tidak terpotong, dan label di kiri dan kanan sejajar */
+.kepala-pd {
+    padding: 18px 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--garis);
+    border-radius: 14px;
+}
+.kepala-pd .jurnal-baris { grid-template-columns: 150px minmax(0, 1fr); }
+/* Kotak Rupiah (Nilai Pemindahan) selebar kolom pilihan di atasnya (gaya bersamanya dibatasi 260px) */
+.kepala-pd .detail-rupiah { width: 100%; max-width: none; }
+.kepala-pd .detail-rupiah input { flex: 1; min-width: 0; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) {
+    .kepala-pd .jurnal-baris { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Jenis Pemindahan: dua tombol pilihan berdampingan (radio), yang terpilih biru seperti gambar contoh */
+.jenis-pd { display: flex; gap: 8px; }
+.jenis-pd label { flex: 1 1 0; min-width: 0; position: relative; cursor: pointer; }
+.jenis-pd input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.jenis-pd span { display: block; height: 100%; padding: 9px 6px; border: 1px solid var(--garis); border-radius: 8px; background-color: var(--putih); text-align: center; font-size: 0.85rem; }
+.jenis-pd input:checked + span { border-color: var(--biru); background-color: #e8f0fb; color: var(--biru-tua); font-weight: 700; }
+.jenis-pd input:focus-visible + span { outline: 3px solid var(--biru); outline-offset: 1px; }
+/* "Dana Umum" (arah ②) selebar kolom pilihan */
+#pd-dari-umum { width: 100%; }
+
+/* Kotak sisa dana di bawah Dari Program: hijau (seperti gambar contoh); merah kalau sisanya 0 atau minus */
+.sisa-dana-pd { margin: 6px 0 0; padding: 7px 12px; border-radius: 8px; background-color: #ecfdf5; color: #065f46; font-size: 0.9rem; }
+.sisa-dana-pd strong { font-variant-numeric: tabular-nums; }
+.sisa-dana-pd.habis { background-color: #fef2f2; color: #991b1b; }
+
+/* Label kecil "tidak terikat" di sebelah Dana Umum */
+.label-umum-pd { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; background-color: #f1f5f9; color: #334155; font-size: 0.75rem; }
+
+/* Popup Tujuan Pemindahan dirapikan (permintaan pengguna 2026-10-30). Popup ini tidak punya baris tab seperti popup
+   baris lain, jadi: isi diberi jarak dari judul, tinggi minimal popup bersama (untuk popup bertab) dilepas supaya tidak
+   ada ruang kosong, label lebih sempit dan sejajar tengah dengan kolomnya. */
+#dialog-tujuan-pemindahan .dialog-detail-isi { min-height: 0; padding-top: 20px; }
+#dialog-tujuan-pemindahan .baris-form { grid-template-columns: 100px minmax(0, 1fr); align-items: center; margin-bottom: 14px; }
+#dialog-tujuan-pemindahan .baris-form > label,
+#dialog-tujuan-pemindahan .baris-form > .label-kelompok { padding-top: 0; }
+/* Baris Nilai dan Ke Divisi: kesalahan tampil di bawah kolom, jadi labelnya tetap sejajar dengan kolom (bukan dengan
+   pesannya) */
+#dialog-tujuan-pemindahan .baris-form:has(.pesan-galat-kolom) { align-items: start; }
+#dialog-tujuan-pemindahan .baris-form:has(.pesan-galat-kolom) > :first-child { line-height: 42px; }
+
+/* Popup: kolom Nilai dan tombol Semua sisa sebaris, sama tinggi; kotak Rupiah selebar sisa baris (gaya bersamanya dibatasi 260px) */
+.nilai-tpd { display: flex; gap: 8px; align-items: stretch; }
+.nilai-tpd .detail-rupiah { flex: 1; max-width: none; }
+.nilai-tpd .tombol { white-space: nowrap; }

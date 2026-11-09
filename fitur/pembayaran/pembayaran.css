@@ -1,0 +1,7 @@
+/* fitur/pembayaran/pembayaran.css: gaya khusus Pembayaran (bagian gaji). Gaya bersama transaksi Kas/Bank ada di
+   umum/transaksi-kas.css. Dimuat oleh index.html sesudah umum/transaksi-kas.css. */
+
+/* Popup Rincian Pembayaran: kolom Pencatatan Gaji (hanya dibaca) berwarna hijau seperti tautan dokumen */
+#baris-rbayar-gaji[hidden] { display: none; }
+.dialog-detail .kolom-tautan-gaji,
+.dialog-detail .kolom-tautan-gaji[readonly] { color: #15803d; background-color: #f0fdf4; border-color: #86efac; }
