@@ -1,0 +1,37 @@
+/* umum/sesi.css: belum masuk, menu pengguna, dan hak akses peran (PRD 6.12, 5.8). Logika: umum/sesi.js dan umum/sesi-aplikasi.js. */
+
+/* Belum masuk: isi aplikasi tidak ditampilkan sama sekali sementara pindah ke layar Masuk */
+html.belum-masuk body { visibility: hidden; }
+
+/* ----- Menu pengguna (lingkaran inisial di kanan atas) ----- */
+.menu-pengguna { position: relative; }
+button.avatar { border: 0; padding: 0; cursor: pointer; font: inherit; font-weight: 700; }
+button.avatar:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.daftar-menu-pengguna { position: absolute; right: 0; top: calc(100% + 8px); z-index: 60; min-width: 220px; padding: 8px;
+                        border-radius: 10px; background: #fff; box-shadow: 0 10px 30px rgba(11, 42, 91, 0.2); color: #1f2937; }
+.daftar-menu-pengguna[hidden] { display: none; }
+.menu-pengguna-nama { margin: 4px 8px 0; font-weight: 700; color: #0b2a5b; overflow-wrap: anywhere; }
+.menu-pengguna-peran { margin: 0 8px 8px; font-size: 12px; color: #6b7280; }
+.daftar-menu-pengguna button { display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 6px; background: none;
+                               text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.daftar-menu-pengguna button:hover, .daftar-menu-pengguna button:focus-visible { background: #eef3fa; }
+.daftar-menu-pengguna .menu-keluar { color: #b91c1c; font-weight: 600; border-top: 1px solid #e5e7eb; border-radius: 0 0 6px 6px; }
+
+.dialog-ganti-sandi { width: min(440px, calc(100vw - 32px)); }
+
+/* ----- Pengawas: hanya melihat (PRD 5.8). Tombol yang mengubah data tidak ditampilkan. ----- */
+body.hanya-lihat .tombol-simpan-besar,
+body.hanya-lihat .tombol-hapus-besar,
+body.hanya-lihat [data-aksi="hapus"],
+body.hanya-lihat [data-alat="baru"],
+body.hanya-lihat [data-favorit-ambil],
+body.hanya-lihat [data-favorit-lain],
+body.hanya-lihat #tombol-tambah-lampiran,
+body.hanya-lihat #daftar-lampiran .tombol-garis-bahaya,
+body.hanya-lihat #lap-simpan,
+body.hanya-lihat #ec-simpan { display: none !important; }
+
+/* ----- Pengguna, Preferensi, Cadangan Data hanya untuk Finance Yayasan ----- */
+body.bukan-finance-yayasan .kotak-menu[data-halaman="Pengguna"],
+body.bukan-finance-yayasan .kotak-menu[data-halaman="Preferensi"],
+body.bukan-finance-yayasan .kotak-menu[data-halaman="Cadangan Data"] { display: none !important; }

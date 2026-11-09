@@ -1,0 +1,139 @@
+/* umum/isi-halaman.css: area isi halaman, toolbar, dan tombol umum yang dipakai semua halaman.
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* ---------- Area isi ---------- */
+
+/* Latar lembut: biru muda di kanan atas, krem tipis di kiri bawah */
+.isi {
+    flex: 1;
+    min-width: 0;   /* mencegah isi melebar keluar layar */
+    padding: 0 28px 32px;
+    background:
+        radial-gradient(circle at 100% 0%, rgba(21, 101, 192, 0.12), transparent 40%),
+        radial-gradient(circle at 0% 100%, rgba(245, 166, 35, 0.10), transparent 40%),
+        #f4f7fb;
+}
+
+/* Tab "Dashboard": menempel ke bawah bar atas, sudut atasnya membulat */
+.tab-baris {
+    display: flex;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--aksen);
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+    border-radius: 0 0 10px 10px;
+    color: var(--teks-redup);
+    background-color: #e3e9f2;   /* tab tidak aktif: abu kebiruan */
+}
+
+/* Atribut hidden bisa kalah oleh "display: flex" di atas, jadi ditegaskan di sini */
+.tab[hidden] {
+    display: none;
+}
+
+/* Tab yang sedang dibuka: amber */
+.tab.aktif {
+    color: var(--biru-tua);
+    background-color: var(--aksen);
+}
+
+/* Tombol judul dan tombol tutup tampil sebagai teks biasa, bukan tombol abu-abu bawaan */
+.tab-judul,
+.tab-tutup {
+    font-family: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.tab-judul {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* Kalau tab punya tombol tutup, jarak kanan judul dikecilkan agar X tidak terlalu jauh */
+.tab-judul:not(:last-child) {
+    padding-right: 6px;
+}
+
+.tab-tutup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin-right: 10px;
+    padding: 0;
+    border-radius: 6px;
+}
+
+.tab-tutup svg {
+    width: 12px;
+    height: 12px;
+}
+
+.tab-tutup:hover {
+    background-color: rgba(11, 42, 91, 0.15);
+}
+
+.tab-judul:focus-visible,
+.tab-tutup:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: -3px;
+}
+
+/* ---------- Toolbar ---------- */
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 12px;
+}
+
+.toolbar-kanan {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ---------- Tombol ---------- */
+
+.tombol {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.tombol svg {
+    width: 16px;
+    height: 16px;
+}
+
+.tombol-garis {
+    color: var(--biru);
+    background-color: #eaf2fd;
+    border: 1px solid #b9d3f3;
+}
+
+.tombol-garis:hover {
+    background-color: #dbe9fb;
+}

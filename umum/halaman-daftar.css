@@ -1,0 +1,585 @@
+/* umum/halaman-daftar.css: Halaman berdaftar (Divisi dan seterusnya): formulir, tampilan Daftar seperti Accurate, popup konfirmasi, filter, Penomoran.
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* ---------- Halaman daftar (Divisi dan seterusnya) ---------- */
+
+/* Tabel dibungkus agar bisa digeser ke samping di layar sempit */
+.bungkus-tabel {
+    overflow-x: auto;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(11, 42, 91, 0.06);
+}
+
+.tabel-data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.tabel-data th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--biru-tua);
+    background-color: #eef3fa;
+    border-bottom: 1px solid var(--garis);
+}
+
+.tabel-data td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e8edf4;
+    vertical-align: top;
+}
+
+/* Kolom angka: rata kanan dengan lebar angka sama, supaya digit sejajar */
+.tabel-data td.sel-kanan {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Angka negatif (misalnya saldo kurang dari nol) berwarna merah */
+.tabel-data td.angka-negatif {
+    color: #c62828;
+}
+
+.tabel-data tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabel-data tbody tr:hover {
+    background-color: #f8fafd;
+}
+
+.tabel-kosong {
+    margin: 0;
+    padding: 32px 16px;
+    text-align: center;
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+.tabel-kosong[hidden] {
+    display: none;
+}
+
+/* ---------- Isian formulir ---------- */
+
+.wajib {
+    color: #d92d20;   /* tanda bintang merah untuk kolom wajib */
+}
+
+/* Pesan kesalahan di bawah kolom, tulisan merah kecil seperti di halaman login */
+.pesan-galat-kolom {
+    margin: 6px 0 0;
+    font-size: 0.82rem;
+    color: #d92d20;
+}
+
+.pesan-galat-kolom[hidden] {
+    display: none;
+}
+
+/* ---------- Halaman modul (Divisi dan seterusnya): formulir + daftar ---------- */
+
+/* Barisan kecil di atas: tombol hijau + judul tampilan */
+.modul-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--garis);
+}
+
+/* Tombol hijau untuk membuka daftar. Berubah abu-abu saat daftar sedang dibuka. */
+.tombol-daftar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 44px;
+    padding: 0;
+    color: var(--putih);
+    background-color: #2e9e44;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+}
+
+.tombol-daftar:hover {
+    background-color: #26853a;
+}
+
+.tombol-daftar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.tombol-daftar:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Tab "Data Baru": abu-abu saat daftar sedang dibuka, putih bergaris amber saat aktif. Bisa diklik. */
+.modul-tab {
+    padding: 11px 22px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--teks-redup);
+    background-color: #e3e9f2;
+    border: 1px solid var(--garis);
+    border-top: 3px solid transparent;
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: -1px;   /* menimpa garis bawah barisan */
+    cursor: pointer;
+}
+
+.modul-tab.aktif {
+    font-weight: 700;
+    color: var(--biru-tua);
+    background-color: var(--putih);
+    border-top-color: var(--aksen);
+}
+
+.modul-tab:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: -3px;
+}
+
+/* Formulir di kiri, tombol simpan besar di kanan */
+.modul-form {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+/* "display: flex" di atas akan mengalahkan atribut hidden, sehingga formulir tetap terlihat
+   saat daftar dibuka. Aturan ini memastikan hidden bekerja. */
+.modul-form[hidden] {
+    display: none;
+}
+
+.modul-form-kiri {
+    flex: 1;
+    min-width: 0;
+}
+
+.tombol-simpan-besar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 64px;
+    padding: 0;
+    color: var(--biru-tua);
+    background-color: var(--aksen);
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(11, 42, 91, 0.2);
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.tombol-simpan-besar:hover {
+    background-color: var(--aksen-gelap);
+}
+
+.tombol-simpan-besar svg {
+    width: 34px;
+    height: 34px;
+}
+
+.tombol-simpan-besar:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Baris alat di atas daftar */
+.toolbar-kiri {
+    display: flex;
+    gap: 8px;
+}
+
+.kolom-cari {
+    width: min(320px, 40vw);
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.kolom-cari:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Kotak kecil berisi jumlah data */
+/* Tombol roda gigi: memilih kolom yang tampil (opsi pilihKolom di buatModulDaftar) */
+.pilih-kolom { position: relative; }
+.pilih-kolom-menu { position: absolute; top: calc(100% + 6px); right: 0; z-index: 30; display: flex; flex-direction: column; min-width: 190px;
+    padding: 6px; background-color: var(--putih); border: 1px solid var(--garis); border-radius: 8px; box-shadow: 0 8px 22px rgba(11, 42, 91, 0.18); }
+.pilih-kolom-menu[hidden] { display: none; }
+.pilih-kolom-menu label { display: flex; align-items: center; gap: 8px; padding: 6px 8px; font-size: 0.9rem; border-radius: 6px; cursor: pointer; }
+.pilih-kolom-menu label:hover { background-color: #eaf2fd; }
+/* Layar sempit: alat turun ke baris berikutnya, tidak keluar dari layar */
+@media (max-width: 760px) {
+    .toolbar:has(.pilih-kolom), .toolbar-kanan:has(.pilih-kolom) { flex-wrap: wrap; min-width: 0; }
+}
+
+.kotak-jumlah {
+    min-width: 56px;
+    padding: 9px 12px;
+    text-align: right;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--teks-redup);
+    background-color: #f1f4f8;
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+/* Judul kolom yang bisa diklik untuk mengurutkan */
+.urut {
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.urut:hover {
+    text-decoration: underline;
+}
+
+.urut:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Panah kecil menunjukkan arah urutan pada kolom yang sedang dipakai */
+.tabel-data th[aria-sort="ascending"] .urut::after {
+    content: " \25B2";   /* segitiga ke atas */
+    font-size: 0.7em;
+}
+
+.tabel-data th[aria-sort="descending"] .urut::after {
+    content: " \25BC";   /* segitiga ke bawah */
+    font-size: 0.7em;
+}
+
+/* Kolom tombol di kanan formulir: simpan di atas, hapus di bawahnya */
+.modul-form-aksi {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tombol-hapus-besar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 56px;
+    padding: 0;
+    color: #d92d20;
+    background-color: var(--putih);
+    border: 1px solid #f5a8a2;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.tombol-hapus-besar:hover {
+    background-color: #fee4e2;
+}
+
+.tombol-hapus-besar svg {
+    width: 28px;
+    height: 28px;
+}
+
+.tombol-hapus-besar[hidden] {
+    display: none;
+}
+
+.tombol-hapus-besar:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* ---------- Tampilan daftar (meniru Accurate) ---------- */
+
+.toolbar-daftar {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.toolbar-daftar .tombol {
+    padding: 9px 14px;
+}
+
+.toolbar-daftar .tombol svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Tabel daftar: judul kolom abu kebiruan tua bertulisan putih, baris belang-belang */
+.tabel-daftar {
+    font-size: 1rem;
+}
+
+.tabel-daftar th {
+    padding: 14px 12px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--putih);
+    background-color: #5b7088;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.tabel-daftar th:last-child {
+    border-right: none;
+}
+
+/* Judul kolom bisa diurutkan: tampilkan panah kecil ⇅ kalau belum diurutkan */
+.tabel-daftar th[aria-sort="none"] .urut::after {
+    content: " \21C5";
+    font-size: 0.8em;
+    opacity: 0.6;
+}
+
+.tabel-daftar td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #ececf0;
+    border-right: 1px solid #ececf0;
+}
+
+.tabel-daftar td:last-child {
+    border-right: none;
+}
+
+.tabel-daftar tbody tr:nth-child(even) {
+    background-color: #f6f6f8;
+}
+
+.tabel-daftar tbody tr:hover {
+    background-color: #e9eef5;
+}
+
+.baris-data {
+    cursor: pointer;
+}
+
+.baris-data:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: -3px;
+}
+
+/* Layar sempit: tombol simpan pindah ke bawah formulir */
+@media (max-width: 760px) {
+    .modul-form {
+        flex-direction: column;   /* formulir di atas, tombol simpan di bawahnya */
+        align-items: stretch;
+    }
+
+    .tombol-simpan-besar {
+        width: 100%;
+        height: 52px;
+    }
+}
+
+/* Baris formulir yang disembunyikan (misalnya Divisi saat fiturnya dimatikan).
+   Perlu aturan ini karena "display: grid" akan mengalahkan atribut hidden. */
+.baris-form[hidden] {
+    display: none;
+}
+
+/* Judul untuk kelompok pilihan (radio) yang bukan satu kolom isian, tampil seperti label */
+.label-kelompok {
+    padding-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Formulir dua kolom (misalnya Data Pribadi dan Data Karyawan): turun jadi satu kolom di layar sempit */
+.dua-kolom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+    gap: 8px 40px;
+}
+
+/* Di dalam dua kolom, label dipersempit agar kolom isian punya ruang cukup */
+.dua-kolom .baris-form {
+    grid-template-columns: 150px minmax(0, 1fr);
+}
+
+/* Layar sempit: label di atas isian (aturan ini harus sesudah aturan di atas agar menang) */
+@media (max-width: 760px) {
+    .dua-kolom .baris-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Popup konfirmasi ---------- */
+
+.dialog-konfirmasi {
+    width: min(480px, calc(100vw - 32px));
+    padding: 0;
+    overflow: hidden;   /* agar sudut membulat juga memotong kepala popup */
+    color: var(--teks);
+    background-color: var(--putih);
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(11, 42, 91, 0.35);
+}
+
+.dialog-konfirmasi::backdrop {
+    background-color: rgba(11, 42, 91, 0.45);
+}
+
+/* Kepala popup: biru tua dengan garis amber di bawahnya */
+.konfirmasi-kepala {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--putih);
+    background: linear-gradient(90deg, #08204a, var(--biru-tua));
+    border-bottom: 3px solid var(--aksen);
+}
+
+.konfirmasi-kepala svg {
+    width: 20px;
+    height: 20px;
+}
+
+.konfirmasi-isi {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 24px 12px;
+}
+
+.konfirmasi-ikon {
+    flex-shrink: 0;
+    width: 58px;
+    height: 58px;
+}
+
+.konfirmasi-teks {
+    margin: 0 0 6px;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--teks);
+}
+
+/* Nama data yang akan dihapus: merah tebal supaya jelas apa yang terancam hilang */
+.konfirmasi-nama {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #b42318;
+    overflow-wrap: anywhere;   /* nama panjang turun ke baris baru, tidak keluar kotak */
+}
+
+.konfirmasi-aksi {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 24px 22px;
+}
+
+/* Tombol bahaya (merah): untuk tindakan yang tidak bisa dibatalkan */
+.tombol-bahaya {
+    color: var(--putih);
+    background-color: #d92d20;
+    border: 1px solid #d92d20;
+}
+
+.tombol-bahaya:hover {
+    background-color: #b42318;
+}
+
+.dialog-konfirmasi .tombol:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* ---------- Filter di atas daftar (Log Aktivitas dan seterusnya) ---------- */
+
+.baris-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.pilih-filter {
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.pilih-filter:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Tab dokumen (PRD 6.10): satu tab per data yang dibuka. Kalau tidak muat, tab turun ke baris berikutnya
+   (tanpa bilah gulir, supaya tidak muncul panah gulir di samping tab). */
+.tab-dokumen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 4px;
+    min-width: 0;
+}
+
+.tab-dokumen .modul-tab {
+    flex-shrink: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.tab-dokumen .tab-judul {
+    padding: 11px 4px 11px 16px;
+    font-weight: inherit;
+}
+
+/* Tab di halaman rincian: judul dan tombol tutup berdampingan, bukan satu tombol */
+.modul-tab-ganda {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+}
+
+.modul-tab-ganda .tab-tutup {
+    margin-right: 0;
+}
+
+/* Label pada isian hanya-baca di halaman rincian mengikuti gaya label biasa */
+.baris-form .label-kelompok {
+    padding-top: 10px;
+}

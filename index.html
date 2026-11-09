@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Content-Security-Policy (Temuan 30): halaman hanya boleh memuat skrip, gaya, dan huruf dari folder aplikasi
+         sendiri; gambar juga boleh dari data:/blob: (logo yayasan dan lampiran). Tidak ada sambungan ke server luar,
+         plugin, bingkai (iframe), atau form yang terkirim ke alamat lain. Lapisan pengaman kedua: kalau suatu hari ada
+         isian yang tidak sengaja dipasang sebagai HTML, skrip di dalamnya tetap tidak bisa berjalan. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src blob:; base-uri 'none'; form-action 'none'">
+    <title>Dashboard – Aplikasi Keuangan</title>
+    <!-- Huruf Inter disimpan di umum/huruf/ (tanpa internet). Kalau gagal dimuat, browser memakai system-ui -->
+    <link rel="stylesheet" href="umum/huruf.css">
+    <!-- Gaya tampilan: umum/ = dipakai bersama, fitur/<nama>/ = khusus satu fitur.
+         URUTAN tag link di bawah menentukan aturan mana yang menang, jadi jangan ditukar. -->
+    <link rel="stylesheet" href="umum/dasar.css">
+    <link rel="stylesheet" href="umum/popup-dan-preferensi.css">
+    <link rel="stylesheet" href="umum/halaman-daftar.css">
+    <link rel="stylesheet" href="fitur/pengaturan/penomoran.css">
+    <link rel="stylesheet" href="fitur/cetakan/cetakan.css">
+    <link rel="stylesheet" href="fitur/akun/akun.css">
+    <link rel="stylesheet" href="fitur/cadangan/cadangan.css">
+    <link rel="stylesheet" href="fitur/cetakan/editor.css">
+    <link rel="stylesheet" href="umum/layar-sempit.css">
+    <link rel="stylesheet" href="umum/isi-halaman.css">
+    <link rel="stylesheet" href="fitur/dashboard/dashboard.css">
+    <link rel="stylesheet" href="fitur/jurnal/jurnal.css">
+    <link rel="stylesheet" href="umum/kalender.css">
+    <link rel="stylesheet" href="umum/lampiran.css">
+    <link rel="stylesheet" href="fitur/gaji/gaji.css">
+    <link rel="stylesheet" href="umum/transaksi-kas.css">
+    <link rel="stylesheet" href="fitur/pembayaran/pembayaran.css">
+    <link rel="stylesheet" href="fitur/transfer/transfer.css">
+    <link rel="stylesheet" href="umum/histori.css">
+    <link rel="stylesheet" href="fitur/rekonsiliasi-bank/rekonsiliasi-bank.css">
+    <link rel="stylesheet" href="fitur/donatur/donatur.css">
+    <link rel="stylesheet" href="fitur/target-donasi/target-donasi.css">
+    <link rel="stylesheet" href="fitur/pemindahan-dana/pemindahan-dana.css">
+    <link rel="stylesheet" href="fitur/laporan/laporan.css">
+    <link rel="stylesheet" href="fitur/laporan-bukti/laporan-bukti.css">
+    <link rel="stylesheet" href="fitur/anggaran/anggaran.css">
+    <link rel="stylesheet" href="fitur/monitor-anggaran/monitor-anggaran.css">
+    <link rel="stylesheet" href="fitur/transfer-anggaran/transfer-anggaran.css">
+    <link rel="stylesheet" href="fitur/aset-tetap/aset-tetap.css">
+    <link rel="stylesheet" href="fitur/favorit/favorit.css">
+    <link rel="stylesheet" href="umum/halaman-pdf.css">
+    <link rel="stylesheet" href="umum/sesi.css">
+    <!-- Sesi masuk (PRD 6.12) diperiksa PALING AWAL: belum masuk = pindah ke login.html sebelum aplikasi tampil -->
+    <script src="umum/sesi.js"></script>
+    <!-- index.html hanya KERANGKA. Setiap <template data-tempat="..."> diganti HTML dari file tampilan:
+         - umum/tampilan-kerangka.js : bilah atas, menu samping
+         - umum/tampilan-popup.js    : popup menu (Pengaturan, Master Data, Buku Besar, Kas & Bank) dan konfirmasi
+         - fitur/<nama>/tampilan.js  : tab, halaman, dan popup milik fitur itu
+         Urutan penanda = urutan HTML di halaman, jadi jangan ditukar. -->
+</head>
+<body>
+
+    <template data-tempat="bilah-atas"></template>
+
+    <div class="tata-letak">
+        <template data-tempat="menu-samping"></template>
+
+        <!-- ===== Area isi: deretan tab, lalu isi tiap tab (hanya satu yang tampil) ===== -->
+        <main class="isi">
+            <div class="tab-baris">
+                <template data-tempat="tab-dashboard"></template>
+                <template data-tempat="tab-divisi"></template>
+                <template data-tempat="tab-program"></template>
+                <template data-tempat="tab-karyawan"></template>
+                <template data-tempat="tab-gaji"></template>
+                <template data-tempat="tab-akun"></template>
+                <template data-tempat="tab-jurnal"></template>
+                <template data-tempat="tab-pgaji"></template>
+                <template data-tempat="tab-bayar"></template>
+                <template data-tempat="tab-terima"></template>
+                <template data-tempat="tab-transfer"></template>
+                <template data-tempat="tab-histori-bank"></template>
+                <template data-tempat="tab-histori-akun"></template>
+                <template data-tempat="tab-kategori-donasi"></template>
+                <template data-tempat="tab-donatur"></template>
+                <template data-tempat="tab-donasi-catat"></template>
+                <template data-tempat="tab-target-donasi"></template>
+                <template data-tempat="tab-pemindahan-dana"></template>
+                <template data-tempat="tab-rekonsiliasi-bank"></template>
+                <template data-tempat="tab-laporan"></template>
+                <template data-tempat="tab-hasil-laporan"></template>
+                <template data-tempat="tab-anggaran"></template>
+                <template data-tempat="tab-monitor-anggaran"></template>
+                <template data-tempat="tab-transfer-anggaran"></template>
+                <template data-tempat="tab-log-jurnal"></template>
+                <template data-tempat="tab-aset-tetap"></template>
+                <template data-tempat="tab-kategori-aset"></template>
+                <template data-tempat="tab-penyusutan"></template>
+                <template data-tempat="tab-lepas-aset"></template>
+                <template data-tempat="tab-favorit"></template>
+                <template data-tempat="tab-log"></template>
+                <template data-tempat="tab-pengguna"></template>
+                <template data-tempat="tab-penomoran"></template>
+                <template data-tempat="tab-cetakan"></template>
+                <template data-tempat="tab-cadangan"></template>
+                <template data-tempat="tab-preferensi"></template>
+            </div>
+
+            <template data-tempat="isi-dashboard"></template>
+
+            <template data-tempat="isi-divisi"></template>
+
+            <template data-tempat="isi-program"></template>
+
+            <template data-tempat="isi-karyawan"></template>
+
+            <template data-tempat="isi-gaji"></template>
+
+            <template data-tempat="isi-akun"></template>
+
+            <template data-tempat="isi-jurnal"></template>
+
+            <template data-tempat="isi-pgaji"></template>
+
+            <template data-tempat="isi-bayar"></template>
+            <template data-tempat="isi-terima"></template>
+            <template data-tempat="isi-transfer"></template>
+            <template data-tempat="isi-histori-bank"></template>
+            <template data-tempat="isi-histori-akun"></template>
+            <template data-tempat="isi-kategori-donasi"></template>
+            <template data-tempat="isi-donatur"></template>
+            <template data-tempat="isi-donasi-catat"></template>
+            <template data-tempat="isi-target-donasi"></template>
+            <template data-tempat="isi-pemindahan-dana"></template>
+            <template data-tempat="isi-rekonsiliasi-bank"></template>
+            <template data-tempat="isi-laporan"></template>
+            <template data-tempat="isi-hasil-laporan"></template>
+            <template data-tempat="isi-anggaran"></template>
+            <template data-tempat="isi-monitor-anggaran"></template>
+            <template data-tempat="isi-transfer-anggaran"></template>
+            <template data-tempat="isi-log-jurnal"></template>
+            <template data-tempat="isi-aset-tetap"></template>
+            <template data-tempat="isi-kategori-aset"></template>
+            <template data-tempat="isi-penyusutan"></template>
+            <template data-tempat="isi-lepas-aset"></template>
+            <template data-tempat="isi-favorit"></template>
+
+            <template data-tempat="isi-log"></template>
+
+            <template data-tempat="isi-pengguna"></template>
+
+            <template data-tempat="isi-penomoran"></template>
+
+            <template data-tempat="isi-cetakan"></template>
+
+            <template data-tempat="isi-cadangan"></template>
+
+            <template data-tempat="isi-preferensi"></template>
+        </main>
+    </div>
+
+    <!-- ===== Popup (dialog). Popup menu ada di umum/tampilan-popup.js, popup fitur di folder fiturnya. ===== -->
+    <template data-tempat="panel-kas"></template>
+    <template data-tempat="panel-donasi"></template>
+    <template data-tempat="panel-aset"></template>
+
+    <template data-tempat="panel-buku-besar"></template>
+
+    <template data-tempat="dialog-detail-akun"></template>
+
+    <template data-tempat="dialog-rincian-gaji"></template>
+
+    <template data-tempat="dialog-rincian-bayar"></template>
+    <template data-tempat="dialog-rincian-terima"></template>
+    <template data-tempat="dialog-rincian-donasi-catat"></template>
+    <template data-tempat="dialog-tujuan-pemindahan"></template>
+
+    <template data-tempat="dialog-lampiran"></template>
+    <template data-tempat="dialog-pintasan"></template>
+    <template data-tempat="dialog-ganti-sandi"></template>
+
+    <template data-tempat="dialog-parameter-laporan"></template>
+    <template data-tempat="dialog-simpan-laporan"></template>
+    <template data-tempat="dialog-modifikasi-laporan"></template>
+    <template data-tempat="dialog-rincian-baris"></template>
+    <template data-tempat="dialog-bukti-laporan"></template>
+    <template data-tempat="dialog-rincian-anggaran"></template>
+    <template data-tempat="dialog-widget"></template>
+    <template data-tempat="dialog-favorit"></template>
+    <template data-tempat="dialog-cetak-bukti"></template>
+    <template data-tempat="halaman-pdf"></template>
+
+    <template data-tempat="panel-master"></template>
+
+    <template data-tempat="dialog-konfirmasi"></template>
+
+    <!-- ===== Tempat notifikasi muncul (pojok kanan atas, di bawah bar atas) =====
+         Notifikasi dibuat oleh JavaScript lewat fungsi tampilkanNotifikasi().
+         aria-live membuat pembaca layar membacakan notifikasi yang baru muncul. -->
+    <div id="area-notifikasi" class="area-notifikasi" aria-live="polite"></div>
+
+    <template data-tempat="panel-pengaturan"></template>
+
+    <!-- ===== Skrip aplikasi: umum/ = dipakai bersama, fitur/<nama>/ = satu fitur. URUTAN PENTING: file di bawah memakai isi file di atasnya.
+         Semua file memakai skrip biasa (bukan module) supaya tetap jalan saat index.html dibuka langsung dari komputer. ===== -->
+    <!-- Pemasang tampilan fitur: harus paling awal (lihat penjelasan di dalam filenya). -->
+    <script src="umum/pasang-tampilan.js"></script>
+    <script src="umum/tampilan-kerangka.js"></script>
+    <script src="umum/tampilan-popup.js"></script>
+    <!-- Cetakan HTML bersama transaksi Kas/Bank: harus sebelum tampilan.js Pembayaran dan Penerimaan -->
+    <script src="umum/tampilan-transaksi-kas.js"></script>
+    <script src="umum/tampilan-histori.js"></script>
+    <script src="fitur/jurnal/tampilan.js"></script>
+    <script src="fitur/gaji/tampilan.js"></script>
+    <script src="fitur/pembayaran/tampilan.js"></script>
+    <script src="fitur/penerimaan/tampilan.js"></script>
+    <script src="fitur/transfer/tampilan.js"></script>
+    <script src="fitur/histori-bank/tampilan.js"></script>
+    <script src="fitur/histori-akun/tampilan.js"></script>
+    <script src="fitur/kategori-donasi/tampilan.js"></script>
+    <script src="fitur/donatur/tampilan.js"></script>
+    <script src="fitur/pencatatan-donasi/tampilan.js"></script>
+    <script src="fitur/target-donasi/tampilan.js"></script>
+    <script src="fitur/pemindahan-dana/tampilan.js"></script>
+    <script src="fitur/rekonsiliasi-bank/tampilan.js"></script>
+    <script src="fitur/laporan/tampilan.js"></script>
+    <script src="fitur/laporan-bukti/tampilan.js"></script>
+    <script src="fitur/anggaran/tampilan.js"></script>
+    <script src="fitur/monitor-anggaran/tampilan.js"></script>
+    <script src="fitur/transfer-anggaran/tampilan.js"></script>
+    <script src="fitur/log-jurnal/tampilan.js"></script>
+    <script src="fitur/aset-tetap/tampilan.js"></script>
+    <script src="fitur/kategori-aset/tampilan.js"></script>
+    <script src="fitur/penyusutan/tampilan.js"></script>
+    <script src="fitur/lepas-aset/tampilan.js"></script>
+    <script src="fitur/favorit/tampilan.js"></script>
+    <script src="fitur/cetak-bukti/tampilan.js"></script>
+    <script src="fitur/akun/tampilan.js"></script>
+    <script src="fitur/master-data/tampilan.js"></script>
+    <script src="fitur/pengaturan/tampilan.js"></script>
+    <script src="fitur/cetakan/tampilan.js"></script>
+    <script src="fitur/cadangan/tampilan.js"></script>
+    <script src="fitur/dashboard/tampilan.js"></script>
+    <script src="fitur/preferensi/tampilan.js"></script>
+    <script src="umum/inti.js"></script>
+    <script src="umum/alat.js"></script>
+    <script src="umum/sandi.js"></script>
+    <!-- Berkas Excel (.xlsx) tanpa pustaka luar, dipakai unduhan laporan. -->
+    <script src="umum/unduh-excel.js"></script>
+    <script src="umum/preferensi.js"></script>
+    <script src="umum/komponen-daftar.js"></script>
+    <script src="umum/komponen-transaksi.js"></script>
+    <script src="umum/lampiran.js"></script>
+    <!-- Kotak pilihan berlabel yang bisa dicari (PRD 5.1). Sesudah umum/komponen-transaksi.js, sebelum skrip fitur. -->
+    <script src="umum/pemilih-opsi.js"></script>
+    <script src="umum/komponen-transaksi-kas.js"></script>
+    <script src="umum/komponen-histori.js"></script>
+    <!-- Master Data (Divisi, Program, Karyawan, Gaji/Tunjangan) ada di file sendiri. Harus sebelum fitur/akun/akun.js. -->
+    <script src="fitur/master-data/master-data.js"></script>
+    <!-- Akun Perkiraan ada di file sendiri. Harus SEBELUM fitur/jurnal/jurnal.js (jurnal memakai perhitungan saldo dan daftar akun). -->
+    <script src="fitur/akun/akun.js"></script>
+    <!-- Jurnal Umum (termasuk lampiran jurnal) ada di file sendiri supaya index.html tidak terlalu panjang.
+         Urutan tag script penting: file ini memakai fungsi bersama dari skrip di atasnya, dan skrip di bawahnya memakai isinya. -->
+    <script src="fitur/jurnal/jurnal.js"></script>
+    <!-- Pencatatan Gaji ada di file sendiri. Harus sesudah fitur/jurnal/jurnal.js (memakai isinya). -->
+    <script src="fitur/gaji/gaji.js"></script>
+    <!-- Pembayaran ada di folder sendiri. Harus sesudah fitur/gaji/gaji.js (memakai isi jurnal.js dan gaji.js).
+         Popup menu Kas & Bank (kas-bank.js) membuka Pembayaran; fitur Kas & Bank berikutnya (Penerimaan, Transfer) juga di folder sendiri. -->
+    <script src="fitur/pembayaran/pembayaran.js"></script>
+    <script src="fitur/penerimaan/penerimaan.js"></script>
+    <script src="fitur/transfer/transfer.js"></script>
+    <script src="fitur/histori-bank/histori-bank.js"></script>
+    <script src="fitur/histori-akun/histori-akun.js"></script>
+    <script src="fitur/rekonsiliasi-bank/rekonsiliasi-bank.js"></script>
+    <script src="fitur/kas-bank/kas-bank.js"></script>
+    <!-- Popup menu Donasi (PRD 6.1). Fitur Donasi berikutnya dibuat di folder sendiri. -->
+    <script src="fitur/donasi/donasi.js"></script>
+    <!-- Kategori Donasi (membuat akun donasi, PRD 6.1). Sesudah fitur/akun/akun.js (memakai petaAkun dan buatKodeAkun). -->
+    <script src="fitur/kategori-donasi/kategori-donasi.js"></script>
+    <!-- Donatur (PRD 6.1): data pemberi donasi, dibuka dari kotak Donatur di popup Donasi. -->
+    <script src="fitur/donatur/donatur.js"></script>
+    <!-- Pencatatan Donasi (PRD 6.1). Sesudah fitur/donatur/donatur.js (namaDonaturDariId) dan fitur/jurnal/jurnal.js. -->
+    <script src="fitur/pencatatan-donasi/pencatatan-donasi.js"></script>
+    <!-- Target Donasi (PRD 6.1): target pengumpulan per Program. Sesudah fitur/master-data/master-data.js (Program). -->
+    <script src="fitur/target-donasi/target-donasi.js"></script>
+    <!-- Pemindahan Dana (PRD 6.1). Sesudah fitur/akun/akun.js (sisaDanaProgram) dan fitur/jurnal/jurnal.js (jurnalMilik). -->
+    <script src="fitur/pemindahan-dana/pemindahan-dana.js"></script>
+    <!-- Anggaran (PRD 6.5): rencana per bulan, tanpa jurnal. Sesudah fitur/master-data/master-data.js dan umum/komponen-transaksi.js. -->
+    <script src="fitur/anggaran/hitung.js"></script>
+    <script src="fitur/anggaran/anggaran.js"></script>
+    <script src="fitur/monitor-anggaran/monitor-anggaran.js"></script>
+    <script src="fitur/transfer-anggaran/transfer-anggaran.js"></script>
+    <script src="fitur/laporan-anggaran/laporan-anggaran.js"></script>
+    <script src="fitur/log-jurnal/log-jurnal.js"></script>
+    <!-- Aset Tetap (PRD 6.6). hitung.js lebih dulu; sesudah Anggaran dan Jurnal Umum karena memakai alat keduanya. -->
+    <script src="fitur/aset-tetap/hitung.js"></script>
+    <script src="fitur/aset-tetap/aset-tetap.js"></script>
+    <script src="fitur/kategori-aset/kategori-aset.js"></script>
+    <script src="fitur/penyusutan/penyusutan.js"></script>
+    <script src="fitur/lepas-aset/lepas-aset.js"></script>
+    <script src="fitur/laporan-aset/laporan-aset.js"></script>
+    <!-- Menu Laporan (PRD 7). Laporan-laporannya dibuat di folder sendiri dan didaftarkan di DAFTAR_LAPORAN. -->
+    <script src="fitur/laporan/laporan.js"></script>
+    <!-- Jendela Parameter Laporan (dipakai bersama laporan ringkasan). Sesudah fitur/master-data/master-data.js (Divisi, Program). -->
+    <script src="fitur/laporan/parameter.js"></script>
+    <!-- Kertas hasil laporan (kepala, filter, kaki, cetak), dipakai bersama laporan ringkasan. -->
+    <script src="fitur/laporan/kertas.js"></script>
+    <script src="fitur/laporan/pdf-laporan.js"></script>
+    <!-- Jendela Modifikasi: ukuran kertas dan margin per laporan. -->
+    <script src="fitur/laporan/modifikasi.js"></script>
+    <!-- Daftar transaksi di balik satu baris laporan (klik baris). -->
+    <script src="fitur/laporan/rincian-baris.js"></script>
+    <!-- Pohon akun bertingkat dan tabel laporan (angka "-", kurung, garis akuntansi), dipakai bersama laporan ringkasan. -->
+    <script src="fitur/laporan/pohon.js"></script>
+    <!-- Hitungan bersama laporan (saldo per tanggal, aset neto, Pemindahan Dana) dan Laporan Tersimpan. -->
+    <script src="fitur/laporan/hitung.js"></script>
+    <script src="fitur/laporan/tersimpan.js"></script>
+    <!-- Laporan (PRD 7), masing-masing di foldernya sendiri. Sesudah fitur/laporan/ (alat bersama) dan fitur/akun/akun.js (jurnal, akun). -->
+    <script src="fitur/penghasilan-komprehensif/penghasilan-komprehensif.js"></script>
+    <script src="fitur/posisi-keuangan/posisi-keuangan.js"></script>
+    <script src="fitur/perubahan-aset-neto/perubahan-aset-neto.js"></script>
+    <script src="fitur/arus-kas/arus-kas.js"></script>
+    <script src="fitur/laporan-program/laporan-program.js"></script>
+    <script src="fitur/laporan-rincian/laporan-rincian.js"></script>
+    <!-- Bukti Pengeluaran (PRD 5.4): sesudah laporan-rincian.js (definisi pengeluaran) dan umum/lampiran.js -->
+    <script src="fitur/laporan-bukti/laporan-bukti.js"></script>
+    <script src="fitur/laporan-kas-donasi/laporan-kas-donasi.js"></script>
+    <script src="fitur/laporan-buku-besar/laporan-buku-besar.js"></script>
+    <!-- Pengaturan (Log Aktivitas, Pengguna, Penomoran), Desain Cetakan, dan Cadangan Data ada di file sendiri.
+         Cadangan Data paling akhir, supaya semua halaman sudah mendaftarkan kunci datanya. -->
+    <script src="fitur/pengaturan/pengaturan.js"></script>
+    <script src="fitur/cetakan/cetakan.js"></script>
+    <script src="fitur/cadangan/cadangan.js"></script>
+    <script src="umum/bilah-atas.js"></script>
+    <!-- Pintasan keyboard (PRD 6.11): sesudah semua halaman dan umum/komponen-daftar.js -->
+    <script src="umum/pintasan.js"></script>
+    <!-- Menu pengguna, Keluar, keluar otomatis 40 menit, dan hak akses peran (PRD 6.12, 5.8) -->
+    <script src="umum/sesi-aplikasi.js"></script>
+    <!-- Transaksi Favorit (PRD 6.8): sesudah semua formulir transaksi -->
+    <script src="fitur/favorit/favorit.js"></script>
+    <!-- Cetak Bukti (PRD 6.9): sesudah semua formulir transaksi dan Desain Cetakan -->
+    <script src="umum/buat-pdf.js"></script>
+    <script src="umum/pdf-tabel.js"></script>
+    <script src="umum/halaman-pdf.js"></script>
+    <script src="fitur/cetak-bukti/pdf-bukti.js"></script>
+    <script src="fitur/cetak-bukti/cetak-bukti.js"></script>
+    <!-- Dashboard (PRD 6.7): paling akhir, karena langsung menggambar widget memakai alat dari hampir semua fitur -->
+    <script src="fitur/dashboard/dashboard.js"></script>
+</body>
+</html>

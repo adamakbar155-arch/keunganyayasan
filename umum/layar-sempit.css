@@ -1,0 +1,31 @@
+/* umum/layar-sempit.css: penyesuaian layar sempit yang dipakai bersama: label formulir pindah ke atas isian,
+   dan menu bagian Preferensi berjajar ke samping. Dimuat sesudah fitur/cetakan/editor.css (posisi lamanya). */
+
+/* Layar sempit: label pindah ke atas isian */
+@media (max-width: 760px) {
+    .baris-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .baris-form label {
+        padding-top: 0;
+    }
+}
+
+/* Di layar sempit: menu bagian pindah ke atas dan berjajar ke samping (bisa digeser) */
+@media (max-width: 760px) {
+    .pref {
+        flex-direction: column;
+    }
+
+    .pref-menu {
+        flex-direction: row;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .pref-item {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,762 @@
+/* umum/popup-dan-preferensi.css: Popup Pengaturan/Master Data, tab dan formulir Preferensi, notifikasi, saklar Fitur, pemilih akun, pilihan format.
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* ---------- Popup Pengaturan ---------- */
+
+/* Popup muncul di dekat menu samping (kiri atas), bukan di tengah layar.
+   position: fixed + margin: 0 membatalkan posisi tengah bawaan <dialog>. */
+.panel-pengaturan {
+    position: fixed;
+    top: calc(var(--tinggi-bar) + 12px);
+    left: calc(var(--lebar-menu) + 12px);
+    margin: 0;
+    width: min(540px, calc(100vw - var(--lebar-menu) - 24px));
+    padding: 0;   /* jarak dalam diatur oleh .panel-isi, bukan oleh dialog */
+    color: var(--teks);
+    background-color: var(--putih);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(11, 42, 91, 0.28);
+}
+
+/* Latar gelap di belakang popup */
+.panel-pengaturan::backdrop {
+    background-color: rgba(11, 42, 91, 0.35);
+}
+
+.panel-isi {
+    padding: 20px 24px 24px;
+}
+
+/* Judul + garis amber di bawahnya, sama seperti garis kecil di halaman lain */
+.panel-kepala {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--aksen);
+}
+
+.panel-kepala h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--biru-tua);
+}
+
+/* Kotak menu: tiga kolom, turun otomatis kalau layar sempit */
+.kotak-pengaturan {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.kotak-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 120px;
+    padding: 14px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--biru-tua);
+    background-color: #eaf2fd;
+    border: 1px solid #b9d3f3;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(11, 42, 91, 0.08);
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+.kotak-menu:hover,
+.kotak-menu:focus-visible {
+    background-color: #fff3d9;   /* amber sangat muda saat disorot */
+    border-color: var(--aksen);
+    outline: none;
+}
+
+/* Varian warna kotak seperti Accurate (dipakai semua popup menu): hijau = transaksi, oranye = target/lainnya.
+   Biru (aturan .kotak-menu di atas) = data. Saat disorot tetap memakai warna amber yang sama. */
+.kotak-menu.kotak-hijau {
+    color: #2f6b12;
+    background-color: #e3f8d6;
+    border-color: #9fd77e;
+}
+.kotak-menu.kotak-oranye {
+    color: #b34a0b;
+    background-color: #fde9dc;
+    border-color: #f2b48a;
+}
+
+/* Kotak yang fiturnya dimatikan disembunyikan. Aturan ini perlu karena "display: flex"
+   di atas akan mengalahkan atribut hidden. */
+.kotak-menu[hidden] {
+    display: none;
+}
+
+.kotak-ikon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.kotak-label-menu {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* ---------- Tab Preferensi ---------- */
+
+/* Dua kolom: menu bagian di kiri, kotak isi di kanan */
+.pref {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.pref-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.pref-item {
+    padding: 11px 16px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    color: var(--teks-redup);
+    background-color: #e3e9f2;
+    border: none;
+    border-left: 4px solid transparent;   /* ruang untuk garis amber saat aktif */
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pref-item:hover {
+    background-color: #d6dfec;
+}
+
+/* Bagian yang sedang dibuka: putih, huruf tebal, garis amber di kiri */
+.pref-item.aktif {
+    font-weight: 700;
+    color: var(--biru-tua);
+    background-color: var(--putih);
+    border-left-color: var(--aksen);
+    box-shadow: 0 2px 8px rgba(11, 42, 91, 0.08);
+}
+
+.pref-item:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+.pref-isi {
+    flex: 1;
+    min-width: 0;
+    min-height: 420px;
+    padding: 24px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(11, 42, 91, 0.06);
+}
+
+.pref-judul {
+    margin: 0 0 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--biru-tua);
+}
+
+/* ---------- Formulir Preferensi ---------- */
+
+/* Tab kecil di dalam bagian (Info, Kontak dan Alamat, Penanda Tangan) */
+.sub-tab-baris {
+    display: flex;
+    gap: 4px;
+    margin-bottom: -1px;   /* tab menempel ke garis kotak di bawahnya */
+    overflow-x: auto;
+}
+
+.sub-tab {
+    flex-shrink: 0;
+    padding: 9px 18px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--teks-redup);
+    background-color: #eef3fa;
+    border: 1px solid var(--garis);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    cursor: pointer;
+}
+
+.sub-tab.aktif {
+    position: relative;   /* agar menutupi garis atas kotak di bawahnya */
+    font-weight: 700;
+    color: var(--biru-tua);
+    background-color: var(--putih);
+    border-top: 3px solid var(--aksen);
+}
+
+.sub-tab:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: -3px;
+}
+
+/* Panel isi tab berwarna putih, menyatu dengan tab yang aktif (permintaan pengguna 2026-11-08) */
+.form-pref {
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 0 12px 12px 12px;
+}
+
+.sub-isi {
+    padding: 24px;
+    min-height: 260px;
+}
+
+/* Satu baris: label di kiri, isian di kanan. Di layar sempit, label ada di atas isian. */
+.baris-form {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 480px);
+    align-items: start;
+    gap: 6px 16px;
+    margin-bottom: 16px;
+}
+
+.baris-form label {
+    padding-top: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.baris-form input,
+.baris-form textarea {
+    width: 100%;
+    margin: 0;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.baris-form textarea {
+    resize: vertical;
+}
+
+.baris-form input:focus,
+.baris-form textarea:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Kolom yang tidak bisa diubah (periode, mata uang): abu-abu seperti di Accurate */
+.baris-form input[readonly] {
+    color: var(--teks-redup);
+    background-color: #f1f4f8;
+}
+
+.grup-tanggal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.grup-tanggal input {
+    width: auto;
+}
+
+.tanggal-teks {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--biru-tua);
+}
+
+.grup-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.baris-form .grup-logo input {
+    padding: 8px;
+}
+
+.logo-pratinjau {
+    max-width: 160px;
+    max-height: 120px;
+    padding: 8px;
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    background-color: #f8fafc;
+}
+
+/* Aturan display lain bisa mengalahkan atribut hidden, jadi ditegaskan di sini */
+.logo-pratinjau[hidden],
+.tombol[hidden] {
+    display: none;
+}
+
+.petunjuk {
+    font-size: 0.8rem;
+    color: var(--teks-redup);
+}
+
+/* Baris bawah: pesan di kiri, tombol Simpan di kanan */
+.pref-aksi {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 24px;
+    border-top: 1px solid #e8edf4;
+}
+
+/* ---------- Notifikasi popup ---------- */
+
+/* Tumpukan notifikasi di pojok kanan atas, tepat di bawah bar atas.
+   pointer-events: none membuat area kosongnya tidak menghalangi klik ke halaman. */
+.area-notifikasi {
+    position: fixed;
+    top: calc(var(--tinggi-bar) + 12px);
+    right: 16px;
+    z-index: 100;   /* di atas semua, termasuk popup Pengaturan */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(340px, calc(100vw - 32px));
+    pointer-events: none;
+}
+
+.notifikasi {
+    padding: 14px 16px 16px;
+    color: var(--putih);
+    background-color: #1e88e5;   /* biru: informasi */
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(11, 42, 91, 0.3);
+    pointer-events: auto;        /* notifikasinya sendiri tetap bisa diklik */
+    animation: notifikasi-masuk 0.25s ease-out;
+    transition: opacity 0.25s, transform 0.25s;
+}
+
+.notifikasi-galat {
+    background-color: #d92d20;   /* merah: gagal */
+}
+
+.notifikasi-peringatan {
+    color: var(--biru-tua);
+    background-color: var(--aksen);   /* amber: peringatan */
+}
+
+/* Kelas "keluar" ditambahkan JavaScript saat notifikasi ditutup */
+.notifikasi.keluar {
+    opacity: 0;
+    transform: translateX(24px);
+}
+
+.notifikasi-kepala {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notifikasi-kepala strong {
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.notifikasi p {
+    margin: 6px 0 0;
+    font-size: 0.95rem;
+}
+
+/* Tombol X: lingkaran putih (warna teks) dengan tanda X yang mengikuti warna latar */
+.notifikasi-tutup {
+    display: flex;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.notifikasi-tutup svg {
+    width: 100%;
+    height: 100%;
+}
+
+.notifikasi-tutup circle {
+    fill: currentColor;
+}
+
+.notifikasi-tutup path {
+    fill: none;
+    stroke: #1e88e5;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.notifikasi-galat .notifikasi-tutup path {
+    stroke: #d92d20;
+}
+
+.notifikasi-peringatan .notifikasi-tutup path {
+    stroke: var(--aksen);
+}
+
+.notifikasi-tutup:focus-visible {
+    outline: 3px solid var(--putih);
+    outline-offset: 2px;
+}
+
+@keyframes notifikasi-masuk {
+    from {
+        opacity: 0;
+        transform: translateX(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Orang yang mematikan animasi di sistemnya: notifikasi muncul tanpa gerakan */
+@media (prefers-reduced-motion: reduce) {
+    .notifikasi {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* Tombol utama (amber): dipakai untuk Simpan, sama dengan tombol Masuk di login */
+.tombol-utama {
+    color: var(--biru-tua);
+    background-color: var(--aksen);
+    border: 1px solid var(--aksen);
+}
+
+.tombol-utama:hover {
+    background-color: var(--aksen-gelap);
+}
+
+/* ---------- Saklar Fitur ---------- */
+
+/* Dua kolom (Fitur Dasar dan Program dan Divisi); di layar sempit otomatis jadi satu kolom */
+.fitur-isi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 8px 40px;
+    padding: 24px;
+    min-height: 260px;
+}
+
+/* Judul kelompok dengan garis di bawahnya, seperti di Accurate */
+.fitur-grup {
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--biru);
+    border-bottom: 1px solid var(--garis);
+}
+
+.fitur-daftar {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fitur-daftar li {
+    margin-bottom: 14px;
+}
+
+.saklar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Bagian Dana di popup baris (PRD 4.1): centang Terikat dan Tidak Terikat berdampingan; turun ke bawah di layar sempit */
+.pilihan-dana {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+}
+
+.saklar input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: var(--biru);   /* warna centang mengikuti biru kita */
+    cursor: pointer;
+}
+
+/* Keterangan kecil di bawah tiap saklar, sejajar dengan teks (bukan dengan kotak centang) */
+.fitur-daftar small {
+    display: block;
+    margin: 2px 0 0 28px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: var(--teks-redup);
+}
+
+/* Kolom tanggal di bawah pilihan radio (Pembatasan), sejajar dengan teks pilihan */
+.opsi-tanggal {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0 0 28px;
+}
+
+.opsi-tanggal input {
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.opsi-tanggal input:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Kolom nonaktif tampil abu-abu */
+.opsi-tanggal input:disabled {
+    color: var(--teks-redup);
+    background-color: #f1f4f8;
+    cursor: not-allowed;
+}
+
+/* Kotak peringatan merah muda di atas halaman Lampiran, seperti di Accurate */
+.kotak-peringatan {
+    margin: 0 0 20px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: #b42318;
+    background-color: #fee4e2;
+    border: 1px solid #f5a8a2;
+    border-radius: 8px;
+}
+
+/* Halaman Lampiran tidak butuh tinggi minimum dan padding ganda seperti halaman Fitur */
+.lampiran-isi {
+    padding: 0;
+    min-height: 0;
+}
+
+/* Atribut hidden bisa kalah oleh "display" lain, jadi ditegaskan di sini */
+.fitur-kolom[hidden] {
+    display: none;
+}
+
+/* ---------- Pemilih akun (Akun Perkiraan) ---------- */
+
+/* Kotak yang berisi label akun terpilih + kolom cari, seperti di Accurate.
+   .pemilih-banyak = kotak yang sama untuk kolom pilih beberapa (buatPemilihBanyak, umum/komponen-transaksi.js). Kelasnya
+   dibedakan karena umum/preferensi.js memasang logika pemilih akun pada SEMUA .pemilih-akun. */
+.pemilih-akun,
+.pemilih-banyak {
+    position: relative;   /* patokan untuk daftar pilihan yang muncul di bawahnya */
+    padding: 6px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.pemilih-akun:focus-within,
+.pemilih-banyak:focus-within {
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+.pemilih-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+/* Label akun terpilih: biru muda dengan tombol hapus (×) */
+.chip-akun {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 4px 3px 10px;
+    font-size: 0.85rem;
+    color: var(--biru-tua);
+    background-color: #e1eefc;
+    border: 1px solid #8bb9ee;
+    border-radius: 6px;
+}
+
+.chip-hapus {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--teks-redup);
+    background: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.chip-hapus:hover {
+    color: var(--biru-tua);
+    background-color: rgba(11, 42, 91, 0.12);
+}
+
+/* Chip di dalam kolom cari satu pilihan (buatChipPilihan, PRD 5.1): menempel di kiri kolom, tidak menutupi ikon cari.
+   Nama yang panjang dipotong dengan "..." supaya chip tetap di dalam kolom. */
+.chip-di-kolom {
+    position: absolute;
+    top: 50%;
+    left: 6px;
+    max-width: calc(100% - 52px);
+    transform: translateY(-50%);
+}
+
+/* Kotak pilihan berlabel (umum/pemilih-opsi.js): selebar tempatnya, juga di baris flex (misalnya No Bukti + saklar) */
+.pemilih-opsi {
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+.chip-di-kolom .chip-teks {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Kolom cari di dalam kotak: tanpa border sendiri karena kotaknya sudah punya.
+   Selector dibuat lebih spesifik supaya mengalahkan gaya input di .baris-form. */
+.baris-form .pemilih-akun .pemilih-cari,
+.baris-form .pemilih-banyak .pemilih-cari {
+    padding: 8px 6px;
+    border: none;
+    box-shadow: none;
+}
+
+.baris-form .pemilih-akun .pemilih-cari:focus,
+.baris-form .pemilih-banyak .pemilih-cari:focus {
+    box-shadow: none;
+}
+
+/* Daftar pilihan akun: melayang di bawah kotak */
+.pemilih-daftar {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 30;
+    max-height: 240px;
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+    list-style: none;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(11, 42, 91, 0.2);
+}
+
+.pemilih-daftar[hidden] {
+    display: none;
+}
+
+.pemilih-pilihan {
+    width: 100%;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    color: var(--teks);
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.pemilih-pilihan:hover,
+.pemilih-pilihan:focus-visible {
+    background-color: #eef3fa;
+    outline: none;
+}
+
+.pemilih-info {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+/* ---------- Pilihan format (Lain-lain) ---------- */
+
+/* Kotak pilihan (select) bergaya sama dengan kolom isian lain di formulir */
+.baris-form select {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.baris-form select:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Dua pilihan berdampingan (jumlah desimal dan kapan ditampilkan) */
+.grup-dua-kolom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Kotak contoh hasil format */
+.kotak-contoh {
+    margin-top: 8px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--teks-redup);
+    background-color: #f1f6fd;
+    border-left: 4px solid var(--aksen);
+    border-radius: 4px;
+}
+
+.kotak-contoh strong {
+    color: var(--biru-tua);
+}
+
+/* Popup Pintasan Keyboard (umum/pintasan.js, PRD 6.11) */
+.dialog-pintasan { width: min(560px, calc(100vw - 32px)); }
+.tabel-pintasan { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabel-pintasan td { padding: 7px 8px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+.tabel-pintasan td:first-child { width: 120px; white-space: nowrap; }
+.tabel-pintasan kbd { display: inline-block; padding: 2px 7px; border: 1px solid #cbd5e1; border-bottom-width: 2px; border-radius: 5px;
+                      background: #f8fafc; color: #0b2a5b; font-family: inherit; font-size: 12px; font-weight: 700; }

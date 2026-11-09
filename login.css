@@ -1,0 +1,325 @@
+/* login.css
+   Gaya untuk halaman login Aplikasi Keuangan. */
+
+/* Variabel warna: ubah di sini kalau ingin ganti warna di seluruh halaman.
+   Palet: biru tua (utama) + amber (aksen) yang saling berlawanan di roda warna,
+   sehingga tombol Masuk langsung menonjol. */
+:root {
+    --biru-tua: #0b2a5b;      /* warna utama, dasar panel kiri */
+    --biru: #1565c0;          /* biru lebih terang, ujung gradasi & fokus input */
+    --aksen: #f5a623;         /* amber, khusus tombol Masuk */
+    --aksen-gelap: #e0910f;   /* amber saat tombol disorot mouse */
+    --putih: #ffffff;
+    --latar-kanan: #eef3fa;   /* abu kebiruan sangat muda */
+    --teks: #1f2937;          /* teks utama (abu sangat gelap, lebih lembut dari hitam) */
+    --teks-redup: #6b7280;    /* teks pendukung */
+    --garis: #d5dbe5;         /* warna border input */
+}
+
+/* Reset kecil: margin bawaan browser dihapus agar halaman rapat ke tepi.
+   box-sizing: border-box membuat padding tidak menambah lebar elemen. */
+* {
+    box-sizing: border-box;
+}
+
+/* Font bersih bawaan sistem (tanpa unduh dari internet) */
+body {
+    margin: 0;
+    font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--teks);
+    background-color: var(--putih);
+}
+
+/* Pembungkus utama: Flexbox membuat anak-anaknya berjajar ke samping (dua kolom).
+   min-height: 100vh membuat tinggi minimal sama dengan tinggi layar. */
+.halaman-login {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---------- Kolom kiri ---------- */
+
+/* Gradasi biru tua -> biru memberi kesan dalam.
+   position: relative + overflow: hidden diperlukan untuk hiasan lingkaran di bawah. */
+.panel-kiri {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    /* Gaya "mesh gradient": beberapa cahaya warna lembut ditumpuk di atas dasar biru,
+       sehingga warnanya mengalir halus dan tidak kaku seperti pola berulang.
+       1) cahaya biru langit di kiri atas
+       2) cahaya cyan di kanan atas
+       3) cahaya amber samar di kanan bawah (menyambung dengan warna tombol)
+       4) gradasi biru tua -> biru sebagai dasar */
+    background:
+        radial-gradient(circle at 12% 18%, rgba(96, 165, 250, 0.50), transparent 45%),
+        radial-gradient(circle at 88% 12%, rgba(34, 211, 238, 0.28), transparent 40%),
+        radial-gradient(circle at 80% 92%, rgba(245, 166, 35, 0.25), transparent 38%),
+        linear-gradient(160deg, var(--biru-tua) 0%, var(--biru) 100%);
+    color: var(--putih);
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Hiasan: dua gelombang putih transparan di bagian bawah panel.
+   Gambarnya SVG yang ditulis langsung di sini (data:), bukan dari internet.
+   Bentuk melengkung membuat tampilan lebih lembut dan mengalir. */
+.panel-kiri::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300' preserveAspectRatio='none'%3E%3Cpath d='M0 110 C150 30 300 190 450 120 S700 30 800 90 V300 H0Z' fill='white' fill-opacity='0.07'/%3E%3Cpath d='M0 190 C200 120 320 260 520 190 S740 140 800 170 V300 H0Z' fill='white' fill-opacity='0.09'/%3E%3C/svg%3E") center bottom / 100% 100% no-repeat;
+}
+
+/* Hiasan kedua: bola cahaya kabur (blur) di pojok kanan atas, memberi kesan kedalaman */
+.panel-kiri::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    filter: blur(60px);   /* blur membuat tepinya hilang, jadi seperti cahaya */
+}
+
+/* Teks dinaikkan di atas hiasan (z-index) supaya tidak tertutup lingkaran */
+.panel-kiri > * {
+    position: relative;
+    z-index: 1;
+}
+
+.nama-aplikasi {
+    margin: 0 0 16px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Garis amber kecil di bawah nama aplikasi sebagai penanda identitas */
+.nama-aplikasi::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin-top: 16px;
+    border-radius: 2px;
+    background: var(--aksen);
+}
+
+.tagline {
+    margin: 0;
+    max-width: 380px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ---------- Kolom kanan ---------- */
+
+.panel-kanan {
+    flex: 1;
+    /* Latar kanan: cahaya warna lembut di sudut-sudut, tetap terang agar kotak login menonjol:
+       1) biru muda di pojok kanan atas
+       2) amber sangat samar di pojok kiri bawah (serasi dengan tombol Masuk)
+       3) warna dasar abu kebiruan */
+    background:
+        radial-gradient(circle at 100% 0%, rgba(21, 101, 192, 0.20), transparent 50%),
+        radial-gradient(circle at 0% 100%, rgba(245, 166, 35, 0.16), transparent 45%),
+        var(--latar-kanan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Kotak login: putih, sudut membulat, bayangan lembut agar terlihat melayang */
+.kotak-login {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--putih);
+    padding: 40px 36px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(11, 42, 91, 0.12);
+}
+
+.kotak-login h2 {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+    color: var(--biru-tua);
+}
+
+.sapaan {
+    margin: 0 0 28px;
+    color: var(--teks-redup);
+}
+
+/* ---------- Form ---------- */
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+input {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+/* Saat kolom diklik: border biru + cincin tipis agar jelas sedang aktif */
+input:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Tombol Masuk: amber dengan teks biru tua (kontrasnya cukup tinggi untuk dibaca) */
+button[type="submit"] {
+    width: 100%;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--biru-tua);
+    background-color: var(--aksen);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--aksen-gelap);
+}
+
+/* ---------- Pesan error ---------- */
+
+/* Catatan: sengaja TIDAK memakai "display" di sini. Kalau ditulis, atribut
+   hidden pada HTML tidak lagi bisa menyembunyikan kotaknya. */
+.pesan-error {
+    margin-bottom: 16px;
+    font-family: Consolas, "Courier New", monospace;  /* huruf gaya mesin ketik, sangat beda dari teks lain */
+    font-size: 0.72rem;                  /* lebih kecil lagi (sebelumnya 0.8rem) */
+    color: #ef4444;                      /* merah lebih muda, hanya teks tanpa kotak */
+}
+
+/* ---------- Kolom kata sandi + tombol Lihat + tautan Lupa ---------- */
+
+/* position: relative menjadikan pembungkus ini "patokan" untuk tombol Lihat,
+   sehingga tombol bisa ditaruh di dalam kolom dengan position: absolute.
+   Jarak bawah dipindah dari input ke pembungkus agar tombol tepat di tengah kolom. */
+.kolom-sandi {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.kolom-sandi input {
+    margin-bottom: 0;
+    /* ruang di kanan agar teks sandi tidak tertutup tombol ikon (36px + jarak) */
+    padding-right: 52px;
+}
+
+/* Tombol ikon mata: kotak kecil 36x36, menempel di sisi kanan kolom.
+   display: flex + align/justify center meletakkan ikon tepat di tengah kotak. */
+.tombol-lihat {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);   /* geser naik setengah tinggi tombol = pas di tengah */
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--biru);
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Ikon yang sedang tidak dipakai disembunyikan (atribut hidden tidak otomatis berlaku untuk SVG) */
+.tombol-lihat svg[hidden] {
+    display: none;
+}
+
+.tombol-lihat:hover {
+    background-color: var(--latar-kanan);
+}
+
+/* Peringatan Caps Lock: teks kecil oranye tua di bawah kolom sandi.
+   Seperti .pesan-error, tidak memakai "display" agar atribut hidden tetap bekerja. */
+.peringatan-caps {
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    color: #b45309;
+}
+
+/* Tautan Lupa kata sandi: rata kanan, biru serasi dengan palet */
+.lupa-sandi {
+    display: block;
+    margin-bottom: 24px;
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--biru);
+    text-decoration: none;
+}
+
+.lupa-sandi:hover {
+    text-decoration: underline;
+}
+
+/* ---------- Pesan biru dan petunjuk kecil (PRD 6.12) ---------- */
+
+/* Pesan informasi, misalnya keluar otomatis karena 40 menit tanpa aktivitas.
+   Tidak memakai "display" supaya atribut hidden tetap bekerja. */
+.pesan-info {
+    margin: 0 0 20px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: #e8f1fd;
+    color: var(--biru-tua);
+    font-size: 0.9rem;
+}
+
+.petunjuk-kecil {
+    margin: -16px 0 20px;
+    font-size: 0.85rem;
+    color: var(--teks-redup);
+}
+
+/* Tombol sedang memeriksa kata sandi */
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* ---------- Layar HP ---------- */
+
+/* Aturan di dalam @media hanya berlaku saat lebar layar 768px atau kurang (HP dan tablet kecil).
+   Panel kiri disembunyikan, sehingga kolom kanan otomatis memenuhi layar. */
+@media (max-width: 768px) {
+    .panel-kiri {
+        display: none;
+    }
+
+    /* Kotak login sedikit lebih ramping di tepinya agar pas di layar kecil */
+    .kotak-login {
+        padding: 32px 24px;
+    }
+}

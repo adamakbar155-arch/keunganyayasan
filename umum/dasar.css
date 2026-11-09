@@ -1,0 +1,320 @@
+/* umum/dasar.css: Variabel warna, dasar halaman, bilah atas, pilihan pembukuan, menu samping, popup penjelasan ikon.
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* Warna dan gaya disalin dari login.css agar tampilannya serasi.
+   Semua warna dasar ada di :root di bawah; ubah di sana supaya seluruh aplikasi ikut berubah. */
+
+:root {
+    --biru-tua: #0b2a5b;
+    --biru: #1565c0;
+    --aksen: #f5a623;
+    --aksen-gelap: #e0910f;
+    --putih: #ffffff;
+    --teks: #1f2937;
+    --teks-redup: #6b7280;
+    --garis: #d5dbe5;
+    --lebar-menu: 64px;   /* menu hanya ikon, jadi lebih ramping */
+    --tinggi-bar: 60px;   /* tinggi bar atas */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--teks);
+    background-color: #f4f7fb;
+}
+
+/* ---------- Bar atas ---------- */
+
+/* Gradasi biru tua gelap, dengan sedikit cahaya amber di kanan sebagai penyatu warna */
+.bar-atas {
+    position: sticky;
+    top: 0;
+    z-index: 10;   /* di atas isi saat halaman digulir */
+    height: var(--tinggi-bar);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: var(--putih);
+    background:
+        radial-gradient(circle at 75% 120%, rgba(245, 166, 35, 0.30), transparent 40%),
+        radial-gradient(circle at 30% -40%, rgba(96, 165, 250, 0.40), transparent 50%),
+        linear-gradient(90deg, #08204a 0%, var(--biru-tua) 60%, #12408a 100%);
+}
+
+.merek {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Penanda kecil: lingkaran amber bergradasi, dibuat murni dengan CSS */
+.merek-titik {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd27a, var(--aksen));
+    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.25);
+}
+
+.merek-nama {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.bar-kanan {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ikon-bar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.85);
+    background: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.ikon-bar:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--putih);
+}
+
+.ikon-bar svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ---------- Pilihan pembukuan ---------- */
+
+/* position: relative menjadikan pembungkus ini patokan untuk daftar yang muncul di bawahnya */
+.pembukuan {
+    position: relative;
+    margin: 0 10px 0 14px;
+}
+
+/* Tombol: nama di atas, tulisan "Pembukuan" kecil di bawah, panah di kanan (pakai grid) */
+.pembukuan-tombol {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    align-items: center;
+    padding: 5px 12px;
+    font-family: inherit;
+    text-align: left;
+    line-height: 1.25;
+    color: var(--putih);
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.pembukuan-tombol:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.pembukuan-tombol strong {
+    font-size: 0.95rem;
+}
+
+.pembukuan-tombol span {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Panah memanjang dua baris di kolom kanan */
+.pembukuan-tombol svg {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    width: 16px;
+    height: 16px;
+}
+
+.pembukuan-tombol:focus-visible,
+.pembukuan-pilihan:focus-visible {
+    outline: 3px solid var(--aksen);
+    outline-offset: 2px;
+}
+
+/* Daftar pilihan: kotak putih melayang tepat di bawah tombol, rata kanan */
+.pembukuan-daftar {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 20;
+    min-width: 190px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    color: var(--teks);
+    background-color: var(--putih);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(11, 42, 91, 0.25);
+}
+
+/* Aturan display lain bisa mengalahkan atribut hidden, jadi ditegaskan di sini */
+.pembukuan-daftar[hidden] {
+    display: none;
+}
+
+.pembukuan-pilihan {
+    width: 100%;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    color: inherit;
+    background: none;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.pembukuan-pilihan:hover {
+    background-color: #eef3fa;
+}
+
+/* Pilihan yang sedang dipakai: amber muda dan huruf tebal */
+.pembukuan-pilihan.aktif {
+    font-weight: 700;
+    color: var(--biru-tua);
+    background-color: #fff3d9;
+}
+
+/* Lingkaran inisial pengguna */
+.avatar {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--biru-tua);
+    background: linear-gradient(135deg, #ffd27a, var(--aksen));
+}
+
+/* ---------- Tata letak: menu samping + isi ---------- */
+
+.tata-letak {
+    display: flex;
+    min-height: calc(100vh - var(--tinggi-bar));
+}
+
+/* ---------- Menu samping ---------- */
+
+/* position: sticky agar menu tetap terlihat saat halaman digulir; tingginya
+   dikurangi tinggi bar atas. Gradasi dan gelombangnya sama dengan panel kiri login. */
+.menu-samping {
+    position: sticky;
+    top: var(--tinggi-bar);
+    width: var(--lebar-menu);
+    height: calc(100vh - var(--tinggi-bar));
+    flex-shrink: 0;   /* lebar menu tidak boleh menyusut */
+    z-index: 5;       /* popup penjelasan harus tampil di atas isi halaman */
+    /* overflow: hidden sengaja tidak dipakai, karena akan memotong popup yang
+       keluar dari lebar menu */
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 8px;
+    background:
+        radial-gradient(circle at 12% 12%, rgba(96, 165, 250, 0.45), transparent 50%),
+        radial-gradient(circle at 90% 95%, rgba(245, 166, 35, 0.22), transparent 45%),
+        linear-gradient(170deg, var(--biru-tua) 0%, var(--biru) 100%);
+}
+
+/* Gelombang transparan di bagian bawah menu (SVG ditulis langsung, bukan dari internet) */
+.menu-samping::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 30%;
+    pointer-events: none;   /* hiasan tidak boleh menghalangi klik */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300' preserveAspectRatio='none'%3E%3Cpath d='M0 110 C150 30 300 190 450 120 S700 30 800 90 V300 H0Z' fill='white' fill-opacity='0.07'/%3E%3Cpath d='M0 190 C200 120 320 260 520 190 S740 140 800 170 V300 H0Z' fill='white' fill-opacity='0.09'/%3E%3C/svg%3E") center bottom / 100% 100% no-repeat;
+}
+
+.menu-item {
+    position: relative;   /* agar berada di atas gelombang */
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* ikon tepat di tengah kotak */
+    height: 48px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.menu-item svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* ---------- Popup penjelasan ---------- */
+
+/* Popup berisi teks dari atribut data-tooltip di HTML.
+   Muncul di sebelah kanan ikon saat kursor diarahkan atau saat fokus keyboard (Tab). */
+.menu-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: calc(100% + 14px);
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;          /* teks tidak turun ke baris baru */
+    color: var(--biru-tua);
+    background-color: #ffe9b8;    /* kuning lembut, serasi dengan warna amber */
+    border: 1px solid var(--aksen);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(11, 42, 91, 0.2);
+    opacity: 0;                   /* tersembunyi sampai disorot */
+    pointer-events: none;         /* popup tidak boleh menghalangi klik */
+    transition: opacity 0.15s;
+}
+
+.menu-item:hover::after,
+.menu-item:focus-visible::after {
+    opacity: 1;
+}
+
+.menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--putih);
+}
+
+/* Menu yang sedang aktif: latar kuning-oranye, ikon dan teks biru tua */
+.menu-item.aktif {
+    background-color: var(--aksen);
+    color: var(--biru-tua);
+    font-weight: 700;
+}
+
+/* Tanda fokus keyboard (saat menekan Tab) harus terlihat jelas */
+.menu-item:focus-visible,
+.tombol:focus-visible,
+.tombol-ikon:focus-visible,
+.ikon-bar:focus-visible {
+    outline: 3px solid var(--aksen);
+    outline-offset: 2px;
+}
+

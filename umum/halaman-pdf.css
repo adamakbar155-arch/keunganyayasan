@@ -1,0 +1,91 @@
+/* umum/halaman-pdf.css: Halaman Cetak seperti Accurate (PRD 6.9).
+   Memenuhi seluruh layar seperti editor Desain Cetakan: PDF di kiri, tombol di kanan. z-index 60: di bawah notifikasi (100). */
+
+.halaman-cetak-bukti {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 60;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    background-color: #e9edf3;
+}
+
+/* Atribut hidden perlu ditegaskan karena elemen ini punya "display" sendiri */
+.halaman-cetak-bukti[hidden] {
+    display: none;
+}
+
+.hcb-pdf {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background-color: #525659;
+}
+
+.hcb-samping {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    overflow-y: auto;
+    background-color: var(--putih);
+    border-left: 1px solid var(--garis);
+}
+
+.hcb-samping h2 {
+    margin: 0 0 6px;
+    overflow-wrap: anywhere;
+    font-size: 1.05rem;
+    color: var(--biru-tua);
+}
+
+.hcb-samping .tombol {
+    justify-content: center;
+    width: 100%;
+}
+
+/* Tombol utama, biru seperti tombol Cetak di foto Accurate */
+#hcb-cetak {
+    color: var(--putih);
+    background-color: var(--biru);
+}
+
+#hcb-cetak:hover {
+    background-color: var(--biru-tua);
+}
+
+.hcb-samping .petunjuk {
+    margin-top: 6px;
+}
+
+/* Petunjuk disorot saat browser tidak mengizinkan tombol Cetak membuka jendela cetak */
+.hcb-samping .hcb-sorot {
+    padding: 10px 12px;
+    font-weight: 700;
+    color: var(--biru-tua);
+    background-color: #fff3d6;
+    border-left: 4px solid var(--aksen);
+    border-radius: 6px;
+}
+
+/* Layar kecil: PDF di atas, tombol di bawah */
+@media (max-width: 760px) {
+    .halaman-cetak-bukti {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr) auto;
+    }
+
+    .hcb-samping {
+        padding: 12px 16px;
+        border-top: 1px solid var(--garis);
+        border-left: 0;
+    }
+
+    .hcb-samping .petunjuk:not(.hcb-sorot) {
+        display: none;
+    }
+}

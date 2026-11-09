@@ -1,0 +1,23 @@
+/* umum/histori.css: gaya bersama halaman histori (Histori Bank, Histori Akun; kelas halaman-histori dari
+   umum/tampilan-histori.js). Tabelnya memakai gaya bersama umum/halaman-daftar.css.
+   Baris atas (.histori-alat) juga dipakai Rekonsiliasi Bank. Dimuat oleh index.html sesudah fitur/transfer/transfer.css. */
+
+/* Baris atas: akun, tanggal dari s/d sampai, tombol segarkan dan ekspor */
+.histori-alat { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.histori-alat select { flex: 1 1 260px; max-width: 420px; padding: 10px 12px; font: inherit; border: 1px solid var(--garis); border-radius: 8px; background-color: var(--putih); }
+.histori-sd { color: var(--teks-redup); }
+/* Tombol ⇄ (Mutasi <-> Debit/Kredit) di ujung kanan, seperti Accurate */
+.histori-ganti { margin-left: auto; }
+.histori-ganti[aria-pressed="true"] { background-color: #e8f0fb; }
+/* Judul kolom angka (Mutasi, Saldo) rata kanan, sejajar dengan angkanya */
+.halaman-histori th.sel-kanan { text-align: right; }
+/* Kolom Tanggal dan kolom angka (Mutasi, Saldo) tidak terpotong */
+.halaman-histori td:first-child, .halaman-histori td.sel-kanan { white-space: nowrap; }
+/* Baris Total di bawah tabel (mutasi bersih rentang itu): tebal dengan latar sedikit berbeda */
+.halaman-histori .histori-total td { font-weight: 700; background-color: #f1f4f9; }
+/* Kolom #: ceklis hijau transaksi yang sudah direkonsiliasi (PRD 6.3); klik untuk membatalkan */
+.halaman-histori .histori-kol-cek { width: 44px; text-align: center; }
+.histori-ceklis { display: inline-flex; vertical-align: middle; margin: -4px 0; padding: 2px; border: 0; border-radius: 6px; background: none; color: #16a34a; cursor: pointer; }
+.histori-ceklis svg { width: 20px; height: 20px; }
+.histori-ceklis:hover { background-color: #dcfce7; }
+.histori-ceklis:focus-visible { outline: 3px solid var(--biru); outline-offset: 1px; }

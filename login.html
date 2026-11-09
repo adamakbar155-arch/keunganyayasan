@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Sama dengan index.html: skrip, gaya, dan huruf hanya dari folder aplikasi (tanpa kode di dalam halaman) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Masuk - Aplikasi Keuangan</title>
+    <link rel="stylesheet" href="login.css">
+    <!-- Alat bersama dengan aplikasi: sesi masuk dan kata sandi (PRD 6.12) -->
+    <script src="umum/sesi.js"></script>
+    <script src="umum/sandi.js"></script>
+</head>
+<body>
+    <!-- Pembungkus utama: dua kolom (kiri panel biru, kanan kotak isian) -->
+    <div class="halaman-login">
+
+        <!-- Kolom kiri: panel biru berisi nama aplikasi dan tagline -->
+        <aside class="panel-kiri">
+            <h1 class="nama-aplikasi">Aplikasi Keuangan</h1>
+            <p class="tagline">Catat, pantau, dan laporkan keuangan Anda dengan rapi.</p>
+        </aside>
+
+        <!-- Kolom kanan: satu kotak, isinya berganti menurut keadaan (Masuk, Akun pertama, Ganti kata sandi) -->
+        <main class="panel-kanan">
+            <div class="kotak-login">
+                <!-- Pesan biru: misalnya keluar otomatis karena 40 menit tanpa aktivitas -->
+                <p id="pesan-info" class="pesan-info" role="status" hidden></p>
+
+                <!-- ===== Masuk ===== -->
+                <section id="layar-masuk" hidden>
+                    <h2>Masuk</h2>
+                    <p class="sapaan">Silakan masuk dengan akun Anda.</p>
+                    <div id="pesan-error" class="pesan-error" role="alert" hidden></div>
+                    <!-- novalidate: pesan kesalahan memakai teks sendiri, bukan bawaan browser -->
+                    <form id="form-login" novalidate>
+                        <label for="username">Nama pengguna</label>
+                        <input id="username" type="text" autocomplete="username" maxlength="60">
+
+                        <label for="password">Kata sandi</label>
+                        <div class="kolom-sandi">
+                            <input id="password" type="password" autocomplete="current-password" maxlength="200">
+                            <!-- Tombol mata: menampilkan/menyembunyikan kata sandi (ikon buatan sendiri) -->
+                            <button type="button" id="tombol-lihat" class="tombol-lihat" aria-pressed="false" aria-label="Lihat kata sandi">
+                                <svg id="ikon-mata" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                                <svg id="ikon-mata-coret" hidden width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                                    <line x1="1" y1="1" x2="23" y2="23"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="peringatan-caps" class="peringatan-caps" hidden>Caps Lock sedang menyala</div>
+                        <a href="#" id="lupa-sandi" class="lupa-sandi">Lupa kata sandi?</a>
+                        <p id="petunjuk-lupa" class="petunjuk-kecil" hidden>Minta Finance Yayasan mengatur ulang kata sandi Anda di Pengaturan, Pengguna.</p>
+                        <button type="submit" id="tombol-masuk">Masuk</button>
+                    </form>
+                </section>
+
+                <!-- ===== Akun pertama: hanya saat belum ada pengguna sama sekali ===== -->
+                <section id="layar-akun-pertama" hidden>
+                    <h2>Buat akun pertama</h2>
+                    <p class="sapaan">Belum ada pengguna. Buat akun <strong>Finance Yayasan</strong> pertama; akun ini bisa menambah pengguna lain.</p>
+                    <div id="pesan-error-akun" class="pesan-error" role="alert" hidden></div>
+                    <form id="form-akun-pertama" novalidate>
+                        <label for="ap-nama">Nama lengkap</label>
+                        <input id="ap-nama" type="text" autocomplete="name" maxlength="80">
+                        <label for="ap-username">Nama pengguna</label>
+                        <input id="ap-username" type="text" autocomplete="username" maxlength="60">
+                        <label for="ap-sandi">Kata sandi (minimal 8 karakter)</label>
+                        <input id="ap-sandi" type="password" autocomplete="new-password" maxlength="200">
+                        <label for="ap-ulang">Ulangi kata sandi</label>
+                        <input id="ap-ulang" type="password" autocomplete="new-password" maxlength="200">
+                        <button type="submit">Buat akun dan masuk</button>
+                    </form>
+                </section>
+
+                <!-- ===== Ganti kata sandi: wajib sesudah akun dibuat atau diatur ulang Finance Yayasan ===== -->
+                <section id="layar-ganti-sandi" hidden>
+                    <h2>Ganti kata sandi</h2>
+                    <p class="sapaan">Kata sandi Anda baru dibuat atau diatur ulang. Buat kata sandi baru sebelum melanjutkan.</p>
+                    <div id="pesan-error-ganti" class="pesan-error" role="alert" hidden></div>
+                    <form id="form-ganti-sandi" novalidate>
+                        <label for="gs-baru">Kata sandi baru (minimal 8 karakter)</label>
+                        <input id="gs-baru" type="password" autocomplete="new-password" maxlength="200">
+                        <label for="gs-ulang">Ulangi kata sandi baru</label>
+                        <input id="gs-ulang" type="password" autocomplete="new-password" maxlength="200">
+                        <button type="submit">Simpan dan masuk</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* umum/kalender.css: Pemilih tanggal (kalender bergaya Accurate) untuk semua kolom tanggal.
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* ---------- Pemilih tanggal (kalender bergaya Accurate) ---------- */
+.pemilih-tanggal {
+    position: relative;
+    display: inline-block;
+    width: 190px;
+    max-width: 100%;
+}
+
+/* Selector bertingkat supaya menang atas aturan lebar kolom tanggal di formulir lain */
+.pemilih-tanggal input.pt-tampil {
+    width: 100%;
+    padding-right: 42px;
+}
+
+.pt-ikon {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    color: #1b4f8a;
+    background-color: var(--putih);
+    border: 1px solid #cfe0ee;
+    border-radius: 6px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.pt-ikon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.pt-ikon:hover:not(:disabled),
+.pt-ikon[aria-expanded="true"] {
+    background-color: #e6f3fc;
+}
+
+.pt-ikon:disabled {
+    color: #9aa7b6;
+    cursor: not-allowed;
+}
+
+.pt-ikon:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 1px;
+}
+
+.pt-kalender {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 80;
+    width: 238px;
+    max-width: calc(100vw - 24px);
+    overflow: hidden;
+    color: #333;
+    background-color: var(--putih);
+    border: 1px solid #d3e8f6;
+    border-radius: 4px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
+    font-size: 0.82rem;
+}
+
+.pt-kalender[hidden] {
+    display: none;
+}
+
+.pt-kalender.di-atas {
+    top: auto;
+    bottom: calc(100% + 6px);
+}
+
+.pt-kalender.rata-kanan {
+    left: auto;
+    right: 0;
+}
+
+.pt-kepala {
+    display: flex;
+    align-items: center;
+    color: var(--putih);
+    background-color: #1ea1e2;
+}
+
+.pt-nav {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.pt-nav:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.pt-nav:focus-visible {
+    outline: 2px solid var(--putih);
+    outline-offset: -3px;
+}
+
+.pt-judul {
+    flex: 1;
+    text-align: center;
+    font-size: 0.88rem;
+}
+
+.pt-tabel {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.pt-tabel th {
+    padding: 5px 0;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-align: center;
+    color: #333;
+    border: 1px solid #e3f1fa;
+}
+
+.pt-tabel td {
+    height: 30px;
+    padding: 0;
+    text-align: center;
+    border: 1px solid #e3f1fa;
+}
+
+.pt-hari {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 30px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: #2f9bd8;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.pt-hari:hover:not(:disabled) {
+    background-color: #e9f6fd;
+}
+
+/* Hari ini diberi garis tepi biru; tanggal terpilih berwarna hijau dengan tanda centang di pojok */
+.pt-hari.hari-ini {
+    box-shadow: inset 0 0 0 1px #2f9bd8;
+}
+
+.pt-hari.dipilih {
+    font-weight: 500;
+    color: #1b4d00;
+    background-color: #a3e05a;
+    box-shadow: inset 0 0 0 1px #2f9bd8;
+}
+
+.pt-hari.dipilih::after {
+    content: "\2713";
+    position: absolute;
+    top: 0;
+    right: 3px;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    color: #1e7fc0;
+}
+
+.pt-hari:disabled {
+    color: #b7c1cb;
+    cursor: not-allowed;
+}
+
+.pt-hari:focus-visible {
+    outline: 2px solid var(--biru);
+    outline-offset: -3px;
+}
+
+/* Teks tersembunyi (sembunyi-visual) di judul kolom tabel rincian bersifat absolut. Tanpa patokan posisi, ia lolos dari
+   kotak gulir tabel dan melebarkan seluruh halaman di layar sempit. */
+.jurnal-bungkus-tabel {
+    position: relative;
+}
+
+/* ---------- Bilah atas di layar sempit ----------
+   Sebelumnya nama aplikasi dan semua ikon tidak mau mengecil, jadi di HP bilah atas lebih lebar dari layar (±73 px) dan
+   seluruh halaman bisa digeser ke samping. Sekarang: nama aplikasi boleh terpotong ("Aplikasi Ke..."), kanan tidak
+   pernah mengecil, dan ukuran diperkecil bertahap. */
+.bar-atas {
+    gap: 8px;
+}
+
+.merek {
+    min-width: 0;          /* boleh lebih sempit dari isinya, supaya nama bisa terpotong */
+    flex: 0 1 auto;
+}
+
+.merek-titik {
+    flex-shrink: 0;
+}
+
+.merek-nama {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bar-kanan {
+    flex-shrink: 0;        /* ikon dan tombol pembukuan tidak ikut terhimpit */
+}
+
+@media (max-width: 640px) {
+    .bar-atas {
+        padding: 0 12px;
+    }
+
+    .merek {
+        gap: 8px;
+    }
+
+    .merek-nama {
+        font-size: 1.05rem;
+    }
+
+    .bar-kanan {
+        gap: 2px;
+    }
+
+    .ikon-bar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pembukuan {
+        margin: 0 6px 0 6px;
+    }
+
+    .pembukuan-tombol {
+        column-gap: 6px;
+        padding: 4px 8px;
+    }
+
+    .avatar {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* Layar sangat sempit: ikon Cari dan Bantuan disembunyikan (Notifikasi tetap) agar nama aplikasi masih terbaca */
+@media (max-width: 520px) {
+    .ikon-bar[aria-label="Cari"],
+    #tombol-bantuan {   /* ikon ? (daftar pintasan); dulu dikenali lewat aria-label "Bantuan" */
+        display: none;
+    }
+}
+
+/* Layar HP kecil: sedikit lebih ringkas lagi supaya nama aplikasi masih terbaca penuh di lebar 390 */
+@media (max-width: 440px) {
+    .merek-nama {
+        font-size: 0.92rem;
+        letter-spacing: -0.2px;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .pembukuan {
+        margin: 0 4px;
+    }
+}
+

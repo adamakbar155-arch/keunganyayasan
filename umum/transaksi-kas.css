@@ -1,0 +1,11 @@
+/* umum/transaksi-kas.css: gaya bersama transaksi Kas/Bank (Pembayaran, Penerimaan), tambahan di atas gaya Jurnal Umum
+   (fitur/jurnal/jurnal.css) dan Pencatatan Gaji (fitur/gaji/gaji.css). HTML-nya dari umum/tampilan-transaksi-kas.js.
+   Dimuat oleh index.html sesudah fitur/gaji/gaji.css. */
+
+/* Kolom No Cek tidak perlu selebar baris */
+.kas-no-cek { max-width: 260px; }
+/* Kaki popup dengan dua tombol: Hapus di kiri, Lanjut di kanan */
+.dialog-kaki-dua { justify-content: space-between; }
+.dialog-kaki-dua > [hidden] { display: none; }
+.dialog-kaki-dua > .tombol-utama:only-child,
+.dialog-kaki-dua > [hidden] + .tombol-utama { margin-left: auto; }
