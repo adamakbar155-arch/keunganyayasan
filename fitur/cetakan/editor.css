@@ -1,0 +1,300 @@
+/* fitur/cetakan/editor.css: Editor Desain Cetakan bagian 2 (tombol gaya, elemen di kanvas, gagang ukuran, margin,
+   layar sempit, dan saat mencetak). Dimuat sesudah fitur/cadangan/cadangan.css (posisi lamanya). */
+
+/* Tombol Edit (urungkan, ulangi, salin, tempel) yang belum bisa dipakai tampak pudar */
+.editor-alat .tombol:disabled {
+    opacity: 0.38;
+    cursor: default;
+}
+
+/* Judul kelompok kedua di kolom alat diberi garis pemisah di atasnya */
+.editor-alat-pemisah {
+    margin-top: 6px;
+    padding-top: 10px;
+    border-top: 1px solid var(--garis);
+}
+
+/* Kanvas boleh menerima fokus (supaya tombol Delete dan panah bekerja), tetapi tanpa garis fokus yang mengganggu */
+.editor-kanvas:focus {
+    outline: none;
+}
+
+/* Kelompok pengaturan di panel (Isi Teks, Huruf, Kotak, Posisi): dipisah garis tipis */
+.editor-kelompok {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e8edf4;
+}
+
+.editor-kelompok[hidden] {
+    display: none;
+}
+
+.editor-label-kecil {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--teks-redup);
+}
+
+/* Kotak centang di panel tidak boleh melebar seperti kolom isian lain */
+.editor-panel input[type="checkbox"] {
+    width: auto;
+}
+
+/* Pemilih warna: tinggi seragam dengan kolom isian lain */
+.editor-panel input[type="color"] {
+    height: 36px;
+    padding: 2px 4px;
+    cursor: pointer;
+}
+
+/* Pilihan penanda isian + tombol Sisipkan */
+.editor-penanda {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.editor-penanda select {
+    flex: 1;
+    min-width: 0;
+}
+
+.editor-penanda .tombol {
+    flex-shrink: 0;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+}
+
+/* Tombol B, I, dan rata teks berderet seperti di editor dokumen */
+.editor-segmen {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 8px;
+}
+
+.editor-segmen button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 34px;
+    padding: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.editor-segmen button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-segmen button:hover {
+    background-color: #eef3fa;
+}
+
+/* Tombol yang sedang menyala (tebal, miring, atau rata yang dipakai): biru dengan garis amber */
+.editor-segmen button[aria-pressed="true"] {
+    color: var(--putih);
+    background-color: var(--biru);
+    border-color: var(--biru-tua);
+}
+
+.editor-segmen button:focus-visible {
+    outline: 3px solid var(--aksen);
+    outline-offset: 1px;
+}
+
+.editor-segmen .pemisah {
+    width: 1px;
+    height: 22px;
+    margin: 0 4px;
+    background-color: var(--garis);
+}
+
+/* Elemen bisa diklik dan digeser di editor */
+.el-cetak {
+    cursor: move;
+}
+
+/* Garis sangat tipis sulit diklik, jadi area kliknya diperlebar 2 mm ke atas dan bawah.
+   overflow harus visible supaya area tambahan itu tidak terpotong. */
+.el-garis {
+    overflow: visible;
+}
+
+.el-garis::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -2mm;
+    bottom: -2mm;
+}
+
+/* Bingkai biru pada elemen yang dipilih, dengan 8 gagang untuk mengubah ukuran.
+   Bingkainya sendiri tidak menangkap klik (pointer-events: none); hanya gagangnya. */
+.kotak-pilihan {
+    position: absolute;
+    box-sizing: border-box;
+    border: 0.35mm solid #1565c0;
+    pointer-events: none;
+}
+
+.gagang-elemen {
+    position: absolute;
+    width: 2.4mm;
+    height: 2.4mm;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border: 0.35mm solid #1565c0;
+    pointer-events: auto;
+}
+
+.gagang-elemen[data-arah="nw"] { left: -1.2mm; top: -1.2mm; cursor: nwse-resize; }
+.gagang-elemen[data-arah="n"]  { left: calc(50% - 1.2mm); top: -1.2mm; cursor: ns-resize; }
+.gagang-elemen[data-arah="ne"] { right: -1.2mm; top: -1.2mm; cursor: nesw-resize; }
+.gagang-elemen[data-arah="e"]  { right: -1.2mm; top: calc(50% - 1.2mm); cursor: ew-resize; }
+.gagang-elemen[data-arah="se"] { right: -1.2mm; bottom: -1.2mm; cursor: nwse-resize; }
+.gagang-elemen[data-arah="s"]  { left: calc(50% - 1.2mm); bottom: -1.2mm; cursor: ns-resize; }
+.gagang-elemen[data-arah="sw"] { left: -1.2mm; bottom: -1.2mm; cursor: nesw-resize; }
+.gagang-elemen[data-arah="w"]  { left: -1.2mm; top: calc(50% - 1.2mm); cursor: ew-resize; }
+
+/* Tombol bergaris dengan warna merah, untuk tindakan menghapus */
+/* Selector dua kelas supaya menang atas ".tombol-garis" yang didefinisikan lebih bawah di file ini */
+.tombol-garis.tombol-garis-bahaya {
+    margin-top: 10px;
+    color: #d92d20;
+    background-color: var(--putih);
+    border-color: #f5a8a2;
+}
+
+.tombol-garis.tombol-garis-bahaya:hover {
+    background-color: #fee4e2;
+}
+
+/* Garis putus-putus penanda batas margin. Hanya di editor. */
+.panduan-margin {
+    position: absolute;
+    border: 1px dashed #8fa3b8;
+    pointer-events: none;
+}
+
+/* Panel pengaturan di kanan: tingginya mengikuti layar, dan menggulir sendiri kalau isinya panjang */
+.editor-panel {
+    min-height: 0;
+    padding: 16px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: var(--putih);
+    border-left: 1px solid var(--garis);
+}
+
+.editor-panel-judul {
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--biru-tua);
+    border-bottom: 2px solid var(--aksen);
+}
+
+.editor-isian {
+    margin-bottom: 16px;
+}
+
+.editor-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.editor-nilai {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--teks-redup);
+    overflow-wrap: anywhere;
+}
+
+.editor-panel select,
+.editor-panel input {
+    width: 100%;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.editor-panel select:focus,
+.editor-panel input:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Margin: label di kiri, kolom angka di kanan, empat baris */
+.editor-margin {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);   /* cukup lebar untuk "Warna latar" dan "Ukuran (pt)" tanpa terpecah */
+    align-items: center;
+    gap: 6px 10px;
+}
+
+.editor-margin label {
+    font-size: 0.9rem;
+}
+
+.editor-zoom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.editor-zoom .tombol {
+    padding: 6px 14px;
+    font-size: 1.1rem;
+}
+
+.editor-zoom span {
+    min-width: 48px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Layar sempit: alat jadi baris di atas, kanvas di tengah, panel di bawah (maksimal 38% tinggi layar) */
+@media (max-width: 900px) {
+    .editor-badan {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr) minmax(0, 38%);
+    }
+
+    .editor-alat {
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--garis);
+        overflow-x: auto;
+    }
+
+    .editor-alat .tombol {
+        min-width: 64px;
+    }
+
+    .editor-panel {
+        border-left: none;
+        border-top: 1px solid var(--garis);
+    }
+}
+

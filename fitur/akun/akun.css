@@ -1,0 +1,130 @@
+/* fitur/akun/akun.css: formulir dua kolom Akun Perkiraan (Informasi Akun di kiri, Informasi Bank di kanan), tab Saldo,
+   Akun Anak, pencarian akun induk, dan layar sempit. Dimuat oleh index.html sesudah fitur/cetakan/cetakan.css. */
+
+/* ---------- Formulir dua kolom (Akun Perkiraan: Informasi Akun di kiri, Informasi Bank di kanan) ---------- */
+
+.form-dua-kolom {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 40px;
+    align-items: start;
+}
+
+/* Di dalam kolom, label dibuat lebih sempit supaya dua kolom muat berdampingan */
+.form-dua-kolom .baris-form {
+    grid-template-columns: 140px minmax(0, 1fr);
+}
+
+/* Tab kecil yang disembunyikan (display bawaan tab akan mengalahkan atribut hidden) */
+.sub-tab[hidden] {
+    display: none;
+}
+
+/* Kotak "Saldo Saat ini" di tab Saldo pada akun yang sudah ada: jarak dari isian saldo awal di atasnya, dan selebar kolom isian */
+.blok-saldo-kini {
+    max-width: 686px;
+    margin-top: 28px;
+}
+
+.blok-saldo-kini[hidden] {
+    display: none;
+}
+
+/* Kotak "Saldo Saat ini" di formulir akun yang sudah ada */
+.kartu-saldo {
+    padding: 14px 18px;
+    background-color: #f1f4f9;
+    border: 1px solid var(--garis);
+    border-radius: 12px;
+}
+
+.kartu-saldo-baris {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--garis);
+}
+
+.kartu-saldo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--teks-redup);
+}
+
+.kartu-saldo-label svg {
+    width: 22px;
+    height: 22px;
+}
+
+.kartu-saldo-nilai {
+    font-size: 1.35rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--biru-tua);
+}
+
+.kartu-saldo-nilai.angka-negatif {
+    color: #c62828;
+}
+
+.kartu-saldo-catatan {
+    margin: 10px 0 0;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+/* Tab Akun Anak: kolom kode sempit di kanan */
+.tabel-anak td:last-child,
+.tabel-anak th:last-child {
+    width: 200px;
+}
+
+/* Tombol di bawah tulisan "daftar kosong" (misalnya Pasang Bagan Akun Awal) */
+.aksi-kosong {
+    display: flex;
+    justify-content: center;
+    padding: 0 16px 24px;
+}
+
+.aksi-kosong[hidden] {
+    display: none;
+}
+
+/* Pencarian akun induk (Sub Akun): kolom cari dengan daftar melayang di bawahnya */
+.pemilih-induk {
+    position: relative;   /* patokan untuk daftar pilihan */
+}
+
+.pemilih-induk[hidden] {
+    display: none;
+}
+
+/* Baris pilihan: nama di kiri, kode (miring) di kanan */
+.pilihan-induk {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.kode-pilihan {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+/* Kolom Informasi Bank disembunyikan untuk tipe akun selain Kas & Bank */
+.form-kolom[hidden] {
+    display: none;
+}
+
+/* Layar sempit: kedua kolom bertumpuk, label kembali di atas isian */
+@media (max-width: 1100px) {
+    .form-dua-kolom {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

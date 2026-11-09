@@ -1,0 +1,86 @@
+/* fitur/gaji/gaji.css: gaya Pencatatan Gaji (pilihan periode, tombol Proses bermenu, popup Rincian Karyawan).
+   Memakai gaya Jurnal Umum (fitur/jurnal/jurnal.css).
+   Dimuat oleh index.html sesudah umum/lampiran.css. */
+
+/* ===== Pencatatan Gaji (memakai kelas Jurnal Umum; di sini hanya tambahannya) ===== */
+.pgaji-kepala select {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+.pgaji-kepala select:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+/* Bulan lebih lebar dari tahun, sebaris */
+.pgaji-periode { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 10px; }
+/* Jatuh tempo dan tombol Proses sebaris; Proses rata kanan */
+.pgaji-tempo { justify-content: space-between; }
+.pgaji-tempo .tombol:disabled { opacity: 0.55; cursor: not-allowed; }
+/* Kolom cari karyawan dan tombol Ambil sebaris */
+.pgaji-alat-kiri { display: flex; align-items: center; gap: 12px; flex: 0 1 560px; min-width: 0; }
+.pgaji-alat-kiri .jurnal-cari { flex: 1 1 auto; }
+/* Gaji dibayarkan negatif (potongan lebih besar dari pendapatan) ditulis merah */
+.pgaji-minus { color: #dc2626 !important; }
+
+/* Popup Rincian Karyawan */
+.dialog-rincian-gaji .dialog-detail-panel { max-height: calc(100vh - 230px); overflow-y: auto; }
+.rgaji-atas { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.rgaji-nama { margin: 0; font-size: 1rem; }
+.rgaji-nama span { font-weight: 600; }
+.rgaji-grup { margin: 14px 0 8px; font-size: 0.95rem; font-weight: 600; color: var(--biru-tua); }
+/* Kolom label lebih lebar supaya nama komponen muat satu baris; label komponen menjorok, kotak angka tetap sejajar */
+.dialog-rincian-gaji .baris-form { grid-template-columns: 200px minmax(0, 1fr); }
+.dialog-rincian-gaji .rgaji-komponen label { padding-left: 20px; }
+.dialog-rincian-gaji .rgaji-komponen label { font-size: 0.9rem; }
+.rgaji-hasil { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--garis); }
+.rgaji-hasil label { font-weight: 600; }
+.dialog-rincian-gaji .detail-rupiah input[readonly] { background-color: #f1f4f8; font-weight: 600; }
+
+@media (max-width: 520px) {
+    .pgaji-alat-kiri { flex-wrap: wrap; }
+    .dialog-rincian-gaji .rgaji-komponen label { padding-left: 0; }
+}
+/* Tombol Proses berisi menu kecil ("Gaji") yang melayang di bawahnya */
+.pgaji-proses-bungkus { position: relative; flex-shrink: 0; }
+.pgaji-proses-bungkus .tombol { display: inline-flex; align-items: center; gap: 6px; }
+.pgaji-proses-bungkus .tombol svg { width: 16px; height: 16px; }
+.pgaji-proses-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 30;
+    min-width: 180px;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+.pgaji-proses-menu[hidden] { display: none; }
+.pgaji-proses-menu button {
+    display: block;
+    width: 100%;
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    text-align: left;
+    color: var(--teks);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.pgaji-proses-menu button:hover,
+.pgaji-proses-menu button:focus-visible { background-color: #eef4fc; outline: none; }
+/* Jatuh Tempo dan Proses tetap sebaris */
+.jurnal-baris .pgaji-tempo { flex-wrap: nowrap; }

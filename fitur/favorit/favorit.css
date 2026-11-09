@@ -1,0 +1,16 @@
+/* fitur/favorit/favorit.css: menu Lainnya dan popup Transaksi Favorit (PRD 6.8). */
+.menu-lainnya { position: fixed; z-index: 40; display: flex; flex-direction: column; min-width: 190px; padding: 6px; background-color: var(--putih);
+    border: 1px solid var(--garis); border-radius: 10px; box-shadow: 0 8px 22px rgba(11, 42, 91, 0.18); }
+.menu-lainnya[hidden] { display: none; }
+.menu-lainnya button { padding: 9px 12px; font: inherit; font-size: 0.9rem; color: var(--teks); text-align: left; background: none; border: 0; border-radius: 6px; cursor: pointer; }
+.menu-lainnya button:hover, .menu-lainnya button:focus-visible { background-color: #eaf2fd; outline: none; }
+
+.favorit-kaki { justify-content: flex-end; gap: 10px; }
+.favorit-kaki [hidden] { display: none; }
+
+.daftar-ambil-favorit { display: flex; flex-direction: column; gap: 6px; max-height: 50vh; overflow-y: auto; }
+.daftar-ambil-favorit button { display: flex; justify-content: space-between; gap: 14px; padding: 11px 14px; font: inherit; color: var(--teks); text-align: left;
+    background-color: #f5f8fc; border: 1px solid var(--garis); border-radius: 10px; cursor: pointer; }
+.daftar-ambil-favorit button:hover, .daftar-ambil-favorit button:focus-visible { background-color: #eaf2fd; border-color: var(--biru); outline: none; }
+.daftar-ambil-favorit button span:first-child { min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.daftar-ambil-favorit button span:last-child { white-space: nowrap; color: var(--teks-redup); }

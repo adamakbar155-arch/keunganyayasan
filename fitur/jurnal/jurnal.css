@@ -1,0 +1,884 @@
+/* fitur/jurnal/jurnal.css: Jurnal Umum: formulir, pencarian akun, baris rincian, popup Detail Akun (dipakai juga Pencatatan Gaji dan Pembayaran).
+   Dimuat oleh index.html. URUTAN tag link di index.html menentukan aturan mana yang menang kalau ada yang sama. */
+
+/* ---------- Jurnal Umum (tampilan) ---------- */
+
+/* Bagian atas: dua kolom (tanggal + tipe, nomor + tombol Ambil); bertumpuk di layar sempit */
+.jurnal-kepala {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 4px 48px;
+    margin-bottom: 14px;
+}
+
+.jurnal-kepala-kolom {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.jurnal-baris {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr);
+    align-items: center;
+    gap: 6px 14px;
+}
+
+.jurnal-baris > label:first-child {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.jurnal-baris-kanan {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.jurnal-baris input[type="text"],
+.jurnal-baris input[type="date"] {
+    width: 100%;
+}
+
+.jurnal-baris input[readonly] {
+    color: var(--teks-redup);
+    background-color: #f1f4f9;
+}
+
+/* Nomor: saklar di kiri, kolom nomor di kanan */
+.jurnal-nomor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.jurnal-nomor .saklar {
+    flex-shrink: 0;
+}
+
+.jurnal-nomor input {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Badan: tab ikon di kiri, isi di kanan */
+.jurnal-badan {
+    display: flex;
+    align-items: stretch;
+}
+
+.jurnal-tab-samping {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 6px;
+}
+
+.jurnal-tab-ikon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: var(--teks-redup);
+    background-color: #e4e9f1;
+    border: 1px solid var(--garis);
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    cursor: pointer;
+}
+
+.jurnal-tab-ikon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.jurnal-tab-ikon:hover {
+    background-color: #d6deeb;
+}
+
+.jurnal-tab-ikon.aktif {
+    color: var(--biru-tua);
+    background-color: var(--putih);
+    border-color: var(--aksen);
+    border-right: none;
+    box-shadow: -3px 0 0 var(--aksen) inset;
+}
+
+.jurnal-tab-ikon:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+.jurnal-isi {
+    flex: 1;
+    min-width: 0;
+    padding: 16px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 0 12px 12px 12px;
+}
+
+.jurnal-panel[hidden] {
+    display: none;
+}
+
+/* Alat di atas tabel: kolom cari akun di kiri, judul "Rincian Jurnal" di kanan */
+.jurnal-alat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.jurnal-cari {
+    position: relative;
+    flex: 0 1 460px;
+    min-width: 0;
+}
+
+.jurnal-cari input {
+    width: 100%;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.jurnal-cari svg {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    color: var(--teks);
+    pointer-events: none;
+}
+
+.jurnal-judul-rincian {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.jurnal-judul-rincian h2 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--teks);
+    white-space: nowrap;
+}
+
+.jurnal-tombol-cari {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+.jurnal-tombol-cari svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Tabel rincian: gulir ke samping di layar sempit */
+.jurnal-bungkus-tabel {
+    min-height: 300px;
+    overflow-x: auto;
+    border-radius: 8px;
+}
+
+.jurnal-tabel {
+    min-width: 760px;
+    table-layout: fixed;
+}
+
+.jurnal-tabel th {
+    color: var(--putih);
+    text-align: center;
+    background-color: #5b6f8a;
+    border-bottom: none;
+}
+
+.jurnal-tabel .jurnal-kol-geser { width: 48px; }
+.jurnal-tabel .jurnal-kol-kode { width: 110px; }
+.jurnal-tabel .jurnal-kol-akun { width: 24%; }
+.jurnal-tabel .jurnal-kol-program { width: 18%; }
+.jurnal-tabel .jurnal-kol-angka { width: 15%; }
+
+.jurnal-tabel td.jurnal-kol-geser {
+    text-align: center;
+    color: var(--teks-redup);
+}
+
+.jurnal-tabel td.jurnal-kol-geser svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.jurnal-kosong td {
+    text-align: center;
+}
+
+.jurnal-kosong td:last-child {
+    color: var(--teks);
+}
+
+.sembunyi-visual {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* Kotak total di kanan bawah */
+.jurnal-total {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+
+.jurnal-total-kotak {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 210px;
+    padding: 14px 18px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+}
+
+.jurnal-total-kotak:first-child {
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+}
+
+.jurnal-total-kotak:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.jurnal-total-kotak span {
+    font-size: 1rem;
+    color: var(--teks);
+}
+
+.jurnal-total-kotak strong {
+    align-self: flex-end;
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--biru-tua);
+}
+
+/* Tombol di kanan: simpan yang belum aktif tampak abu-abu */
+.tombol-simpan-besar:disabled {
+    color: #8c97a8;
+    background-color: #dfe4ec;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.tombol-simpan-besar:disabled:hover {
+    background-color: #dfe4ec;
+}
+
+.tombol-aksi-samping {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 64px;
+    padding: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(11, 42, 91, 0.12);
+}
+
+.tombol-aksi-samping svg {
+    width: 30px;
+    height: 30px;
+}
+
+.tombol-aksi-samping .panah {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    width: 14px;
+    height: 14px;
+}
+
+.tombol-aksi-biru {
+    color: #0d4f9e;
+    background-color: #cfe4fb;
+    border: 1px solid #8dbbee;
+}
+
+.tombol-aksi-biru:hover {
+    background-color: #bcd9f7;
+}
+
+.tombol-aksi-hijau {
+    color: #1b6b2f;
+    background-color: #d4f3d9;
+    border: 1px solid #8fd49b;
+}
+
+.tombol-aksi-hijau:hover {
+    background-color: #c0ebc7;
+}
+
+.tombol-aksi-samping:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Layar sempit: bagian atas bertumpuk, tombol aksi berjajar di bawah, tombol Ambil di kiri */
+@media (max-width: 1100px) {
+    .jurnal-kepala {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .jurnal-baris-kanan {
+        justify-content: flex-start;
+    }
+
+    .jurnal-alat {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .jurnal-cari {
+        flex-basis: auto;
+    }
+
+    .jurnal-judul-rincian {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 760px) {
+    .modul-form-aksi:has(.tombol-aksi-samping) {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .jurnal-total {
+        justify-content: stretch;
+    }
+
+    .jurnal-total-kotak {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* Kolom isian Jurnal Umum: tampilan yang sama dengan kolom isian formulir lain (.baris-form) */
+.jurnal-form input[type="text"],
+.jurnal-form input[type="date"],
+.jurnal-form textarea {
+    margin: 0;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.jurnal-form input:focus,
+.jurnal-form textarea:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+.jurnal-form input[readonly] {
+    color: var(--teks-redup);
+    background-color: #f1f4f8;
+}
+
+/* Tanggal dan teks tanggal sebaris, teks tidak terpotong ke baris baru */
+.jurnal-baris .grup-tanggal {
+    flex-wrap: wrap;
+    row-gap: 4px;
+}
+
+.jurnal-baris .grup-tanggal input {
+    width: 190px;
+}
+
+.jurnal-baris .tanggal-teks {
+    white-space: nowrap;
+}
+
+/* HP: tab ikon pindah ke atas isi (mendatar) dan label kolom di atas isiannya */
+@media (max-width: 760px) {
+    .jurnal-badan {
+        flex-direction: column;
+    }
+
+    .jurnal-tab-samping {
+        flex-direction: row;
+        padding: 0;
+    }
+
+    .jurnal-tab-ikon {
+        border-right: 1px solid var(--garis);
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .jurnal-tab-ikon.aktif {
+        border-right: 1px solid var(--aksen);
+        box-shadow: 0 -3px 0 var(--aksen) inset;
+    }
+
+    .jurnal-isi {
+        border-radius: 0 12px 12px 12px;
+    }
+
+    .jurnal-baris {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .jurnal-nomor {
+        flex-wrap: wrap;
+    }
+}
+
+/* Pilihan aturan penomoran di samping saklar Otomatis (Jurnal Umum), bergaya seperti kolom isian lain */
+.jurnal-nomor select {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+}
+
+.jurnal-nomor select:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+.jurnal-nomor select:disabled {
+    color: var(--teks-redup);
+    background-color: #f1f4f8;
+}
+
+/* display bawaan select/input dipertahankan; atribut hidden harus tetap menyembunyikan */
+.jurnal-nomor [hidden] {
+    display: none;
+}
+
+.jurnal-contoh-nomor {
+    margin: 6px 0 0;
+    min-height: 1.2em;
+}
+
+/* Label baris kepala jurnal sejajar dengan kolom isian paling atas (baris Nomor punya contoh nomor di bawahnya) */
+.jurnal-baris {
+    align-items: start;
+}
+
+.jurnal-baris > label:first-child {
+    padding-top: 11px;
+}
+
+.jurnal-baris-kanan {
+    align-items: center;
+}
+
+/* ---------- Jurnal Umum: pencarian akun dan baris rincian ---------- */
+
+/* Daftar hasil pencarian akun, melayang di bawah kolom cari */
+.jurnal-daftar-akun {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 40;
+    max-height: 320px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    box-shadow: 0 8px 22px rgba(11, 42, 91, 0.18);
+}
+
+.jurnal-daftar-akun[hidden] {
+    display: none;
+}
+
+.jurnal-pilihan-akun {
+    padding: 9px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.jurnal-pilihan-akun:last-child {
+    border-bottom: none;
+}
+
+.jurnal-pilihan-akun.disorot {
+    background-color: #e9edf3;
+}
+
+.jurnal-pilihan-nama {
+    font-size: 0.98rem;
+    color: var(--teks);
+}
+
+.jurnal-pilihan-bawah {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 3px;
+    font-size: 0.85rem;
+    color: var(--teks);
+}
+
+.jurnal-pilihan-tipe {
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+/* Bagian yang cocok dengan kata yang diketik disorot kuning */
+.jurnal-daftar-akun mark {
+    padding: 0;
+    color: inherit;
+    background-color: #ffff00;
+}
+
+.jurnal-info-akun {
+    padding: 12px;
+    font-style: italic;
+    color: var(--teks-redup);
+}
+
+/* Baris rincian */
+.jurnal-tabel .jurnal-kol-hapus {
+    width: 48px;
+}
+
+.jurnal-tabel td {
+    vertical-align: middle;
+    padding: 8px 10px;
+}
+
+.jurnal-tabel td.jurnal-sel-teks {
+    overflow-wrap: anywhere;
+}
+
+.jurnal-tabel td input,
+.jurnal-tabel td select {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 6px;
+}
+
+.jurnal-tabel td input:focus,
+.jurnal-tabel td select:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
+
+/* Debit dan Kredit memakai kolom sendiri-sendiri: sel angka kedua tidak boleh tumpang tindih */
+.jurnal-tabel td.jurnal-sel-angka {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.jurnal-hapus-baris {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: var(--teks-redup);
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.jurnal-hapus-baris svg {
+    width: 16px;
+    height: 16px;
+}
+
+.jurnal-hapus-baris:hover,
+.jurnal-hapus-baris:focus-visible {
+    color: #d92d20;
+    background-color: #fee4e2;
+    outline: none;
+}
+
+/* Debit dan kredit belum sama: angka total berwarna merah */
+.jurnal-total.tidak-seimbang .jurnal-total-kotak strong {
+    color: #c62828;
+}
+
+/* Tabel rincian berisi kolom isian, jadi butuh lebar minimum lebih besar */
+.jurnal-tabel {
+    min-width: 940px;
+}
+
+/* ---------- Popup Detail Akun (Jurnal Umum) ---------- */
+.dialog-detail {
+    width: min(560px, calc(100vw - 24px));
+    max-height: calc(100vh - 24px);
+    padding: 0;
+    overflow: hidden;
+    color: var(--teks);
+    background-color: #fbfcfd;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 18px 50px rgba(11, 42, 91, 0.35);
+}
+
+.dialog-detail::backdrop {
+    background-color: rgba(11, 42, 91, 0.45);
+}
+
+.dialog-detail[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog-detail-kepala {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    color: var(--putih);
+    background-color: var(--biru-tua);
+}
+
+.dialog-detail-kepala svg {
+    width: 20px;
+    height: 20px;
+}
+
+.dialog-detail-kepala h2 {
+    flex: 1;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.dialog-detail-tutup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dialog-detail-tutup svg {
+    width: 18px;
+    height: 18px;
+}
+
+.dialog-detail-tutup:hover,
+.dialog-detail-tutup:focus-visible {
+    background-color: rgba(255, 255, 255, 0.18);
+    outline: none;
+}
+
+.dialog-detail-isi {
+    flex: 1;
+    min-height: 330px;
+    padding: 0 20px 16px;
+    overflow-y: auto;
+}
+
+/* Dua tab di atas isi popup; tab aktif bergaris bawah warna aksen */
+.dialog-detail-tab {
+    display: flex;
+    gap: 6px;
+    margin: 0 -20px 16px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--garis);
+}
+
+.dialog-detail-tab button {
+    padding: 14px 14px 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--teks-redup);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+}
+
+.dialog-detail-tab button.aktif {
+    font-weight: 600;
+    color: var(--biru-tua);
+    border-bottom-color: var(--aksen);
+}
+
+.dialog-detail-tab button:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: -3px;
+}
+
+.dialog-detail-panel[hidden] {
+    display: none;
+}
+
+/* Isian di dalam popup memakai .baris-form; label dan kolom dibuat lebih sempit agar muat */
+.dialog-detail .baris-form {
+    grid-template-columns: 150px minmax(0, 1fr);
+}
+
+.dialog-detail .baris-form select {
+    width: 100%;
+}
+
+.detail-kode {
+    padding-top: 10px;
+    font-weight: 500;
+    color: var(--biru);
+}
+
+.detail-pilihan-sisi {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 10px;
+    padding-top: 8px;
+}
+
+.detail-pilihan-sisi label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.detail-pilihan-sisi input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    accent-color: var(--biru);
+}
+
+/* Kolom nilai: kotak "Rp" abu-abu di kiri, angka rata kanan */
+.detail-rupiah {
+    display: flex;
+    align-items: stretch;
+    max-width: 260px;
+}
+
+.detail-rupiah span {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    color: var(--teks-redup);
+    background-color: #eef1f5;
+    border: 1px solid var(--garis);
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+}
+
+.dialog-detail .baris-form .detail-rupiah input {
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    border-radius: 0 8px 8px 0;
+}
+
+.dialog-detail-kaki {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 20px;
+    border-top: 1px solid var(--garis);
+}
+
+.dialog-detail-kaki .tombol {
+    min-width: 110px;
+}
+
+/* Baris rincian sekarang hanya teks; klik untuk membuka Detail Akun */
+.jurnal-baris-data {
+    cursor: pointer;
+}
+
+.jurnal-baris-data:hover,
+.jurnal-baris-data:focus-visible {
+    background-color: #f1f5fb;
+    outline: none;
+}
+
+.jurnal-tabel .jurnal-sel-angka {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.jurnal-tabel .jurnal-kol-pj {
+    width: 15%;
+}
+
+.jurnal-tabel {
+    min-width: 1000px;
+}
+
+/* Lebar kolom rincian dihitung ulang setelah kolom Penanggung Jawab ditambah: jumlah persentase tidak boleh melewati
+   100% (sisa dibagi ke Keterangan, yang lebarnya otomatis) */
+.jurnal-tabel .jurnal-kol-akun { width: 18%; }
+.jurnal-tabel .jurnal-kol-program { width: 14%; }
+.jurnal-tabel .jurnal-kol-pj { width: 14%; }
+.jurnal-tabel .jurnal-kol-angka { width: 13%; }
+
+/* Pesan kesalahan jurnal (di bawah kepala) dan keterangan kenapa belum bisa disimpan (di atas total) */
+.jurnal-pesan-galat {
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    background-color: #fdecea;
+    border: 1px solid #f5b5ae;
+    border-radius: 8px;
+}
+
+.jurnal-pesan-galat[hidden] {
+    display: none;
+}
+
+.jurnal-status {
+    min-height: 1.3em;
+    margin: 10px 0 0;
+    font-size: 0.9rem;
+    text-align: right;
+    color: #c62828;
+}
+

@@ -1,0 +1,90 @@
+/* fitur/cadangan/cadangan.css: halaman Cadangan Data (dua kartu Unduh/Pulihkan, tabel kecil isi cadangan).
+   Dimuat oleh index.html sesudah fitur/akun/akun.css (posisi lamanya). */
+
+/* ---------- Halaman informasi (Cadangan Data) ---------- */
+
+.halaman-info {
+    max-width: 1100px;
+}
+
+.judul-halaman-info {
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--biru-tua);
+}
+
+/* Dua kartu berdampingan, turun jadi satu kolom di layar sempit */
+.dua-kartu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.kartu-halaman {
+    padding: 22px 24px;
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(11, 42, 91, 0.06);
+}
+
+.kartu-halaman h3 {
+    margin: 0 0 8px;
+    padding-bottom: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--biru-tua);
+    border-bottom: 3px solid var(--aksen);
+}
+
+.kartu-halaman p {
+    margin: 0 0 12px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+
+.info-cadangan {
+    color: var(--teks-redup);
+}
+
+.label-berkas {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.kartu-halaman input[type="file"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    background-color: #f8fafc;
+    border: 1px dashed var(--garis);
+    border-radius: 8px;
+}
+
+.kartu-halaman .tombol {
+    margin-top: 14px;
+}
+
+.tabel-kecil {
+    font-size: 0.88rem;
+}
+
+.tabel-kecil th,
+.tabel-kecil td {
+    padding: 8px 12px;
+}
+
+.tabel-kecil .kanan {
+    text-align: right;
+}
+
+.kartu-halaman [hidden] {
+    display: none;
+}

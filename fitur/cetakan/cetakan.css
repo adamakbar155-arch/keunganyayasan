@@ -1,0 +1,242 @@
+/* fitur/cetakan/cetakan.css: Editor Desain Cetakan bagian 1 (kanvas, kolom alat, panel).
+   Bagian 2 ada di editor.css. URUTAN tag link di index.html menentukan aturan mana yang menang. */
+
+/* ---------- Editor Desain Cetakan ---------- */
+
+/* Atribut hidden perlu ditegaskan karena elemen-elemen ini punya "display" sendiri */
+.modul-bar[hidden],
+.editor-cetakan[hidden],
+.tombol-edit-besar[hidden] {
+    display: none;
+}
+
+/* Tombol Edit Desain di kolom kanan formulir: biru, sama ukuran dengan tombol hapus */
+.tombol-edit-besar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 56px;
+    padding: 0;
+    color: var(--biru);
+    background-color: #eaf2fd;
+    border: 1px solid #b9d3f3;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.tombol-edit-besar:hover {
+    background-color: #dbe9fb;
+}
+
+.tombol-edit-besar svg {
+    width: 28px;
+    height: 28px;
+}
+
+.tombol-edit-besar:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Editor memenuhi SELURUH layar (menutup bar atas, menu samping, dan tab), seperti editor di Accurate.
+   Dengan begitu tidak ada lagi menggulir halaman: bar tetap di atas, alat tetap di kiri, panel tetap di kanan,
+   dan hanya kertas di tengah yang bergerak. z-index 60: di atas halaman, di bawah notifikasi (100). */
+.editor-cetakan {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    background-color: #e9edf3;
+}
+
+/* Selama editor terbuka, halaman di belakangnya tidak boleh ikut tergulir */
+body.editor-terbuka {
+    overflow: hidden;
+}
+
+/* Bar atas editor: Tutup di kiri, nama desain di tengah, Simpan di kanan */
+.editor-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    color: var(--putih);
+    background: linear-gradient(90deg, #08204a, var(--biru-tua));
+    border-bottom: 3px solid var(--aksen);
+}
+
+.editor-bar strong {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Tiga kolom mengisi sisa tinggi layar: alat 76px | kanvas (melar) | panel 300px.
+   min-height: 0 penting supaya anak-anaknya boleh menggulir sendiri, bukan memanjangkan halaman. */
+.editor-badan {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr) 300px;
+}
+
+/* Kanvas abu-abu di tengah: hanya bagian ini yang menggulir (kalau kertas diperbesar) */
+.editor-kanvas {
+    min-width: 0;
+    min-height: 0;
+    padding: 20px;
+    overflow: auto;
+    overscroll-behavior: contain;   /* gulir di sini tidak "menembus" ke halaman di belakang */
+    background-color: #6b7280;
+}
+
+/* Kertas: bayangan agar tampak melayang di atas kanvas. "zoom" diatur JavaScript. */
+.editor-kertas {
+    width: max-content;
+    margin: 0 auto;
+    background-color: var(--putih);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* Halaman kertas: tempat semua elemen desain diletakkan dengan posisi absolut (satuan milimeter).
+   overflow: hidden meniru kertas sungguhan: yang keluar dari tepi kertas terpotong. */
+.halaman-cetak {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--putih);
+}
+
+/* Satu elemen desain. Ukuran huruf dan lain-lain diatur lewat gaya inline dari JavaScript. */
+.el-cetak {
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0.4mm 0.8mm;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.25;
+    white-space: pre-wrap;      /* baris baru di isi teks tetap tampil sebagai baris baru */
+    color: #111111;
+}
+
+.el-garis,
+.el-kotak {
+    padding: 0;
+}
+
+.el-logo {
+    padding: 0;
+}
+
+.el-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Elemen Tabel Rincian: baris mengikuti transaksi saat dicetak (fitur/cetak-bukti/cetak-bukti.js) */
+.el-tabel {
+    padding: 0;
+    white-space: normal;
+}
+
+.tabel-cetak {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.tabel-cetak th,
+.tabel-cetak td {
+    padding: 0.8mm 1.2mm;
+    overflow-wrap: anywhere;
+    text-align: left;
+    border-bottom: 0.15mm solid #e4e9f1;
+}
+
+.tabel-cetak th {
+    font-weight: 700;
+    color: #0b2a5b;
+    border-bottom: 0.4mm solid #0b2a5b;
+}
+
+.tabel-cetak .kanan {
+    text-align: right;
+}
+
+.tabel-cetak tfoot td {
+    font-weight: 700;
+    border-top: 0.4mm solid #0b2a5b;
+    border-bottom: 0.6mm double #0b2a5b;
+}
+
+/* Tempat logo kalau logo belum diisi di Preferensi → Data */
+.el-logo-kosong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9pt;
+    color: #888888;
+    border: 0.3mm dashed #888888;
+}
+
+/* Kolom alat "Tambah" di kiri: tombol bersusun ke bawah, ikon di atas dan label kecil di bawahnya */
+.editor-alat {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 12px 8px;
+    overflow-y: auto;
+    background-color: var(--putih);
+    border-right: 1px solid var(--garis);
+}
+
+.editor-alat-label {
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--teks-redup);
+}
+
+.editor-alat .tombol {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px 4px;
+    font-size: 0.72rem;
+}
+
+.editor-alat .tombol svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Kolom isi teks di panel */
+.editor-panel textarea {
+    width: 100%;
+    margin-bottom: 4px;
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--teks);
+    background-color: var(--putih);
+    border: 1px solid var(--garis);
+    border-radius: 8px;
+    resize: vertical;
+}
+
+.editor-panel textarea:focus {
+    outline: none;
+    border-color: var(--biru);
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);
+}
