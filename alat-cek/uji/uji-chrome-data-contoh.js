@@ -14,6 +14,18 @@ const foto = async (nama) => { const r = await kirim("Page.captureScreenshot", {
 const klik = async (sel) => { const j = JSON.parse(await evalJs(`(function(){var e=document.querySelector(${JSON.stringify(sel)}); e.scrollIntoView({block:'center'}); var r=e.getBoundingClientRect(); return JSON.stringify({x:r.left+r.width/2,y:r.top+r.height/2});})()`)); await kirim("Input.dispatchMouseEvent", { type: "mouseMoved", x: j.x, y: j.y }); await kirim("Input.dispatchMouseEvent", { type: "mousePressed", x: j.x, y: j.y, button: "left", clickCount: 1 }); await kirim("Input.dispatchMouseEvent", { type: "mouseReleased", x: j.x, y: j.y, button: "left", clickCount: 1 }); };
 const tungguMuatUlang = async () => { await tunggu(1500); for (let i = 0; i < 100; i++) { try { if (await evalJs("document.readyState==='complete' && typeof gambarDashboard==='function'")) { break; } } catch (e) { /* sedang memuat */ } await tunggu(200); } await tunggu(500); };
 
+// Pesan sesudah muat ulang hanya tampil 4 detik, dan makin cepat halaman dimuat (misalnya versi online gabungan, T.7) makin awal
+// pesannya muncul. Karena itu pesan dicari SEJAK tombol diklik, setiap 0,1 detik (tunggu pendek tidak dikalikan tunggu-lebih-lama.js).
+const tungguPesan = async (pola, detik) => {
+  const batas = Date.now() + detik * 1000; let teks = "";
+  while (Date.now() < batas) {
+    try { teks = await evalJs("document.getElementById('area-notifikasi') ? document.getElementById('area-notifikasi').textContent : ''"); } catch (e) { /* sedang memuat ulang */ }
+    if (pola.test(teks)) { return teks; }
+    await tunggu(100);
+  }
+  return teks;
+};
+
 (async () => {
   fs.mkdirSync(folderPng, { recursive: true });
   const galat = [];
@@ -36,10 +48,8 @@ const tungguMuatUlang = async () => { await tunggu(1500); for (let i = 0; i < 10
     await klik("#tombol-isi-contoh"); await tunggu(300);
     catat("Klik Isi: konfirmasi muncul dulu", await evalJs("document.getElementById('dialog-konfirmasi').open && /REKAAN/.test(document.getElementById('isi-konfirmasi').textContent)"));
     await klik("#ya-konfirmasi");
-    await tungguMuatUlang();
-    // Saat komputer sibuk, pengisian (foto kanvas, PDF) bisa lebih lama dari waktu tunggu awal: tunggu pesannya, paling lama 15 detik
-    let pesanIsi = "";
-    for (let i = 0; i < 75 && !/Data contoh telah diisi/.test(pesanIsi); i++) { try { pesanIsi = await evalJs("document.getElementById('area-notifikasi').textContent"); } catch (e) { /* sedang memuat ulang */ } if (!/Data contoh telah diisi/.test(pesanIsi)) { await tunggu(200); } }
+    // Pengisian (foto kanvas, PDF) bisa lama saat komputer sibuk: pesan ditunggu paling lama 30 detik
+    const pesanIsi = await tungguPesan(/Data contoh telah diisi/, 30);
     await tungguMuatUlang();
     catat("Sesudah diisi halaman dimuat ulang dengan pesan berhasil", /Data contoh telah diisi/.test(pesanIsi), pesanIsi);
     const isi = JSON.parse(await evalJs(`(function(){ var l=JSON.parse(localStorage.getItem('lampiranJurnal')||'{}'), foto=0, pdf=0;
@@ -64,8 +74,9 @@ const tungguMuatUlang = async () => { await tunggu(1500); for (let i = 0; i < 10
     catat("Cadangan Data: sekarang tombol Hapus Data Contoh", await evalJs("document.getElementById('tombol-isi-contoh').hidden && !document.getElementById('tombol-hapus-contoh').hidden"));
     await klik("#tombol-hapus-contoh"); await tunggu(300);
     await klik("#ya-konfirmasi");
+    const pesanHapus = await tungguPesan(/Data contoh telah dihapus/, 20);
     await tungguMuatUlang();
-    catat("Sesudah Hapus: aplikasi kosong lagi, pengguna tetap", await evalJs("JSON.parse(localStorage.getItem('daftarDonasi')||'[]').length===0 && JSON.parse(localStorage.getItem('daftarDivisi')||'[]').length===0 && JSON.parse(localStorage.getItem('daftarPengguna')||'[]').length>0 && /Data contoh telah dihapus/.test(document.getElementById('area-notifikasi').textContent)"));
+    catat("Sesudah Hapus: aplikasi kosong lagi, pengguna tetap", /Data contoh telah dihapus/.test(pesanHapus) && await evalJs("JSON.parse(localStorage.getItem('daftarDonasi')||'[]').length===0 && JSON.parse(localStorage.getItem('daftarDivisi')||'[]').length===0 && JSON.parse(localStorage.getItem('daftarPengguna')||'[]').length>0"), pesanHapus);
     catat("Tidak ada galat atau peringatan di Console", galat.length === 0, JSON.stringify(galat.slice(0, 3)));
   } catch (e) {
     console.log("GALAT: " + e.message); hasil.push(false);

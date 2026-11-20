@@ -1,0 +1,42 @@
+# Memasang versi online di GitHub Pages (Temuan 49, PLAN T.7).
+# Setiap kali ada kiriman ke cabang main: salinan situs disusun dengan file CSS dan JS yang digabung
+# (alat-cek/gabung-online.js), lalu dipasang ke GitHub Pages. Kode di repositori tidak diubah.
+# Syarat: Settings > Pages > Source = "GitHub Actions".
+name: Pasang situs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # bisa juga dijalankan manual dari tab Actions
+
+# Hak paling kecil yang dibutuhkan: membaca kode, menulis ke Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Kalau ada dua kiriman berdekatan, yang lama dibatalkan dan yang terbaru dipasang
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  pasang:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pasang.outputs.page_url }}
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+      - name: Susun situs (file digabung)
+        run: node alat-cek/gabung-online.js _situs
+      - name: Siapkan Pages
+        uses: actions/configure-pages@v5
+      - name: Unggah situs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _situs
+      - name: Pasang ke Pages
+        id: pasang
+        uses: actions/deploy-pages@v4

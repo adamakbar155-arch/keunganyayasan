@@ -2,6 +2,8 @@
 # Alat uji: paket Node dan hasil sementara (profil browser, foto uji) yang besar dan bisa dibuat ulang
 alat-cek/node_modules/
 alat-cek/.sementara/
+# Salinan situs gabungan yang disusun GitHub Actions (alat-cek/gabung-online.js, T.7)
+_situs/
 # Catatan sistem
 *.log
 Thumbs.db

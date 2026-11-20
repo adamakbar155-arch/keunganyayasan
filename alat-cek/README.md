@@ -43,6 +43,18 @@ node alat-cek\versi.js
 File yang isinya berubah mendapat alamat baru (browser mengambilnya lagi); file lain tetap diambil dari simpanan browser.
 Kalau lupa, `cek.ps1` melaporkan `BELUM SESUAI`.
 
+## Versi online: file digabung (T.7)
+
+GitHub Pages dipasang lewat GitHub Actions (`.github/workflows/situs.yml`): setiap kiriman ke `main`, `gabung-online.js`
+menyusun salinan situs dengan semua CSS menjadi `aplikasi.css` dan semua skrip `<body>` menjadi `aplikasi.js` (urutan sama
+dengan index.html), supaya pembukaan pertama cepat. Kode di proyek tidak diubah. Mencoba hasilnya di komputer:
+
+```
+node alat-cek\gabung-online.js alat-cek\.sementara\situs
+```
+
+lalu buka `alat-cek\.sementara\situs\index.html`, atau jalankan uji Chrome dengan alamat itu.
+
 ## Pemasangan (sekali saja, butuh internet)
 
 ```
