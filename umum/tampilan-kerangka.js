@@ -1,5 +1,6 @@
 // ==================== Tampilan kerangka: bilah atas dan menu samping ====================
-// Bagian yang selalu tampil di semua halaman. Logikanya ada di umum/inti.js (popup menu) dan umum/bilah-atas.js (pilihan pembukuan).
+// Bagian yang selalu tampil di semua halaman. Logikanya ada di umum/inti.js (popup menu) dan umum/sesi-aplikasi.js (menu pengguna).
+// Pilihan pembukuan (Yayasan/Sekolah/Unit usaha) dihapus di J.28: aplikasi hanya untuk pembukuan Yayasan (PRD 6.14).
 // Dipasang ke index.html lewat pasangTampilan (umum/pasang-tampilan.js) di tempat penanda <template data-tempat="...">.
 // Tanda /*html*/ membantu editor (misalnya ekstensi VS Code "es6-string-html") mewarnai teks sebagai HTML.
 
@@ -23,23 +24,6 @@ pasangTampilan("bilah-atas", /*html*/ `
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
             </button>
 
-            <!-- Pilihan pembukuan: tombol yang membuka daftar kecil (yayasan, sekolah, unit usaha) -->
-            <div class="pembukuan">
-                <button type="button" id="tombol-pembukuan" class="pembukuan-tombol" aria-haspopup="true" aria-expanded="false" aria-label="Pilih pembukuan">
-                    <strong id="nama-pembukuan">Yayasan</strong>
-                    <span>Pembukuan</span>
-                    <!-- Panah kecil ke bawah, tanda bahwa tombol ini membuka daftar -->
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                </button>
-
-                <!-- Daftar pembukuan. Atribut hidden = tersembunyi sampai tombol diklik.
-                     data-nama = teks yang akan tampil di tombol saat dipilih. -->
-                <ul id="daftar-pembukuan" class="pembukuan-daftar" hidden>
-                    <li><button type="button" class="pembukuan-pilihan aktif" data-nama="Yayasan">Yayasan</button></li>
-                    <li><button type="button" class="pembukuan-pilihan" data-nama="Sekolah">Sekolah</button></li>
-                    <li><button type="button" class="pembukuan-pilihan" data-nama="Unit usaha">Unit usaha</button></li>
-                </ul>
-            </div>
             <!-- Menu pengguna (PRD 6.12): inisial nama; klik membuka nama, peran, Ganti Kata Sandi, dan Keluar (umum/sesi-aplikasi.js) -->
             <div class="menu-pengguna">
                 <button type="button" id="tombol-pengguna" class="avatar" aria-haspopup="menu" aria-expanded="false" aria-controls="daftar-menu-pengguna" aria-label="Menu pengguna">?</button>

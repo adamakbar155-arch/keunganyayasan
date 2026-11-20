@@ -2,7 +2,7 @@
 // Dimuat PALING AWAL di index.html (di <head>) dan juga oleh login.html. Belum masuk, sesinya rusak, penggunanya sudah
 // dihapus/Non Aktif, atau 40 menit tanpa aktivitas = pindah ke layar Masuk (login.html), sebelum aplikasi sempat tampil.
 // Sesi disimpan di sessionStorage: berlaku per jendela/tab browser dan hilang saat browser ditutup.
-// Bentuk sesi: { penggunaId, nama, peran, pembukuan: [..], terakhirAktif: angka waktu (ms), baruMasuk: true/false }
+// Bentuk sesi: { penggunaId, nama, peran, terakhirAktif: angka waktu (ms), baruMasuk: true/false }
 // CATATAN: tanpa server, sesi ini kunci layar dan pencatat siapa yang bekerja, bukan pengaman penuh (PRD 6.12, Batasan).
 
 var KUNCI_SESI = "sesiMasuk";
@@ -32,7 +32,7 @@ function hapusSesi() {
 // Membuat sesi untuk pengguna yang baru masuk (dipanggil layar Masuk)
 function mulaiSesi(pengguna) {
     simpanSesi({ penggunaId: pengguna.id, nama: String(pengguna.nama || pengguna.username || ""), peran: String(pengguna.peran || ""),
-                 pembukuan: Array.isArray(pengguna.pembukuan) ? pengguna.pembukuan.map(String) : [], terakhirAktif: Date.now(), baruMasuk: true });
+                 terakhirAktif: Date.now(), baruMasuk: true });
 }
 
 // Sesi yang sah: ada, penggunanya masih ada dan aktif, belum wajib ganti sandi, dan belum 40 menit tanpa aktivitas.
@@ -54,8 +54,9 @@ function keLayarMasuk(alasan) {
 
 // Peran pengguna yang sedang masuk ("" kalau belum masuk)
 function peranSesi() { var s = bacaSesi(); return s ? s.peran : ""; }
-// Pengawas hanya melihat (PRD 5.8)
-function hanyaLihat() { return peranSesi() === "pengawas"; }
+// Hanya Finance Yayasan yang boleh mengubah data. Pengawas hanya melihat (PRD 5.8); peran lama Finance Sekolah dan
+// Finance Unit usaha juga hanya melihat, karena pembukuannya sudah dihapus (J.28). Peran tak dikenal juga hanya melihat (aman).
+function hanyaLihat() { return peranSesi() !== "finance-yayasan"; }
 // Halaman yang hanya boleh dibuka Finance Yayasan (PRD 5.8): id tab "pengguna", "preferensi", "cadangan"
 var HALAMAN_FINANCE_YAYASAN = ["pengguna", "preferensi", "cadangan"];
 function bolehBukaHalaman(nama) { return HALAMAN_FINANCE_YAYASAN.indexOf(nama) === -1 || peranSesi() === "finance-yayasan"; }

@@ -26,6 +26,20 @@ const buka = async (url) => { await kirim("Page.navigate", { url }); await tungg
 const isi = (nilai) => evalJs("(function(){var n=" + JSON.stringify(nilai) + "; Object.keys(n).forEach(function(k){document.getElementById(k).value=n[k];}); return true;})()");
 const kirimForm = (idForm) => evalJs("document.getElementById(" + JSON.stringify(idForm) + ").requestSubmit(); true");
 const pesan = (idKotak) => evalJs("document.getElementById(" + JSON.stringify(idKotak) + ").hidden ? '' : document.getElementById(" + JSON.stringify(idKotak) + ").textContent");
+// Menunggu sampai layar Masuk selesai memeriksa kata sandi (variabel sedangMemeriksa di login.js), paling lama 10 detik.
+// Kalau halaman sudah pindah (masuk berhasil), langsung selesai.
+const tungguPeriksa = async () => {
+  await tunggu(100);
+  for (let i = 0; i < 100; i++) {
+    try { if (!(await evalJs("typeof sedangMemeriksa !== 'undefined' && sedangMemeriksa"))) { await tunggu(100); return; } } catch (e) { /* sedang pindah halaman */ }
+    await tunggu(100);
+  }
+};
+// Sama untuk Ganti Kata Sandi di dalam aplikasi (variabel sedangGantiSandi di umum/sesi-aplikasi.js)
+const tungguGantiSandi = async () => {
+  await tunggu(100);
+  for (let i = 0; i < 100; i++) { if (!(await evalJs("sedangGantiSandi"))) { await tunggu(100); return; } await tunggu(100); }
+};
 const masuk = async (nama, sandi) => { await isi({ username: nama, password: sandi }); await kirimForm("form-login"); };
 
 (async () => {
@@ -65,20 +79,20 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Keluar: kembali ke layar Masuk dengan pesan 'Anda sudah keluar.'", await tungguHalaman(/login\.html$/) && await pesan("pesan-info") === "Anda sudah keluar.");
     await buka(INDEX);
     catat("Sesudah keluar, membuka index.html langsung kembali ke layar Masuk", await tungguHalaman(/login\.html$/));
-    await masuk("siti", "salah-sekali"); await tunggu(800);
+    await masuk("siti", "salah-sekali"); await tungguPeriksa();
     catat("Kata sandi salah: 'Nama pengguna atau kata sandi salah.'", await pesan("pesan-error") === "Nama pengguna atau kata sandi salah.", await pesan("pesan-error"));
-    await masuk("tidak-ada", "rahasia-123"); await tunggu(800);
+    await masuk("tidak-ada", "rahasia-123"); await tungguPeriksa();
     catat("Nama tidak terdaftar: pesan yang sama (tidak membocorkan nama mana yang ada)", await pesan("pesan-error") === "Nama pengguna atau kata sandi salah.");
     await masuk("SITI", "rahasia-123");
     catat("Masuk berhasil (nama pengguna tidak membedakan huruf besar/kecil)", await tungguHalaman(/index\.html$/));
     await foto("masuk-aplikasi.png");
 
-    // ---- 3. Tambah pengguna lewat data (sandi teracak dari alat bersama), wajib ganti sandi, Non Aktif, Pengawas, Finance Sekolah ----
+    // ---- 3. Tambah pengguna lewat data (sandi teracak dari alat bersama), wajib ganti sandi, Non Aktif, Pengawas, akun lama Finance Sekolah ----
     await evalJs(`(async function(){ var d=JSON.parse(localStorage.getItem('daftarPengguna'));
       var s=await acakKataSandi('awal-1234');
-      d.push({id:'u2', nama:'Budi Pengawas', username:'budi', peran:'pengawas', pembukuan:['yayasan','sekolah','unit-usaha'], nonAktif:false, sandi:s, wajibGantiSandi:true});
-      d.push({id:'u3', nama:'Rina', username:'rina', peran:'finance-sekolah', pembukuan:['sekolah'], nonAktif:false, sandi:s, wajibGantiSandi:false});
-      d.push({id:'u4', nama:'Lama', username:'lama', peran:'finance-yayasan', pembukuan:['yayasan'], nonAktif:true, sandi:s, wajibGantiSandi:false});
+      d.push({id:'u2', nama:'Budi Pengawas', username:'budi', peran:'pengawas', nonAktif:false, sandi:s, wajibGantiSandi:true});
+      d.push({id:'u3', nama:'Rina', username:'rina', peran:'finance-sekolah', nonAktif:false, sandi:s, wajibGantiSandi:false});
+      d.push({id:'u4', nama:'Lama', username:'lama', peran:'finance-yayasan', nonAktif:true, sandi:s, wajibGantiSandi:false});
       localStorage.setItem('daftarPengguna', JSON.stringify(d)); return true; })()`);
     // Pengaman akun sendiri
     await evalJs("bukaTab('pengguna'); modulPengguna.hapus(modulPengguna.ambil()[0]); true"); await tunggu(150);
@@ -87,11 +101,11 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Akun yang sedang dipakai tidak bisa dijadikan Non Aktif", /tidak bisa dijadikan Non Aktif/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && !JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"))[0].nonAktif);
     await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
 
-    await masuk("lama", "awal-1234"); await tunggu(800);
+    await masuk("lama", "awal-1234"); await tungguPeriksa();
     catat("Akun Non Aktif ditolak", /Non Aktif/.test(await pesan("pesan-error")), await pesan("pesan-error"));
-    await masuk("budi", "awal-1234"); await tunggu(800);
+    await masuk("budi", "awal-1234"); await tungguPeriksa();
     catat("Kata sandi baru dibuat/diatur ulang: wajib ganti dulu sebelum masuk", await evalJs("!document.getElementById('layar-ganti-sandi').hidden") && (await evalJs("location.pathname")).endsWith("login.html"));
-    await isi({ "gs-baru": "awal-1234", "gs-ulang": "awal-1234" }); await kirimForm("form-ganti-sandi"); await tunggu(150);
+    await isi({ "gs-baru": "awal-1234", "gs-ulang": "awal-1234" }); await kirimForm("form-ganti-sandi"); await tungguPeriksa();
     catat("Kata sandi baru tidak boleh sama dengan yang lama", /tidak boleh sama/.test(await pesan("pesan-error-ganti")));
     await isi({ "gs-baru": "baru-budi-99", "gs-ulang": "baru-budi-99" }); await kirimForm("form-ganti-sandi");
     catat("Sesudah ganti kata sandi langsung masuk", await tungguHalaman(/index\.html$/));
@@ -109,9 +123,9 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await foto("masuk-pengawas.png");
     // Ganti Kata Sandi sendiri tetap boleh untuk Pengawas
     await evalJs("document.getElementById('tombol-pengguna').click(); document.getElementById('menu-ganti-sandi').click(); true"); await tunggu(150);
-    await isi({ "gsa-lama": "salah-salah", "gsa-baru": "budi-baru-77", "gsa-ulang": "budi-baru-77" }); await kirimForm("form-ganti-sandi-app"); await tunggu(800);
+    await isi({ "gsa-lama": "salah-salah", "gsa-baru": "budi-baru-77", "gsa-ulang": "budi-baru-77" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
     catat("Ganti Kata Sandi: kata sandi sekarang salah ditolak", /salah/.test(await evalJs("document.getElementById('galat-ganti-sandi').textContent")));
-    await isi({ "gsa-lama": "baru-budi-99" }); await kirimForm("form-ganti-sandi-app"); await tunggu(1500);
+    await isi({ "gsa-lama": "baru-budi-99" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
     catat("Ganti Kata Sandi berhasil (juga untuk Pengawas)", await evalJs("!document.getElementById('dialog-ganti-sandi').open && /diganti/.test(document.getElementById('area-notifikasi').textContent)"));
 
     // ---- 5. Keluar otomatis 40 menit ----
@@ -132,11 +146,11 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await buka(INDEX);
     catat("Membuka ulang aplikasi dengan sesi yang sudah lewat 40 menit: ke layar Masuk", await tungguHalaman(/login\.html$/));
 
-    // ---- 6. Finance Sekolah: pembukuan hanya Sekolah ----
+    // ---- 6. Akun lama Finance Sekolah (pembukuan Sekolah dihapus di J.28): tetap bisa masuk, hanya melihat ----
     await masuk("rina", "awal-1234");
     await tungguHalaman(/index\.html$/);
-    const sekolah = JSON.parse(await evalJs("JSON.stringify({nama: document.getElementById('nama-pembukuan').textContent, pilihan: [...document.querySelectorAll('.pembukuan-pilihan')].filter(function(p){return !p.closest('li').hidden;}).map(function(p){return p.dataset.nama;}), kelas: document.body.classList.contains('bukan-finance-yayasan')})"));
-    catat("Finance Sekolah: pembukuan aktif Sekolah, pilihan hanya Sekolah, menu Pengguna/Preferensi/Cadangan tersembunyi", sekolah.nama === "Sekolah" && JSON.stringify(sekolah.pilihan) === '["Sekolah"]' && sekolah.kelas, JSON.stringify(sekolah));
+    const sekolah = JSON.parse(await evalJs("JSON.stringify({pilihan: !!document.querySelector('.pembukuan'), lihat: document.body.classList.contains('hanya-lihat'), kelas: document.body.classList.contains('bukan-finance-yayasan'), peran: document.getElementById('menu-pengguna-peran').textContent})"));
+    catat("Akun lama Finance Sekolah: tanpa pilihan pembukuan, hanya melihat, menu Pengguna/Preferensi/Cadangan tersembunyi", !sekolah.pilihan && sekolah.lihat && sekolah.kelas && /peran lama/.test(sekolah.peran), JSON.stringify(sekolah));
 
     // ---- 7. Lima kali salah: tunggu 1 menit ----
     await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);

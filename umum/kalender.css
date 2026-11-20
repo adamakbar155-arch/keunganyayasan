@@ -221,7 +221,7 @@
 }
 
 .bar-kanan {
-    flex-shrink: 0;        /* ikon dan tombol pembukuan tidak ikut terhimpit */
+    flex-shrink: 0;        /* ikon dan menu pengguna tidak ikut terhimpit */
 }
 
 @media (max-width: 640px) {
@@ -244,15 +244,6 @@
     .ikon-bar {
         width: 36px;
         height: 36px;
-    }
-
-    .pembukuan {
-        margin: 0 6px 0 6px;
-    }
-
-    .pembukuan-tombol {
-        column-gap: 6px;
-        padding: 4px 8px;
     }
 
     .avatar {
@@ -279,10 +270,6 @@
     .avatar {
         width: 32px;
         height: 32px;
-    }
-
-    .pembukuan {
-        margin: 0 4px;
     }
 }
 

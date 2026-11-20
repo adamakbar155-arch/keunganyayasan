@@ -52,15 +52,10 @@ const muatUlang = async () => {
     await ukuran(1366); await tunggu(250);
     catat("Lebar 1366: 3 ikon tampil, nama aplikasi penuh", await evalJs("document.querySelectorAll('.ikon-bar').length===3 && [...document.querySelectorAll('.ikon-bar')].every(function(i){return i.offsetParent!==null;}) && (function(){var n=document.querySelector('.merek-nama'); return n.scrollWidth<=n.clientWidth;})()"));
 
-    // 2) Pilihan pembukuan di layar sempit
+    // 2) Pilihan pembukuan sudah dihapus (J.28, PRD 6.14); di layar sempit avatar tetap di dalam layar
     await ukuran(360); await tunggu(250);
-    await klik("#tombol-pembukuan"); await tunggu(250);
-    catat("Lebar 360: tombol pembukuan membuka daftar, daftar di dalam layar", await evalJs("(function(){var d=document.getElementById('daftar-pembukuan'); var r=d.getBoundingClientRect(); return !d.hidden && r.left>=0 && r.right<=window.innerWidth;})()"));
-    await foto("bar-360-pembukuan.png");
-    await klik("#daftar-pembukuan .pembukuan-pilihan[data-nama='Unit usaha']"); await tunggu(250);
-    catat("Memilih 'Unit usaha': nama di tombol berganti, daftar menutup, avatar tetap di dalam layar", await evalJs("document.getElementById('nama-pembukuan').textContent==='Unit usaha' && document.getElementById('daftar-pembukuan').hidden && document.querySelector('.avatar').getBoundingClientRect().right<=window.innerWidth"));
-    await klik("#tombol-pembukuan"); await tunggu(150); await klik("#daftar-pembukuan .pembukuan-pilihan[data-nama='Yayasan']"); await tunggu(150);
-    catat("Kembali ke 'Yayasan'", await evalJs("document.getElementById('nama-pembukuan').textContent==='Yayasan'"));
+    catat("Lebar 360: tidak ada pilihan pembukuan, avatar di dalam layar", await evalJs("!document.getElementById('tombol-pembukuan') && !document.querySelector('.pembukuan') && document.querySelector('.avatar').getBoundingClientRect().right<=window.innerWidth"));
+    await foto("bar-360.png");
 
     // 3) Setiap halaman dari menu dibuka sendiri-sendiri (muat ulang tiap kali) di lebar 390: tidak ada galat skrip.
     //    Lebar halaman dibandingkan dengan lebar Dashboard sendiri (Temuan 4), supaya yang dilaporkan hanya tambahan dari halaman itu.

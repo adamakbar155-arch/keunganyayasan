@@ -140,66 +140,42 @@ function bukaLog() {
 // ---------- Halaman Pengguna ----------
 // Data pengguna tersimpan di browser; login (login.html, PRD 6.12) adalah kunci layar, bukan pengaman penuh sampai tahap server.
 // Kata sandi tidak disimpan apa adanya, melainkan diacak (PBKDF2-SHA256 dengan garam acak, umum/sandi.js).
-// (Nama variabel sengaja berbeda dari "daftarPembukuan" milik pilihan pembukuan di bar atas)
-var semuaPembukuan = [
-    { kunci: "yayasan", label: "Yayasan" },
-    { kunci: "sekolah", label: "Sekolah" },
-    { kunci: "unit-usaha", label: "Unit usaha" }
-];
 var kolomPengguna = {
     nama: "pg-nama", username: "pg-username", kontak: "pg-kontak"
 };
 var kolomSandiPengguna = document.getElementById("pg-sandi");
 var pilihPeranPengguna = document.getElementById("pg-peran");
 
-// Empat peran tetap (hak tiap peran sesuai keputusan, tanpa tabel hak akses).
-// "pembukuan" = pembukuan yang otomatis boleh dibuka oleh peran itu.
+// Peran tetap (sementara, sampai J.29 menggantinya dengan Administrator / Operator + Akses Grup, PRD 6.14).
+// Aplikasi hanya untuk pembukuan Yayasan (J.28). Peran "lama" hanya untuk menampilkan nama peran akun lama;
+// tidak bisa dipilih lagi, dan akun lama dengan peran itu hanya bisa melihat (umum/sesi.js, hanyaLihat).
 var peranPengguna = {
     "finance-yayasan": {
         label: "Finance Yayasan",
-        pembukuan: ["yayasan", "sekolah", "unit-usaha"],
-        keterangan: "Hak penuh atas ketiga pembukuan, termasuk mengelola pengguna."
-    },
-    "finance-sekolah": {
-        label: "Finance Sekolah",
-        pembukuan: ["sekolah"],
-        keterangan: "Mencatat dan melihat hanya di pembukuan Sekolah."
-    },
-    "finance-unit-usaha": {
-        label: "Finance Unit usaha",
-        pembukuan: ["unit-usaha"],
-        keterangan: "Mencatat dan melihat hanya di pembukuan Unit usaha."
+        keterangan: "Hak penuh, termasuk mengelola pengguna."
     },
     "pengawas": {
         label: "Pengawas",
-        pembukuan: ["yayasan", "sekolah", "unit-usaha"],
-        keterangan: "Melihat ketiga pembukuan dan memberi catatan pengawasan. Tidak mengubah data."
-    }
+        keterangan: "Melihat semua data. Tidak mengubah data."
+    },
+    "finance-sekolah": { label: "Finance Sekolah (peran lama)", lama: true },
+    "finance-unit-usaha": { label: "Finance Unit usaha (peran lama)", lama: true }
 };
 
-// Isi pilihan peran dari tabel di atas (sekali saja, daftarnya tetap)
-isiPilihan(pilihPeranPengguna, Object.keys(peranPengguna), {
+// Isi pilihan peran dari tabel di atas (sekali saja, daftarnya tetap); peran lama tidak ditawarkan
+isiPilihan(pilihPeranPengguna, Object.keys(peranPengguna).filter(function (k) { return !peranPengguna[k].lama; }), {
     nilai: function (kunci) { return kunci; },
     teks: function (kunci) { return peranPengguna[kunci].label; },
     kosong: "Pilih peran..."
 });
-var kotakPembukuanPengguna = document.querySelectorAll("input[name='pg-pembukuan']");
 var kotakNonAktifPengguna = document.getElementById("pg-nonaktif");
 var galatPengguna = {
     nama: document.getElementById("galat-pg-nama"),
     username: document.getElementById("galat-pg-username"),
     kontak: document.getElementById("galat-pg-kontak"),
     sandi: document.getElementById("galat-pg-sandi"),
-    peran: document.getElementById("galat-pg-peran"),
-    pembukuan: document.getElementById("galat-pg-pembukuan")
+    peran: document.getElementById("galat-pg-peran")
 };
-
-function namaPembukuanDari(daftarKunci) {
-    return (daftarKunci || []).map(function (kunci) {
-        var pembukuan = semuaPembukuan.find(function (p) { return p.kunci === kunci; });
-        return pembukuan ? pembukuan.label : kunci;
-    }).join(", ");
-}
 
 // Mengacak kata sandi: alat bersama umum/sandi.js (acakKataSandi), dipakai juga layar Masuk.
 
@@ -213,19 +189,12 @@ function tampilkanGalatPengguna(nama, pesan, kolomFokus) {
     if (kolomFokus) { kolomFokus.focus(); }
 }
 
-// Menerapkan peran yang dipilih: centang pembukuan diatur otomatis dan dikunci, supaya tidak
-// ada pengguna dengan pembukuan yang bertentangan dengan perannya. Tanpa peran, centang bebas.
+// Petunjuk di bawah pilihan peran mengikuti peran yang dipilih
 function terapkanPeran() {
     var peran = peranPengguna[pilihPeranPengguna.value];
-    kotakPembukuanPengguna.forEach(function (kotak) {
-        if (peran) {
-            kotak.checked = peran.pembukuan.indexOf(kotak.value) !== -1;
-        }
-        kotak.disabled = !!peran;
-    });
-    document.getElementById("petunjuk-pg-peran").textContent = peran
+    document.getElementById("petunjuk-pg-peran").textContent = peran && peran.keterangan
         ? peran.keterangan
-        : "Peran menentukan pembukuan yang boleh dibuka dan apa yang boleh dilakukan.";
+        : "Peran menentukan apa yang boleh dilakukan.";
 }
 pilihPeranPengguna.addEventListener("change", function () {
     galatPengguna.peran.hidden = true;
@@ -245,11 +214,10 @@ function aturKolomSandi(sedangMengubah) {
 // yang dicatat hanya KAPAN terakhir diatur.
 var labelPengguna = {
     nama: "Nama Lengkap", username: "Nama Pengguna", kontak: "Email/No Handphone",
-    peran: "Peran", pembukuan: "Pembukuan", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
+    peran: "Peran", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
 };
 var formatPengguna = {
     peran: function (kunci) { return peranPengguna[kunci] ? peranPengguna[kunci].label : kunci; },
-    pembukuan: function (daftarKunci) { return namaPembukuanDari(daftarKunci); },
     nonAktif: function (nilai) { return nilai ? "Ya" : "Tidak"; },
     sandiDiatur: function (waktu) { return teksWaktuLog(waktu); }
 };
@@ -265,7 +233,6 @@ var modulPengguna = buatModulDaftar({
         { kunci: "username", judul: "Nama Pengguna" },
         { kunci: "kontak", judul: "Email/No Handphone" },
         { kunci: "peran", judul: "Peran", tampil: function (p) { return peranPengguna[p.peran] ? peranPengguna[p.peran].label : ""; } },
-        { kunci: "pembukuan", judul: "Pembukuan", tampil: function (p) { return namaPembukuanDari(p.pembukuan); } },
         { kunci: "nonAktif", judul: "Non Aktif", tampil: function (p) { return p.nonAktif ? "Ya" : "Tidak"; } }
     ],
     // Pengaman akun (PRD 6.12): akun sendiri dan Finance Yayasan aktif terakhir tidak bisa dihapus
@@ -281,11 +248,9 @@ var modulPengguna = buatModulDaftar({
         });
         kolomSandiPengguna.value = "";   // kata sandi tidak pernah ditampilkan kembali
         aturKolomSandi(!!pengguna);
-        pilihPeranPengguna.value = pengguna ? (pengguna.peran || "") : "";
-        kotakPembukuanPengguna.forEach(function (kotak) {
-            kotak.checked = !!pengguna && Array.isArray(pengguna.pembukuan) && pengguna.pembukuan.indexOf(kotak.value) !== -1;
-        });
-        terapkanPeran();   // peran yang dipilih mengatur dan mengunci centang pembukuan
+        // Peran lama tidak ada di pilihan, jadi pilihan kosong: Finance Yayasan wajib memilih peran baru saat menyimpan
+        pilihPeranPengguna.value = pengguna && peranPengguna[pengguna.peran] && !peranPengguna[pengguna.peran].lama ? pengguna.peran : "";
+        terapkanPeran();
         kotakNonAktifPengguna.checked = pengguna ? !!pengguna.nonAktif : false;
         sembunyikanGalatPengguna();
     }
@@ -323,7 +288,6 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
     var sandi = kolomSandiPengguna.value;   // kata sandi sengaja tidak di-trim: spasi boleh jadi bagian sandi
     var daftar = bacaPengguna();
     var sedangMengubah = (modulPengguna.idDiubah !== null);
-    var pembukuan = Array.from(kotakPembukuanPengguna).filter(function (k) { return k.checked; }).map(function (k) { return k.value; });
 
     // Pemeriksaan satu per satu; berhenti di kesalahan pertama
     if (data.nama === "") {
@@ -364,13 +328,8 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         tampilkanGalatPengguna("peran", "Peran wajib dipilih.", pilihPeranPengguna);
         return;
     }
-    if (pembukuan.length === 0) {
-        tampilkanGalatPengguna("pembukuan", "Pilih minimal satu pembukuan.", kotakPembukuanPengguna[0]);
-        return;
-    }
 
     data.peran = pilihPeranPengguna.value;
-    data.pembukuan = pembukuan;
     data.nonAktif = kotakNonAktifPengguna.checked;
 
     // Pengaman akun (PRD 6.12): akun yang sedang dipakai tidak bisa dijadikan Non Aktif, dan harus tetap ada
@@ -414,6 +373,7 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         daftar.forEach(function (p) {
             if (p.id === modulPengguna.idDiubah) {
                 Object.assign(p, data);   // kata sandi lama tetap kalau kolom sandi dikosongkan
+                delete p.pembukuan;       // isian lama (Yayasan/Sekolah/Unit usaha), tidak dipakai lagi sejak J.28
             }
         });
     } else {
@@ -441,13 +401,9 @@ Object.keys(kolomPengguna).forEach(function (nama) {
     document.getElementById(kolomPengguna[nama]).addEventListener("input", function () { galatPengguna[nama].hidden = true; });
 });
 kolomSandiPengguna.addEventListener("input", function () { galatPengguna.sandi.hidden = true; });
-kotakPembukuanPengguna.forEach(function (k) {
-    k.addEventListener("change", function () { galatPengguna.pembukuan.hidden = true; });
-});
 
 // ---------- Halaman Penomoran ----------
-// Aturan penomoran untuk transaksi pembukuan Yayasan. Sekolah dan Unit usaha mengatur penomorannya
-// sendiri di dalam pembukuan masing-masing.
+// Aturan penomoran untuk transaksi (aplikasi hanya untuk pembukuan Yayasan, PRD 6.14).
 // Counter mulai dari 1 lagi menurut komponen yang dipakai (lihat periodeReset): tiap bulan kalau nomor memuat Bulan
 // atau Hari, tiap tahun kalau hanya memuat Tahun, dan tidak pernah kalau tidak memuat keduanya. Tanpa aturan ini,
 // nomor tanpa bulan (misalnya "JU-0001") akan terulang di bulan berikutnya dan bertabrakan dengan nomor lama.
@@ -571,9 +527,8 @@ var galatPenomoran = {
 };
 var komponenSaatIni = [];   // komponen yang sedang disusun di formulir: [{ jenis, nilai }]
 
-// Halaman ini khusus pembukuan Yayasan. Aturan penomoran Sekolah dan Unit usaha dibuat nanti
-// di dalam pembukuan masing-masing. Nilai ini tetap disimpan di tiap aturan supaya aturan lama
-// tetap jelas milik pembukuan mana.
+// Aplikasi hanya untuk pembukuan Yayasan (PRD 6.14). Nilai ini tetap disimpan di tiap aturan supaya
+// bentuk data aturan lama dan cadangan lama tetap sama.
 var PEMBUKUAN_PENOMORAN = "yayasan";
 
 // Isi pilihan tipe transaksi dan jenis komponen (sekali saja, daftarnya tetap). Mulai dari "Silakan Pilih" (PRD 5.3a).

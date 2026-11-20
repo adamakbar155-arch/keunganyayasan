@@ -140,7 +140,7 @@ el("form-akun-pertama").addEventListener("submit", function (k) {
         // Diperiksa lagi: selama mengacak, akun bisa saja sudah dibuat di jendela lain
         if (bacaPenggunaTersimpan().length > 0) { location.replace("login.html"); return; }
         var pengguna = { id: idAcak(), nama: nama, username: username, kontak: "", peran: "finance-yayasan",
-                         pembukuan: ["yayasan", "sekolah", "unit-usaha"], nonAktif: false, sandi: simpanan, wajibGantiSandi: false,
+                         nonAktif: false, sandi: simpanan, wajibGantiSandi: false,
                          sandiDiatur: waktuSekarangLogin() };
         if (!simpanDaftarPengguna([pengguna])) { tampilkanPesan("pesan-error-akun", "Gagal menyimpan. Penyimpanan browser penuh atau diblokir."); return; }
         masukKeAplikasi(pengguna);

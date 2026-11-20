@@ -31,7 +31,7 @@ function bacaPengaturan(kunci, bawaan) {
 // Simpan objek pengaturan, beri tahu hasilnya, dan catat di Log Aktivitas (referensiLog = nama bagian Preferensi).
 // Mengembalikan true kalau berhasil.
 function simpanPengaturan(kunci, data, pesanBerhasil, referensiLog) {
-    if (hanyaLihat()) { tampilkanNotifikasi("Peran Pengawas hanya bisa melihat data.", "peringatan"); return false; }   // PRD 5.8, umum/sesi.js
+    if (hanyaLihat()) { tampilkanNotifikasi("Peran Anda hanya bisa melihat data.", "peringatan"); return false; }   // PRD 5.8, umum/sesi.js
     try {
         localStorage.setItem(kunci, JSON.stringify(data));
     } catch (galat) {

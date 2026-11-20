@@ -37,7 +37,11 @@ const tungguMuatUlang = async () => { await tunggu(1500); for (let i = 0; i < 10
     catat("Klik Isi: konfirmasi muncul dulu", await evalJs("document.getElementById('dialog-konfirmasi').open && /REKAAN/.test(document.getElementById('isi-konfirmasi').textContent)"));
     await klik("#ya-konfirmasi");
     await tungguMuatUlang();
-    catat("Sesudah diisi halaman dimuat ulang dengan pesan berhasil", /Data contoh telah diisi/.test(await evalJs("document.getElementById('area-notifikasi').textContent")), await evalJs("document.getElementById('area-notifikasi').textContent"));
+    // Saat komputer sibuk, pengisian (foto kanvas, PDF) bisa lebih lama dari waktu tunggu awal: tunggu pesannya, paling lama 15 detik
+    let pesanIsi = "";
+    for (let i = 0; i < 75 && !/Data contoh telah diisi/.test(pesanIsi); i++) { try { pesanIsi = await evalJs("document.getElementById('area-notifikasi').textContent"); } catch (e) { /* sedang memuat ulang */ } if (!/Data contoh telah diisi/.test(pesanIsi)) { await tunggu(200); } }
+    await tungguMuatUlang();
+    catat("Sesudah diisi halaman dimuat ulang dengan pesan berhasil", /Data contoh telah diisi/.test(pesanIsi), pesanIsi);
     const isi = JSON.parse(await evalJs(`(function(){ var l=JSON.parse(localStorage.getItem('lampiranJurnal')||'{}'), foto=0, pdf=0;
       Object.keys(l).forEach(function(k){ Object.keys(l[k]).forEach(function(f){ if(/^data:image\\/jpeg/.test(l[k][f])) foto++; if(/^data:application\\/pdf/.test(l[k][f])) pdf++; }); });
       return JSON.stringify({foto:foto, pdf:pdf, donasi:JSON.parse(localStorage.getItem('daftarDonasi')).length, bayar:JSON.parse(localStorage.getItem('daftarPembayaran')).length}); })()`));

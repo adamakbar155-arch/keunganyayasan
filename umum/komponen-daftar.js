@@ -429,7 +429,7 @@ function buatModulDaftar(opsi) {
         // Hak akses (PRD 5.8, umum/sesi.js): Pengawas hanya melihat. Pengaman kedua di belakang tombol yang disembunyikan;
         // saat halaman baru dimuat (misalnya pengisian desain bawaan) ditolak tanpa pesan.
         if (hanyaLihat()) {
-            if (document.readyState === "complete") { tampilkanNotifikasi("Peran Pengawas hanya bisa melihat data.", "peringatan"); }
+            if (document.readyState === "complete") { tampilkanNotifikasi("Peran Anda hanya bisa melihat data.", "peringatan"); }
             return false;
         }
         try {

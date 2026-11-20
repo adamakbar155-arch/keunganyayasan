@@ -7,7 +7,7 @@
 const SKRIP = `(function () {
   try {
     var uji = { id: "u-uji", nama: "Pengguna", username: "pengguna-uji", kontak: "", peran: "finance-yayasan",
-                pembukuan: ["yayasan", "sekolah", "unit-usaha"], nonAktif: false, wajibGantiSandi: false,
+                nonAktif: false, wajibGantiSandi: false,
                 sandi: { garam: "00", hash: "00", iterasi: 1 } };
     var daftar;
     try { daftar = JSON.parse(localStorage.getItem("daftarPengguna") || "[]"); } catch (e) { daftar = null; }
@@ -18,7 +18,7 @@ const SKRIP = `(function () {
     // Sesi lama yang sudah ada (misalnya uji peran Pengawas) dibiarkan; kalau belum ada, masuk sebagai pengguna uji
     if (!sessionStorage.getItem("sesiMasuk")) {
       sessionStorage.setItem("sesiMasuk", JSON.stringify({ penggunaId: "u-uji", nama: "Pengguna", peran: "finance-yayasan",
-        pembukuan: ["yayasan", "sekolah", "unit-usaha"], terakhirAktif: Date.now(), baruMasuk: false }));
+        terakhirAktif: Date.now(), baruMasuk: false }));
     } else {
       var s = JSON.parse(sessionStorage.getItem("sesiMasuk")); s.terakhirAktif = Date.now();
       sessionStorage.setItem("sesiMasuk", JSON.stringify(s));

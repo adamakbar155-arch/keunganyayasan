@@ -48,7 +48,6 @@ umum/                     dipakai semua fitur
   tampilan-histori.js       cetakan HTML bersama halaman histori (Histori Bank, Histori Akun)
   komponen-histori.js       logika bersama halaman histori: Saldo Awal, saldo berjalan, Total, ceklis, ekspor CSV
   histori.css               gaya bersama halaman histori (juga baris atas Rekonsiliasi Bank)
-  bilah-atas.js             pilihan pembukuan di bilah atas
   sesi.js                   sesi masuk (dimuat paling awal; belum masuk/40 menit diam = ke login.html), hak akses dasar
   sesi-aplikasi.js, sesi.css menu pengguna (Ganti Kata Sandi, Keluar), keluar otomatis 40 menit, Log Masuk/Keluar, peran
   sandi.js                  mengacak dan mencocokkan kata sandi (PBKDF2), dipakai layar Masuk dan halaman Pengguna

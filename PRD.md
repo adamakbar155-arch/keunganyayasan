@@ -653,6 +653,46 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
   dan datanya tetap tersimpan. Tanggal tidak boleh sebelum bulan penyusutan terakhir aset itu. Membatalkan = menghapus data Lepas Aset.
 - **Belum termasuk:** Pindah Aset, Perubahan Aset Tetap, aset dari donasi (bersama donasi barang), Kategori Aset Tetap Pajak.
 
+### 6.14 Pengguna dan Akses Grup — disetujui 2026-11-20 (dari foto Accurate 2026-11-20, Temuan 50; menggantikan 4 peran di 1.3 dan 5.8)
+- **Satu pembukuan saja: Yayasan.** Pembukuan Sekolah dan Unit usaha dihilangkan, termasuk pilihan pembukuan di bilah atas dan centang Pembukuan
+  di formulir Pengguna (Temuan 48 tidak diperlukan lagi).
+- **Pengguna** (seperti Accurate): Nama Lengkap, Nama Pengguna (untuk masuk; tidak memakai email/HP), Email/No Handphone (kontak), kata sandi,
+  **Jenis Akses**: ● Operator / ○ Administrator, dan **Akses Grup** (untuk Operator). Keterangan di bawahnya: "Pengguna tipe Operator dapat
+  melihat dan membuka data. Hak menunya ditentukan melalui Akses Grup." Daftar: Nama, No Handphone, Email, Jenis Akses (tanpa kolom 2FA).
+  - **Administrator** = semua akses. Hanya Administrator yang membuka Pengguna, Akses Grup, Preferensi, Cadangan Data, dan Data Contoh.
+  - **Operator** = hanya menu yang dicentang di Akses Grup-nya. Operator tanpa Akses Grup hanya melihat Dashboard.
+  - Pengaman: akun yang sedang dipakai tidak bisa dihapus, dijadikan Non Aktif, atau diturunkan menjadi Operator; minimal satu Administrator aktif.
+- **Akses Grup** (menu baru di Pengaturan, seperti foto Accurate):
+  - Daftar: Nama Grup, Daftar Pengguna.
+  - Tab **Umum**: Nama Grup (wajib, unik), Pembatasan Akses (hanya "Mengikuti Pembatasan di Preferensi"; "Terbatas pada waktu" belum dibuat),
+    Daftar Pengguna (pilih beberapa Operator; satu pengguna hanya punya satu grup, jadi memilihnya di sini memindahkan dari grup lamanya).
+  - Tab **Hak Akses**: kiri daftar kelompok menu (Master Data, Buku Besar, Kas & Bank, Donasi, Aset Tetap, Laporan, Lainnya); kanan kotak Cari,
+    tombol **Salin Hak** (dari grup lain), dan tabel **Hak Akses | Aktif | Buat | Ubah | Hapus | Lihat** dengan centang "pilih semua" per kolom.
+    Tiap menu hanya menampilkan centang yang berlaku untuknya.
+  - Arti kolom (persis Accurate, keputusan pengguna): **Aktif** = menu tampil dan halamannya bisa dibuka; **Buat** = Data Baru dan menyimpan
+    data baru; **Ubah** = menyimpan perubahan data lama; **Hapus**; **Lihat** = melihat data yang dibuat pengguna lain (tanpa Lihat, Daftar
+    hanya berisi data buatan sendiri). Buat/Ubah/Hapus/Lihat hanya berlaku kalau Aktif dicentang.
+  - Menu dan centangnya:
+    - Master Data: Divisi, Program, Karyawan, Gaji/Tunjangan — Aktif, Buat, Ubah, Hapus, Lihat.
+    - Buku Besar: Akun Perkiraan, Jurnal Umum, Pencatatan Gaji, Anggaran, Transfer Anggaran — Aktif, Buat, Ubah, Hapus, Lihat;
+      Monitor Anggaran, Histori Akun, Log Aktifitas Jurnal — Aktif.
+    - Kas & Bank: Pembayaran, Penerimaan, Transfer Bank — Aktif, Buat, Ubah, Hapus, Lihat; Histori Bank — Aktif; Rekonsiliasi Bank — Aktif, Ubah.
+    - Donasi: Kategori Donasi, Donatur, Pencatatan Donasi, Target Donasi, Pemindahan Dana — Aktif, Buat, Ubah, Hapus, Lihat.
+    - Aset Tetap: Kategori Aset, Aset Tetap, Lepas Aset — Aktif, Buat, Ubah, Hapus, Lihat; Proses Penyusutan — Aktif, Buat, Hapus, Lihat.
+    - Laporan: Keuangan, Divisi & Program, Kas & Bank, Donasi, Buku Besar, Aset Tetap — Aktif; Laporan Tersimpan — Aktif, Buat, Hapus.
+      (Laporan selalu menghitung semua data, tidak dibatasi kolom Lihat.)
+    - Lainnya: Penomoran, Desain Cetakan, Transaksi Favorit — Aktif, Buat, Ubah, Hapus; Log Aktivitas — Aktif.
+  - Grup baru dibuat kosong (semua tidak dicentang); tidak ada grup bawaan (keputusan pengguna).
+- **Penerapan:** menu, kotak menu, tab, tombol Data Baru/Simpan/Hapus, dan pintasan keyboard mengikuti hak; penyimpanan juga ditolak di satu
+  tempat sebagai pengaman kedua (seperti Pengawas sekarang). Data baru menyimpan pembuatnya (id pengguna) untuk kolom Lihat; data lama tanpa
+  id pembuat dianggap buatan pengguna lain.
+- **Pengguna lama:** Finance Yayasan → Administrator. Pengawas, Finance Sekolah, dan Finance Unit usaha → Operator tanpa Akses Grup (hanya
+  Dashboard sampai Administrator memberi grup). Dicatat di Log Aktivitas.
+- **Lupa kata sandi Administrator:** memakai **kode pemulihan** yang ditampilkan sekali saat akun Administrator dibuat (disimpan sebagai
+  hash, seperti kata sandi). Di layar masuk ada "Lupa kata sandi?" untuk memasukkan nama pengguna + kode pemulihan, lalu membuat sandi baru.
+- Beberapa tab sekaligus: tidak ada peringatan (keputusan pengguna).
+- Batasan tetap sama (6.12): tanpa server, hak akses ini kunci di layar, bukan pengaman penuh.
+
 ### 6.13 Isi Data Contoh (keputusan pengguna 2026-11-20; untuk melihat laporan dan menguji sistem, juga untuk reviewer situs online)
 - Tombol **Isi Data Contoh** dan **Hapus Data Contoh** di Pengaturan, **Cadangan Data** (halaman ini hanya untuk Finance Yayasan).
 - **Hanya bisa dipakai saat aplikasi masih kosong** (belum ada transaksi, Divisi, Program, Donatur, atau Karyawan). Kalau sudah ada, ditolak dengan pesan,

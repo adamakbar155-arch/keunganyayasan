@@ -4,10 +4,11 @@
 //   - Menu pengguna (lingkaran inisial di kanan atas): nama, peran, Ganti Kata Sandi, Keluar
 //   - Keluar otomatis: 40 menit tanpa aktivitas = langsung keluar tanpa peringatan (keputusan pengguna 2026-11-09)
 //   - Log Aktivitas: Masuk dan Keluar
-//   - Hak akses peran: Pengawas hanya melihat; Pengguna/Preferensi/Cadangan hanya Finance Yayasan; pilihan pembukuan per peran
+//   - Hak akses peran: Pengawas hanya melihat; Pengguna/Preferensi/Cadangan hanya Finance Yayasan
 
 var sesiAktif = bacaSesi();   // umum/sesi.js
-var NAMA_PERAN_SESI = { "finance-yayasan": "Finance Yayasan", "finance-sekolah": "Finance Sekolah", "finance-unit-usaha": "Finance Unit usaha", "pengawas": "Pengawas" };
+// Finance Sekolah dan Finance Unit usaha = peran lama (pembukuannya dihapus di J.28), tetap diberi nama supaya akun lama terbaca
+var NAMA_PERAN_SESI = { "finance-yayasan": "Finance Yayasan", "finance-sekolah": "Finance Sekolah (peran lama)", "finance-unit-usaha": "Finance Unit usaha (peran lama)", "pengawas": "Pengawas" };
 
 // "Siti Aminah" -> "SA"; satu kata -> dua huruf pertama
 function inisialNama(nama) {
@@ -129,18 +130,8 @@ document.getElementById("form-ganti-sandi-app").addEventListener("submit", funct
 
 // ----- Hak akses peran (PRD 5.8) -----
 if (sesiAktif) {
-    // Pengawas: tombol yang mengubah data disembunyikan lewat kelas ini (umum/sesi.css)
+    // Selain Finance Yayasan: tombol yang mengubah data disembunyikan lewat kelas ini (umum/sesi.css)
     document.body.classList.toggle("hanya-lihat", hanyaLihat());
     // Pengguna, Preferensi, Cadangan Data hanya untuk Finance Yayasan (kotak menunya disembunyikan; bukaTab juga menolak)
     document.body.classList.toggle("bukan-finance-yayasan", sesiAktif.peran !== "finance-yayasan");
-    // Pilihan pembukuan di bilah atas: hanya yang diizinkan. Kalau yang aktif tidak diizinkan, pindah ke yang pertama diizinkan.
-    var KUNCI_PEMBUKUAN_NAMA = { "Yayasan": "yayasan", "Sekolah": "sekolah", "Unit usaha": "unit-usaha" };
-    var pilihanPembukuan = Array.prototype.slice.call(document.querySelectorAll(".pembukuan-pilihan"));
-    var boleh = pilihanPembukuan.filter(function (p) { return sesiAktif.pembukuan.indexOf(KUNCI_PEMBUKUAN_NAMA[p.dataset.nama]) !== -1; });
-    pilihanPembukuan.forEach(function (p) { p.closest("li").hidden = boleh.indexOf(p) === -1; });
-    var aktif = pilihanPembukuan.find(function (p) { return p.classList.contains("aktif"); });
-    if (boleh.length && boleh.indexOf(aktif) === -1) {
-        pilihanPembukuan.forEach(function (p) { p.classList.toggle("aktif", p === boleh[0]); });
-        document.getElementById("nama-pembukuan").textContent = boleh[0].dataset.nama;
-    }
 }

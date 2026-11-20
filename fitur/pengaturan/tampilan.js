@@ -86,20 +86,8 @@ pasangTampilan("isi-pengguna", /*html*/ `
                                     <label for="pg-peran">Peran <span class="wajib" aria-hidden="true">*</span></label>
                                     <div>
                                         <select id="pg-peran" aria-required="true"></select>
-                                        <p id="petunjuk-pg-peran" class="petunjuk">Peran menentukan pembukuan yang boleh dibuka dan apa yang boleh dilakukan.</p>
+                                        <p id="petunjuk-pg-peran" class="petunjuk">Peran menentukan apa yang boleh dilakukan.</p>
                                         <p id="galat-pg-peran" class="pesan-galat-kolom" role="alert" hidden></p>
-                                    </div>
-                                </div>
-
-                                <div class="baris-form">
-                                    <span class="label-kelompok" id="label-pg-pembukuan">Pembukuan yang boleh dibuka <span class="wajib" aria-hidden="true">*</span></span>
-                                    <div role="group" aria-labelledby="label-pg-pembukuan">
-                                        <ul class="fitur-daftar">
-                                            <li><label class="saklar"><input type="checkbox" name="pg-pembukuan" value="yayasan"> <span>Yayasan</span></label></li>
-                                            <li><label class="saklar"><input type="checkbox" name="pg-pembukuan" value="sekolah"> <span>Sekolah</span></label></li>
-                                            <li><label class="saklar"><input type="checkbox" name="pg-pembukuan" value="unit-usaha"> <span>Unit usaha</span></label></li>
-                                        </ul>
-                                        <p id="galat-pg-pembukuan" class="pesan-galat-kolom" role="alert" hidden></p>
                                     </div>
                                 </div>
 
