@@ -147,6 +147,43 @@ function bolehMenulisSekarang() {
     return ["buat", "ubah", "hapus"].some(function (j) { return bolehHakHalaman(halamanAktif, j); });
 }
 
+// ----- Lihat dan pembuat data (J.31 langkah 3) -----
+// Setiap data menyimpan pembuatnya (isian dibuatOlehId = id pengguna; dicatat otomatis oleh modul.simpan, umum/komponen-daftar.js).
+// Tanpa hak Lihat, Daftar hanya berisi data buatan sendiri. Data lama tanpa pembuat dianggap buatan pengguna lain (PRD 6.14).
+// Menu yang tidak punya centang Lihat (misalnya Penomoran) dan Administrator selalu melihat semua.
+function idPenggunaSaya() {
+    var s = bacaSesi();
+    return s && typeof s.penggunaId === "string" ? s.penggunaId : "";
+}
+// Penyaring untuk satu halaman: null = semua data boleh tampil, atau function (item) -> true kalau boleh.
+// Dihitung sekali per penyaringan (bukan per data), karena Daftar bisa berisi ribuan data.
+function penyaringLihat(kunci) {
+    if (adalahAdministrator()) { return null; }
+    if (!MENU_HAK[kunci] || MENU_HAK[kunci].hak.indexOf("lihat") === -1 || punyaHak(kunci, "lihat")) { return null; }
+    var saya = idPenggunaSaya();
+    return function (item) { return !!saya && !!item && item.dibuatOlehId === saya; };
+}
+function bolehLihatData(kunci, item) {
+    var saring = penyaringLihat(kunci);
+    return !saring || saring(item);
+}
+// Mencatat pembuat sebelum daftar disimpan: data baru (id belum ada di penyimpanan) diberi id pengguna yang sedang masuk;
+// data lama yang disusun ulang oleh halamannya (isian pembuat hilang) mendapat kembali pembuat lamanya.
+function tandaiPembuatData(daftarBaru, daftarLama) {
+    var lamaPerId = Object.create(null);
+    daftarLama.forEach(function (d) { if (d && typeof d.id === "string") { lamaPerId[d.id] = d; } });
+    var saya = idPenggunaSaya();
+    daftarBaru.forEach(function (d) {
+        if (!d || typeof d !== "object" || typeof d.id !== "string" || d.dibuatOlehId) { return; }
+        var lama = lamaPerId[d.id];
+        if (lama) {
+            if (lama.dibuatOlehId) { d.dibuatOlehId = lama.dibuatOlehId; }
+        } else if (saya) {
+            d.dibuatOlehId = saya;
+        }
+    });
+}
+
 // Nama kotak menu di popup (data-halaman) -> kunci menu. Laporan tidak punya kotak menu, jadi tidak ikut
 // (namanya juga bisa sama, misalnya "Aset Tetap").
 var KUNCI_MENU_DARI_NAMA = {};

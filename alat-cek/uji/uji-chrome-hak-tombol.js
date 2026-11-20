@@ -35,6 +35,7 @@ const daftar = (kunci) => evalJs("localStorage.getItem('" + kunci + "')").then(t
     await require("./bantu-sesi.js").masukChrome(kirim, "file:///" + halaman.replace(/\\/g, "/"));
     // Data rekaan. Grup Staf: Divisi hanya Buat; Program hanya Ubah + Hapus; Kategori Donasi Buat (menyimpan akun ikutan);
     // Laporan Keuangan + Laporan Tersimpan hanya Aktif; Rekonsiliasi Bank dan Desain Cetakan hanya Aktif; Jurnal Umum Buat.
+    // Divisi Lama dan Program Lama dibuat Operator itu sendiri (tanpa hak Lihat, data buatan orang lain tidak bisa dibuka; langkah 3).
     await evalJs(`localStorage.clear();
       localStorage.setItem("daftarAksesGrup", JSON.stringify([{ id: "ag-1", nama: "Staf", pembatasan: "preferensi", hak: {
         divisi: ["aktif", "buat"], program: ["aktif", "ubah", "hapus"], "kategori-donasi": ["aktif", "buat"], jurnal: ["aktif", "buat"],
@@ -42,8 +43,8 @@ const daftar = (kunci) => evalJs("localStorage.getItem('" + kunci + "')").then(t
       localStorage.setItem("daftarPengguna", JSON.stringify([
         { id: "u-staf", nama: "Staf Satu", username: "staf", kontak: "", jenisAkses: "operator", aksesGrupId: "ag-1", nonAktif: false, sandi: { garam: "00", hash: "00", iterasi: 1 } }
       ]));
-      localStorage.setItem("daftarDivisi", JSON.stringify([{ id: "d-lama", nama: "Divisi Lama", keterangan: "" }]));
-      localStorage.setItem("daftarProgram", JSON.stringify([{ id: "p-lama", nama: "Program Lama", divisiId: "d-lama", status: "aktif", keterangan: "" }]));
+      localStorage.setItem("daftarDivisi", JSON.stringify([{ id: "d-lama", nama: "Divisi Lama", keterangan: "", dibuatOlehId: "u-staf" }]));
+      localStorage.setItem("daftarProgram", JSON.stringify([{ id: "p-lama", nama: "Program Lama", divisiId: "d-lama", status: "aktif", keterangan: "", dibuatOlehId: "u-staf" }]));
       true`);
     await muatUlang();
     await masukSebagai("u-staf"); await muatUlang();

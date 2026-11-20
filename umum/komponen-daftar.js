@@ -338,6 +338,7 @@ function buatModulDaftar(opsi) {
 
     // Buka rincian satu data; tombol hijau atau tombol X membawa kembali ke daftar
     modul.bukaDetail = function (item) {
+        if (tolakLihat(item)) { return; }
         renderDetail(opsi.detail(item));
         tampilanDaftar.hidden = true;
         tampilanDetail.hidden = false;
@@ -449,6 +450,8 @@ function buatModulDaftar(opsi) {
             if (document.readyState === "complete") { tampilkanNotifikasi("Akses Grup Anda tidak mengizinkan menyimpan di sini. Hubungi Administrator.", "peringatan"); }
             return false;
         }
+        // Pembuat tiap data dicatat (untuk hak Lihat, umum/hak-akses.js); data lama tetap dengan pembuat lamanya
+        if (Array.isArray(daftar)) { tandaiPembuatData(daftar, modul.ambil()); }
         try {
             localStorage.setItem(opsi.kunci, JSON.stringify(daftar));
             return true;
@@ -654,8 +657,16 @@ function buatModulDaftar(opsi) {
         });
     };
 
+    // Data buatan pengguna lain tanpa hak Lihat ditolak, juga kalau dibuka dari halaman lain (misalnya klik baris laporan)
+    function tolakLihat(item) {
+        if (bolehLihatData(opsi.id, item)) { return false; }
+        tampilkanNotifikasi("Data ini dibuat pengguna lain. Akses Grup Anda tidak mengizinkan melihatnya. Hubungi Administrator.", "peringatan");
+        return true;
+    }
+
     modul.bukaUbah = function (item) {
         if (opsi.hanyaDaftar || !item) { return; }   // halaman tanpa formulir (misalnya Log Aktivitas) tidak bisa diubah
+        if (tolakLihat(item)) { return; }
         bukaTabDokumen(item.id, item);
     };
 
@@ -745,9 +756,12 @@ function buatModulDaftar(opsi) {
     // ----- Filter -----
     // Isi pilihan tiap filter dari nilai-nilai yang ada di data, tanpa menghilangkan pilihan yang sedang dipakai.
     // Pilihan pertama selalu "Judul: Semua" (tanpa penyaringan).
-    // Data yang boleh tampil di Daftar (semua data, kecuali halaman menyaringnya lewat opsi.tampilHanya)
+    // Data yang boleh tampil di Daftar (semua data, kecuali halaman menyaringnya lewat opsi.tampilHanya). Tanpa hak Lihat
+    // (Akses Grup, umum/hak-akses.js) hanya data buatan sendiri; cari, filter, unduh, dan cetak Daftar ikut tersaring.
     function dataDaftar() {
-        return opsi.tampilHanya ? modul.ambil().filter(opsi.tampilHanya) : modul.ambil();
+        var data = opsi.tampilHanya ? modul.ambil().filter(opsi.tampilHanya) : modul.ambil();
+        var saring = penyaringLihat(opsi.id);
+        return saring ? data.filter(saring) : data;
     }
 
     function isiFilter() {
