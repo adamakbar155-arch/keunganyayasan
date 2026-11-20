@@ -88,3 +88,7 @@
 .kartu-halaman [hidden] {
     display: none;
 }
+
+/* Kartu Data Contoh di bawah dua kartu Cadangan (PRD 6.13) */
+.kolom-kartu { display: grid; gap: 20px; align-content: start; }
+.kartu-data-contoh .tombol { margin-right: 8px; }

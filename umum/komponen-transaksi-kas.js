@@ -419,6 +419,12 @@ function buatTransaksiKas(k) {
         // Mengganti baris kerja (misalnya Pembayaran gaji dari Proses > Gaji) lalu menggambar ulang tabel
         aturBaris: function (daftarBaris) { baris = daftarBaris; gambarRincian(); },
         gambarRincian: gambarRincian,
-        bukaBaru: function () { modul.bukaDariMenu(); }
+        bukaBaru: function () { modul.bukaDariMenu(); },
+        // Isi jurnal otomatis sebuah transaksi tersimpan (aturan yang sama dengan tombol Simpan). Dipakai Isi Data Contoh
+        // (fitur/data-contoh). Kas/Bank-nya dicari dari kasId; null kalau akunnya tidak ada.
+        isiJurnalData: function (trx) {
+            var kas = bacaDaftarAkun().find(function (a) { return a.id === trx.kasId; });
+            return kas ? isiJurnal(trx, kas) : null;
+        }
     };
 }

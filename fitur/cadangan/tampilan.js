@@ -45,6 +45,8 @@ pasangTampilan("isi-cadangan", /*html*/ `
                             </button>
                         </section>
 
+                        <!-- Kolom kanan: Pulihkan, lalu Data Contoh di bawahnya -->
+                        <div class="kolom-kartu">
                         <!-- ===== Kartu 2: Pulihkan ===== -->
                         <section class="kartu-halaman" aria-labelledby="judul-pulihkan">
                             <h3 id="judul-pulihkan">Pulihkan dari Cadangan</h3>
@@ -66,6 +68,16 @@ pasangTampilan("isi-cadangan", /*html*/ `
                                 <button type="button" id="tombol-pulihkan" class="tombol tombol-bahaya">Pulihkan (Ganti Semua Data)</button>
                             </div>
                         </section>
+                        <!-- ===== Data Contoh (PRD 6.13; logika fitur/data-contoh/data-contoh.js) ===== -->
+                        <section class="kartu-halaman kartu-data-contoh" aria-labelledby="judul-data-contoh">
+                            <h3 id="judul-data-contoh">Data Contoh</h3>
+                            <p>Mengisi aplikasi yang <strong>masih kosong</strong> dengan data <strong>rekaan</strong> 3 bulan terakhir (donasi, pembayaran, gaji,
+                               transfer, aset, anggaran, dan lainnya), supaya Dashboard dan laporan bisa dicoba. Bukan data asli yayasan.</p>
+                            <p class="info-cadangan" id="status-data-contoh"></p>
+                            <button type="button" id="tombol-isi-contoh" class="tombol tombol-utama">Isi Data Contoh</button>
+                            <button type="button" id="tombol-hapus-contoh" class="tombol tombol-bahaya" hidden>Hapus Data Contoh</button>
+                        </section>
+                        </div>
                     </div>
                 </div>
             </section>

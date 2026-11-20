@@ -653,6 +653,18 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
   dan datanya tetap tersimpan. Tanggal tidak boleh sebelum bulan penyusutan terakhir aset itu. Membatalkan = menghapus data Lepas Aset.
 - **Belum termasuk:** Pindah Aset, Perubahan Aset Tetap, aset dari donasi (bersama donasi barang), Kategori Aset Tetap Pajak.
 
+### 6.13 Isi Data Contoh (keputusan pengguna 2026-11-20; untuk melihat laporan dan menguji sistem, juga untuk reviewer situs online)
+- Tombol **Isi Data Contoh** dan **Hapus Data Contoh** di Pengaturan, **Cadangan Data** (halaman ini hanya untuk Finance Yayasan).
+- **Hanya bisa dipakai saat aplikasi masih kosong** (belum ada transaksi, Divisi, Program, Donatur, atau Karyawan). Kalau sudah ada, ditolak dengan pesan,
+  supaya data asli tidak tercampur atau tertimpa.
+- Isi: **data rekaan** (bukan data asli yayasan) untuk **3 bulan terakhir sampai hari ini**, saling nyambung: data yayasan, bagan akun, aturan penomoran,
+  Divisi, Program, Karyawan, Donatur, Kategori Donasi, Pencatatan Donasi, Pembayaran (termasuk gaji lewat Pencatatan Gaji), Penerimaan, Transfer Bank,
+  Pemindahan Dana, Jurnal Umum, Anggaran, Aset Tetap dan Proses Penyusutan, Target Donasi, serta beberapa lampiran foto nota rekaan dan transaksi tanpa bukti.
+- Semua transaksi berjurnal dibuat lewat **aturan jurnal yang sama** dengan formulirnya, jadi laporan (Neraca seimbang, Arus Kas, Bukti Pengeluaran, cek
+  kecocokan Aset) sekaligus menguji sistem. Saldo Kas/Bank tidak pernah minus.
+- **Hapus Data Contoh** (dengan konfirmasi): mengembalikan aplikasi kosong, termasuk data yang ditambahkan sesudahnya. Akun pengguna tetap.
+  Hanya bisa dipakai kalau data contoh pernah diisi. Isi dan hapus tercatat di Log Aktivitas.
+
 ### 6.12 Masuk, Keluar, dan hak akses (keputusan pengguna 2026-11-09; layar Masuk = login.html yang sudah ada)
 - **Layar Masuk** memakai login.html yang sudah ada (panel biru, Nama pengguna, Kata sandi, tombol mata, peringatan Caps Lock).
   Belum masuk atau sesi habis: aplikasi langsung pindah ke layar Masuk.
@@ -1066,3 +1078,4 @@ dan gaya yang sudah disetujui; semuanya menunggu koreksi pengguna.
 | 2026-11-09 | 6.10 | J.19: Tab Dokumen bagian 3. Penomoran (komponen) dan Pemindahan Dana (Jenis, Tujuan) ikut diingat per tab; Ambil favorit tidak lagi menimpa Data Baru yang belum disimpan; Tambah ke Favorit menolak tab yang belum disimpan. Formulir lain di daftar J.19 sudah berisi kolom biasa saja, jadi sudah ikut diingat. |
 | 2026-11-09 | 6.11 | Pintasan keyboard (permintaan pengguna): Ctrl+S, Alt+N, Alt+D, Alt+W, Ctrl+P, Alt+L, Esc, F1. Hapus lewat keyboard sengaja tidak dibuat. |
 | 2026-11-09 | 6.12, 5.8 | Masuk/Keluar memakai login.html yang sudah ada: akun Finance Yayasan pertama, wajib ganti sandi, keluar otomatis 40 menit tanpa peringatan (keputusan pengguna), hak akses peran sekaligus. |
+| 2026-11-20 | 6.13 | Isi Data Contoh / Hapus Data Contoh di Cadangan Data: hanya saat kosong, 3 bulan terakhir, data rekaan lengkap lewat aturan jurnal yang sama (keputusan pengguna). |
