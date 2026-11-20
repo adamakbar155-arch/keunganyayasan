@@ -85,6 +85,7 @@ function aturPopupFavorit(judul, info, ubah, nama) {
 }
 
 document.getElementById("menu-tambah-favorit").addEventListener("click", function () {
+    if (!periksaHak("favorit", "buat")) { return; }
     var tipe = tipeMenuLainnya, asal = TIPE_FAVORIT[tipe]();
     if (asal.modul.idDiubah === null) {
         tampilkanNotifikasi("Simpan transaksi dulu, lalu buka dari Daftar untuk dijadikan favorit.", "peringatan");
@@ -126,6 +127,8 @@ function galatFavorit(pesan) {
 
 function simpanFavorit() {
     if (!favoritDibuka) { return; }
+    // Hak Akses Grup menu Transaksi Favorit: menambah = Buat, mengganti nama = Ubah (umum/hak-akses.js)
+    if (!periksaHak("favorit", favoritDibuka.lama ? "ubah" : "buat")) { return; }
     var nama = kolomNamaFavorit.value.trim();
     var lama = favoritDibuka.lama;
     var tipe = lama ? teksAman(lama.tipe) : favoritDibuka.baru.tipe;

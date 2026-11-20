@@ -73,9 +73,6 @@ function adalahAdministrator() {
     var p = penggunaSesi();
     return !!p && jenisAksesPengguna(p) === "administrator";
 }
-// Hanya Administrator yang boleh mengubah data. Operator sementara hanya melihat, sampai hak Akses Grup berlaku (J.31).
-// Belum masuk atau akun tidak dikenal juga hanya melihat (aman).
-function hanyaLihat() { return !adalahAdministrator(); }
 // Halaman yang hanya boleh dibuka Administrator (PRD 6.14): id tab "pengguna", "akses-grup", "preferensi", "cadangan"
 var HALAMAN_ADMINISTRATOR = ["pengguna", "akses-grup", "preferensi", "cadangan"];
 // Halaman lain untuk Operator mengikuti centang Aktif di Akses Grup-nya (bolehHalamanOperator, umum/hak-akses.js).

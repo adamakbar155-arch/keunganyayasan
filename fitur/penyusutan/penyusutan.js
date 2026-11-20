@@ -165,7 +165,8 @@ document.getElementById("form-penyusutan").addEventListener("submit", function (
 
 saatTabDibuka.penyusutan = function () {
     modulPenyusutan.gambarTabel();
-    if (!modulPenyusutan.idDiubah) { modulPenyusutan.bukaBaru(); }
+    // Tanpa hak Buat (Akses Grup, umum/hak-akses.js) tetap di Daftar
+    if (!modulPenyusutan.idDiubah && bolehHakHalaman("penyusutan", "buat")) { modulPenyusutan.bukaBaru(); }
 };
 
 function bukaPenyusutanBaru() { modulPenyusutan.bukaDariMenu(); }

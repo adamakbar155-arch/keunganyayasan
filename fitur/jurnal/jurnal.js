@@ -560,6 +560,8 @@ function bacaTandaRekonsiliasi() {
     return bacaDaftarTersimpan(KUNCI_REKONSILIASI);
 }
 function simpanTandaRekonsiliasi(daftar) {
+    // Hak Akses Grup (umum/hak-akses.js): menandai dan membatalkan tanda butuh hak Ubah di Rekonsiliasi Bank (juga dari Histori Bank)
+    if (!periksaHak("rekonsiliasi-bank", "ubah")) { return false; }
     try { localStorage.setItem(KUNCI_REKONSILIASI, JSON.stringify(daftar)); return true; }
     catch (galat) { tampilkanNotifikasi("Tanda rekonsiliasi gagal disimpan (penyimpanan browser penuh atau diblokir).", "galat"); return false; }
 }

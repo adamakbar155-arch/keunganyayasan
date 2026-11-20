@@ -132,11 +132,11 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Pemindahan dicatat di Log Aktivitas", await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return /Peran lama diganti Jenis Akses \\(4 pengguna\\)/.test(l.referensi);})"));
 
     // ---- 4. Operator (dulu Pengawas): hanya melihat, sampai hak Akses Grup berlaku (J.31) ----
-    const pengawas = JSON.parse(await evalJs(`JSON.stringify({kelas: document.body.classList.contains('hanya-lihat'),
+    const pengawas = JSON.parse(await evalJs(`JSON.stringify({kelas: /(^| )buat:divisi( |$)/.test(document.body.dataset.tanpaHak || ''),
       simpanTerlihat: [...document.querySelectorAll('.tombol-simpan-besar')].some(function(b){return b.getClientRects().length>0;}),
       kotakPengguna: (function(){ var k=document.querySelector('.kotak-menu[data-halaman="Pengguna"]'); return getComputedStyle(k).display; })(),
       simpan: modulDivisi.simpan([{id:'x',nama:'Coba'}]), divisi: localStorage.getItem('daftarDivisi')})`).catch(() => "{}"));
-    catat("Operator: kelas hanya-lihat, tombol Simpan tidak terlihat, penyimpanan ditolak (pengaman kedua)", pengawas.kelas && !pengawas.simpanTerlihat && pengawas.simpan === false && pengawas.divisi === null, JSON.stringify(pengawas));
+    catat("Operator tanpa grup: tanpa hak Buat (data-tanpa-hak), tombol Simpan tidak terlihat, penyimpanan ditolak (pengaman kedua)", pengawas.kelas && !pengawas.simpanTerlihat && pengawas.simpan === false && pengawas.divisi === null, JSON.stringify(pengawas));
     catat("Operator: kotak Pengguna tidak tampil di Pengaturan; menu tanpa Buat Kode Pemulihan", pengawas.kotakPengguna === "none" && await evalJs("document.getElementById('menu-kode-pemulihan').hidden && document.getElementById('menu-pengguna-peran').textContent==='Operator'"), pengawas.kotakPengguna);
     await evalJs("document.getElementById('area-notifikasi').textContent=''; bukaTab('preferensi'); true"); await tunggu(150);
     catat("Operator membuka Preferensi lewat kode: ditolak 'hanya untuk Administrator'", /hanya untuk Administrator/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && await evalJs("document.getElementById('isi-preferensi').hidden"));
@@ -171,8 +171,8 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     // ---- 6. Akun lama Finance Sekolah, sekarang Operator: tetap bisa masuk, hanya melihat ----
     await masuk("rina", "awal-1234");
     await tungguHalaman(/index\.html$/);
-    const sekolah = JSON.parse(await evalJs("JSON.stringify({pilihan: !!document.querySelector('.pembukuan'), lihat: document.body.classList.contains('hanya-lihat'), kelas: document.body.classList.contains('bukan-administrator'), peran: document.getElementById('menu-pengguna-peran').textContent})"));
-    catat("Akun lama Finance Sekolah: Operator, hanya melihat, menu Pengguna/Preferensi/Cadangan tersembunyi", !sekolah.pilihan && sekolah.lihat && sekolah.kelas && sekolah.peran === "Operator", JSON.stringify(sekolah));
+    const sekolah = JSON.parse(await evalJs("JSON.stringify({pilihan: !!document.querySelector('.pembukuan'), lihat: /(^| )ubah:divisi( |$)/.test(document.body.dataset.tanpaHak || ''), kelas: document.body.classList.contains('bukan-administrator'), peran: document.getElementById('menu-pengguna-peran').textContent})"));
+    catat("Akun lama Finance Sekolah: Operator tanpa hak Ubah, menu Pengguna/Preferensi/Cadangan tersembunyi", !sekolah.pilihan && sekolah.lihat && sekolah.kelas && sekolah.peran === "Operator", JSON.stringify(sekolah));
     await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
 
     // ---- 6b. Lupa kata sandi dengan kode pemulihan (khusus Administrator) ----

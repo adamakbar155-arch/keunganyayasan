@@ -27,17 +27,24 @@ button.avatar:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
                   font-family: Consolas, "Courier New", monospace; font-size: 1.25rem; font-weight: 700; letter-spacing: 2px;
                   text-align: center; color: #0b2a5b; user-select: all; overflow-wrap: anywhere; }
 
-/* ----- Operator: hanya melihat (sementara sampai hak Akses Grup berlaku, J.31). Tombol yang mengubah data tidak ditampilkan. ----- */
-body.hanya-lihat .tombol-simpan-besar,
-body.hanya-lihat .tombol-hapus-besar,
-body.hanya-lihat [data-aksi="hapus"],
-body.hanya-lihat [data-alat="baru"],
-body.hanya-lihat [data-favorit-ambil],
-body.hanya-lihat [data-favorit-lain],
-body.hanya-lihat #tombol-tambah-lampiran,
-body.hanya-lihat #daftar-lampiran .tombol-garis-bahaya,
-body.hanya-lihat #lap-simpan,
-body.hanya-lihat #ec-simpan { display: none !important; }
+/* ----- Operator: tombol Buat / Ubah / Hapus mengikuti Akses Grup (terapkanHakMenu, umum/hak-akses.js) -----
+   Tiap halaman <section id="isi-KUNCI"> berkelas tanpa-buat / tanpa-ubah / tanpa-hapus; data-mode = formulir Data Baru ("baru") atau
+   data lama ("ubah"), diisi umum/komponen-daftar.js. <body data-tanpa-hak="jenis:kunci ..."> untuk tombol di halaman lain.
+   Ini hanya tampilan; penolakan sebenarnya ada di kode (periksaHak, bolehMenulisSekarang). */
+.tanpa-buat [data-alat="baru"],
+.tanpa-buat .modul-tab[data-kunci="baru"],
+.tanpa-buat [data-favorit-ambil],
+.tanpa-buat[data-mode="baru"] .tombol-simpan-besar,
+.tanpa-ubah[data-mode="ubah"] .tombol-simpan-besar,
+.tanpa-hapus [data-aksi="hapus"],
+#isi-rekonsiliasi-bank.tanpa-ubah #rekonsiliasi-daftar .tombol,
+body[data-tanpa-hak~="buat:laporan-tersimpan"] #lap-simpan,
+body[data-tanpa-hak~="buat:laporan-tersimpan"] #lap-impor,
+body[data-tanpa-hak~="hapus:laporan-tersimpan"] .lap-tersimpan-hapus,
+body[data-tanpa-hak~="ubah:cetakan"] #ec-simpan,
+body[data-tanpa-hak~="buat:favorit"] #menu-tambah-favorit,
+body[data-tanpa-hak~="aktif:favorit"] [data-favorit-ambil],
+body[data-tanpa-hak~="aktif:favorit"] [data-favorit-lain] { display: none !important; }
 
 /* ----- Pengguna, Akses Grup, Preferensi, Cadangan Data hanya untuk Administrator (PRD 6.14) ----- */
 body.bukan-administrator .kotak-menu[data-halaman="Pengguna"],

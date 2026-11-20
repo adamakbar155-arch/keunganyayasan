@@ -46,7 +46,9 @@ function bacaLaporanTersimpan() {
     return bacaDaftarTersimpan(KUNCI_LAPORAN_TERSIMPAN).map(laporanTersimpanAman).filter(Boolean);
 }
 
-function simpanDaftarLaporanTersimpan(daftar) {
+// jenisHak: "buat" (Simpan Laporan, Impor) atau "hapus" (tombol x). Hak Akses Grup menu Laporan Tersimpan (umum/hak-akses.js).
+function simpanDaftarLaporanTersimpan(daftar, jenisHak) {
+    if (!periksaHak("laporan-tersimpan", jenisHak)) { return false; }
     try {
         localStorage.setItem(KUNCI_LAPORAN_TERSIMPAN, JSON.stringify(daftar));
         return true;
@@ -72,7 +74,7 @@ function kelompokLaporanTersimpan() {
 
 function hapusLaporanTersimpan(d) {
     tanyaKonfirmasi({ pesan: "Apakah Anda yakin ingin menghapus laporan tersimpan ini?", nama: d.nama, labelYa: "Ya, Hapus" }, function () {
-        if (simpanDaftarLaporanTersimpan(bacaLaporanTersimpan().filter(function (x) { return x.id !== d.id; }))) {
+        if (simpanDaftarLaporanTersimpan(bacaLaporanTersimpan().filter(function (x) { return x.id !== d.id; }), "hapus")) {
             catatLog({ tindakan: "Hapus", tipe: "Laporan Tersimpan", referensi: d.nama });
             tampilkanNotifikasi("Laporan tersimpan telah dihapus");
             gambarMenuLaporan();
@@ -82,7 +84,7 @@ function hapusLaporanTersimpan(d) {
 
 // ----- Simpan dari kertas hasil laporan -----
 document.getElementById("lap-simpan").addEventListener("click", function () {
-    if (!kertasLaporanAktif) { return; }
+    if (!kertasLaporanAktif || !periksaHak("laporan-tersimpan", "buat")) { return; }
     kolomNamaSimpanLaporan.value = kertasLaporanAktif.lap.nama;
     galatSimpanLaporan.hidden = true;
     dialogSimpanLaporan.showModal();
@@ -102,7 +104,7 @@ function simpanLaporanBaru() {
     }
     daftar.push({ id: buatId("lt"), nama: nama, laporanId: kertasLaporanAktif.lap.id, param: kertasLaporanAktif.param,
                   modifikasi: kertasLaporanAktif.modifikasi, dibuatPada: waktuSekarang() });
-    if (simpanDaftarLaporanTersimpan(daftar)) {
+    if (simpanDaftarLaporanTersimpan(daftar, "buat")) {
         catatLog({ tindakan: "Buat", tipe: "Laporan Tersimpan", referensi: nama });
         dialogSimpanLaporan.close();
         tampilkanNotifikasi("Laporan telah tersimpan di Laporan Tersimpan");
@@ -125,7 +127,9 @@ document.getElementById("lap-ekspor").addEventListener("click", function () {
     tampilkanNotifikasi("Laporan tersimpan telah diekspor");
 });
 var kolomImporLaporan = document.getElementById("lap-impor-berkas");
-document.getElementById("lap-impor").addEventListener("click", function () { kolomImporLaporan.click(); });
+document.getElementById("lap-impor").addEventListener("click", function () {
+    if (periksaHak("laporan-tersimpan", "buat")) { kolomImporLaporan.click(); }
+});
 kolomImporLaporan.addEventListener("change", function () {
     var berkas = kolomImporLaporan.files[0];
     kolomImporLaporan.value = "";   // berkas yang sama bisa dipilih lagi
@@ -152,7 +156,8 @@ function imporLaporanTersimpan(teks) {
         daftar.push(aman);
         masuk++;
     });
-    if (masuk && simpanDaftarLaporanTersimpan(daftar)) { catatLog({ tindakan: "Buat", tipe: "Laporan Tersimpan", referensi: "Impor " + masuk + " laporan" }); }
+    if (masuk && !simpanDaftarLaporanTersimpan(daftar, "buat")) { return; }
+    if (masuk) { catatLog({ tindakan: "Buat", tipe: "Laporan Tersimpan", referensi: "Impor " + masuk + " laporan" }); }
     tampilkanNotifikasi(masuk + " dari " + isi.length + " laporan diimpor.", masuk ? undefined : "peringatan");
     gambarMenuLaporan();
 }

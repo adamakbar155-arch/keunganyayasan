@@ -90,6 +90,22 @@ function unduhCsv(namaBerkas, barisBaris) {
 // Modul menurut id halamannya ("bayar" untuk <section id="isi-bayar">). Dipakai pintasan keyboard (umum/pintasan.js).
 var modulPerHalaman = Object.create(null);
 
+// ---------- Hak Akses Grup untuk tombol Simpan (PRD 6.14, J.31) ----------
+// Satu penjaga untuk SEMUA formulir halaman berdaftar: sebelum kode simpan halaman mana pun berjalan (tahap "capture"),
+// Data Baru butuh hak Buat dan data lama butuh hak Ubah. Berlaku juga untuk Ctrl+S dan tombol Cetak yang ikut menyimpan
+// (keduanya menekan tombol Simpan / requestSubmit). Hak dan pesannya: umum/hak-akses.js.
+document.addEventListener("submit", function (k) {
+    var form = k.target;
+    if (!form || !form.closest || !form.closest(".modul-form")) { return; }
+    var seksi = form.closest("section.isi-tab[id^='isi-']");
+    var modul = seksi ? modulPerHalaman[seksi.id.slice(4)] : null;
+    if (!modul) { return; }
+    var jenis = modul.idDiubah === null ? "buat" : "ubah";
+    if (periksaHak(seksi.id.slice(4), jenis)) { return; }
+    k.preventDefault();
+    k.stopImmediatePropagation();   // kode simpan halaman tidak dijalankan
+}, true);
+
 function buatModulDaftar(opsi) {
     var seksi = document.getElementById("isi-" + opsi.id);
     var tampilanForm = seksi.querySelector(".modul-form");
@@ -426,10 +442,11 @@ function buatModulDaftar(opsi) {
 
     // Simpan seluruh daftar. Mengembalikan true kalau berhasil.
     modul.simpan = function (daftar) {
-        // Hak akses (PRD 6.14, umum/sesi.js): selain Administrator hanya melihat (sampai J.31). Pengaman kedua di belakang tombol yang disembunyikan;
-        // saat halaman baru dimuat (misalnya pengisian desain bawaan) ditolak tanpa pesan.
-        if (hanyaLihat()) {
-            if (document.readyState === "complete") { tampilkanNotifikasi("Peran Anda hanya bisa melihat data.", "peringatan"); }
+        // Hak Akses Grup (PRD 6.14, umum/hak-akses.js): pengaman kedua di belakang tombol yang disembunyikan. Selain Administrator,
+        // menyimpan hanya boleh dari halaman yang punya hak Buat/Ubah/Hapus. Saat halaman baru dimuat (misalnya pengisian desain
+        // bawaan) ditolak tanpa pesan.
+        if (!bolehMenulisSekarang()) {
+            if (document.readyState === "complete") { tampilkanNotifikasi("Akses Grup Anda tidak mengizinkan menyimpan di sini. Hubungi Administrator.", "peringatan"); }
             return false;
         }
         try {
@@ -495,6 +512,7 @@ function buatModulDaftar(opsi) {
             tombolTutup.type = "button";
             tombolTutup.className = "tab-tutup";
             tombolTutup.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';   // ikon tetap
+            t.el.dataset.kunci = t.kunci === "baru" ? "baru" : "data";   // tab Data Baru disembunyikan tanpa hak Buat (umum/sesi.css)
             tombolJudul.addEventListener("click", function () { aktifkanTab(t); });
             tombolTutup.addEventListener("click", function () { tutupTab(t); });
             t.el.appendChild(tombolJudul);
@@ -582,6 +600,8 @@ function buatModulDaftar(opsi) {
         if (tampilanDetail) { tampilanDetail.hidden = true; }   // berpindah tampilan menutup rincian
         tampilanDaftar.hidden = form && !!tampilanForm;
         tabDokumen.forEach(function (t) { t.el.classList.toggle("aktif", form && t === tabAktif); });
+        // Formulir Data Baru atau data lama: tombol Simpan mengikuti hak Buat atau Ubah (umum/sesi.css)
+        seksi.dataset.mode = modul.idDiubah === null ? "baru" : "ubah";
         // Tombol yang hanya relevan saat mengubah data (misalnya Hapus)
         seksi.querySelectorAll("[data-hanya-ubah]").forEach(function (el) {
             el.hidden = (modul.idDiubah === null);
@@ -591,6 +611,7 @@ function buatModulDaftar(opsi) {
     // Tab Data Baru: pindah ke tab yang ada (isinya yang belum disimpan tetap), atau buat baru
     modul.bukaBaru = function () {
         if (opsi.hanyaDaftar) { return; }
+        if (!periksaHak(opsi.id, "buat")) { return; }   // Hak Akses Grup: Data Baru butuh hak Buat (juga pintasan Alt+N)
         var ada = tabDokumen.find(function (t) { return t.kunci === "baru"; });
         // Data Baru yang belum diisi apa pun dikosongkan ulang (misalnya tanggal kembali ke hari ini)
         if (ada && ada === tabAktif && !tabDiubah(ada)) {
@@ -607,6 +628,7 @@ function buatModulDaftar(opsi) {
     // (misalnya Proses > Gaji membuka Pembayaran). Kalau Data Baru masih berisi isian yang belum disimpan, ditanya dulu
     // dengan peringatan yang sama seperti tombol x; Batal = tidak terjadi apa-apa.
     modul.bukaBaruKosong = function (lanjut) {
+        if (!periksaHak(opsi.id, "buat")) { return; }   // juga dari Transaksi Favorit dan halaman lain yang mengisi Data Baru
         var ada = tabDokumen.find(function (t) { return t.kunci === "baru"; });
         function kosongkan() {
             if (ada) { buangTab(ada); }
@@ -638,8 +660,15 @@ function buatModulDaftar(opsi) {
     };
 
     // Dipanggil dari menu (Master Data): buka tab modul, langsung ke formulir kosong
+    // Tanpa hak Buat (Akses Grup): langsung ke Daftar, bukan formulir kosong
     modul.bukaDariMenu = function () {
         bukaTab(opsi.id);
+        if (!bolehBukaHalaman(opsi.id)) { return; }   // halaman ditolak (bukaTab sudah memberi pesan)
+        if (!opsi.hanyaDaftar && !bolehHakHalaman(opsi.id, "buat")) {
+            modul.gambarTabel();
+            modul.tampilkan("daftar");
+            return;
+        }
         modul.bukaBaru();
     };
 
@@ -674,6 +703,7 @@ function buatModulDaftar(opsi) {
     };
 
     modul.hapus = function (item) {
+        if (!periksaHak(opsi.id, "hapus")) { return; }   // Hak Akses Grup: Hapus
         // Halaman boleh menolak penghapusan lewat opsi.alasanTolakHapus
         // (misalnya divisi yang masih dipakai program). Fungsinya mengembalikan alasan, atau "" kalau boleh.
         if (opsi.alasanTolakHapus) {
@@ -871,7 +901,8 @@ function buatModulDaftar(opsi) {
         if (tampilanForm.hidden) {
             // Sedang di daftar -> kembali ke tab yang terakhir dibuka; tanpa tab, buka Data Baru
             var t = tabAktif || tabDokumen[0];
-            if (t) { aktifkanTab(t); } else { modul.bukaBaru(); }
+            // Tanpa hak Buat (Akses Grup) dan tanpa tab: tetap di Daftar
+            if (t) { aktifkanTab(t); } else if (bolehHakHalaman(opsi.id, "buat")) { modul.bukaBaru(); }
         } else {
             modul.gambarTabel();
             modul.tampilkan("daftar");  // sedang di formulir -> ke daftar

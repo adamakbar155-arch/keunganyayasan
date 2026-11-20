@@ -187,6 +187,7 @@ var saatTabDibuka = {};
 
 // Tampilkan satu tab: tab itu diberi tanda aktif, isinya ditampilkan, dan isi tab lain disembunyikan.
 function tampilkanTab(nama) {
+    halamanAktif = nama;   // dipakai pengaman hak menyimpan (bolehMenulisSekarang, umum/hak-akses.js)
     if (saatTabDibuka[nama]) { saatTabDibuka[nama](); }
     daftarTab.forEach(function (n) {
         document.getElementById("tab-" + n).classList.toggle("aktif", n === nama);

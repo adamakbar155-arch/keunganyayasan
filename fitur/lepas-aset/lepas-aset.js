@@ -174,7 +174,8 @@ document.getElementById("form-lepas-aset").addEventListener("submit", function (
 
 saatTabDibuka["lepas-aset"] = function () {
     modulLepasAset.gambarTabel();
-    if (!modulLepasAset.idDiubah) { modulLepasAset.bukaBaru(); }
+    // Tanpa hak Buat (Akses Grup, umum/hak-akses.js) tetap di Daftar
+    if (!modulLepasAset.idDiubah && bolehHakHalaman("lepas-aset", "buat")) { modulLepasAset.bukaBaru(); }
 };
 
 function bukaLepasAsetBaru() { modulLepasAset.bukaDariMenu(); }

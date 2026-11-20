@@ -31,7 +31,8 @@ function bacaPengaturan(kunci, bawaan) {
 // Simpan objek pengaturan, beri tahu hasilnya, dan catat di Log Aktivitas (referensiLog = nama bagian Preferensi).
 // Mengembalikan true kalau berhasil.
 function simpanPengaturan(kunci, data, pesanBerhasil, referensiLog) {
-    if (hanyaLihat()) { tampilkanNotifikasi("Peran Anda hanya bisa melihat data.", "peringatan"); return false; }   // PRD 5.8, umum/sesi.js
+    // Preferensi hanya untuk Administrator (PRD 6.14, umum/sesi.js); pengaman di belakang halaman yang sudah ditolak
+    if (!adalahAdministrator()) { tampilkanNotifikasi("Preferensi hanya untuk Administrator.", "peringatan"); return false; }
     try {
         localStorage.setItem(kunci, JSON.stringify(data));
     } catch (galat) {

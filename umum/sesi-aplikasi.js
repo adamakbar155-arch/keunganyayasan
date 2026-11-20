@@ -251,8 +251,6 @@ document.getElementById("form-kode-pemulihan").addEventListener("submit", functi
 
 // ----- Hak Jenis Akses dan Akses Grup (PRD 6.14) -----
 if (sesiAktif) {
-    // Selain Administrator: tombol yang mengubah data disembunyikan lewat kelas ini (umum/sesi.css)
-    document.body.classList.toggle("hanya-lihat", hanyaLihat());
     // Pengguna, Preferensi, Cadangan Data hanya untuk Administrator (kotak menunya disembunyikan; bukaTab juga menolak)
     document.body.classList.toggle("bukan-administrator", !adalahAdministrator());
     // Operator: menu mengikuti centang Aktif di Akses Grup (umum/hak-akses.js). Diterapkan ulang kalau Administrator mengubah

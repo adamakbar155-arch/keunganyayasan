@@ -618,6 +618,7 @@ document.getElementById("ec-bawaan").addEventListener("click", function () {
 });
 
 document.getElementById("ec-simpan").addEventListener("click", function () {
+    if (!periksaHak("cetakan", "ubah")) { return; }   // menyimpan desain yang sudah ada = hak Ubah (Akses Grup)
     var baru = pengaturanDariEditor();
     if (!pengaturanValid(baru)) {
         tampilkanNotifikasi("Margin harus angka 0 sampai 50 mm.", "galat");

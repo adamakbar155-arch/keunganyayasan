@@ -122,6 +122,31 @@ function bolehHalamanOperator(nama) {
     return !!MENU_HAK[nama] && punyaHak(nama, "aktif");
 }
 
+// ----- Buat / Ubah / Hapus (J.31 langkah 2) -----
+// Boleh membuat/mengubah/menghapus di satu halaman (kunci menu = id halaman). Centang yang tidak berlaku untuk menu itu
+// (misalnya Ubah di Proses Penyusutan) berarti tidak boleh, kecuali Administrator.
+function bolehHakHalaman(kunci, jenis) {
+    if (adalahAdministrator()) { return true; }
+    return !!MENU_HAK[kunci] && MENU_HAK[kunci].hak.indexOf(jenis) !== -1 && punyaHak(kunci, jenis);
+}
+var PESAN_JENIS_HAK = { buat: "membuat data baru", ubah: "mengubah data", hapus: "menghapus data" };
+// Memeriksa hak; kalau tidak boleh, pesan ditampilkan. Hasil true/false.
+function periksaHak(kunci, jenis) {
+    if (bolehHakHalaman(kunci, jenis)) { return true; }
+    tampilkanNotifikasi("Akses Grup Anda tidak mengizinkan " + PESAN_JENIS_HAK[jenis] + " di sini. Hubungi Administrator.", "peringatan");
+    return false;
+}
+
+// Halaman (id tab) yang sedang tampil; diisi tampilkanTab (umum/inti.js)
+var halamanAktif = "dashboard";
+// Pengaman kedua untuk SEMUA penyimpanan daftar (modul.simpan, umum/komponen-daftar.js): selain Administrator, menyimpan hanya
+// boleh dari halaman yang punya salah satu hak Buat, Ubah, atau Hapus. Penyimpanan ikutan (misalnya jurnal otomatis dari
+// Pembayaran, atau akun dari Kategori Donasi) tetap boleh, karena terjadi di halaman yang berhak.
+function bolehMenulisSekarang() {
+    if (adalahAdministrator()) { return true; }
+    return ["buat", "ubah", "hapus"].some(function (j) { return bolehHakHalaman(halamanAktif, j); });
+}
+
 // Nama kotak menu di popup (data-halaman) -> kunci menu. Laporan tidak punya kotak menu, jadi tidak ikut
 // (namanya juga bisa sama, misalnya "Aset Tetap").
 var KUNCI_MENU_DARI_NAMA = {};
@@ -145,4 +170,25 @@ function terapkanHakMenu() {
     });
     var tombolLaporan = document.getElementById("tombol-laporan");
     if (tombolLaporan) { tombolLaporan.classList.toggle("tanpa-hak", !admin && !adaLaporanBoleh()); }
+
+    // Tombol Buat/Ubah/Hapus (umum/sesi.css):
+    //  - tiap halaman <section id="isi-KUNCI"> diberi kelas tanpa-buat / tanpa-ubah / tanpa-hapus;
+    //  - <body data-tanpa-hak="buat:favorit hapus:laporan-tersimpan ..."> untuk tombol yang ada di halaman lain
+    //    (Simpan Laporan, Tambah ke Favorit, Simpan di editor Desain Cetakan).
+    var hak = hakSaya();
+    function ada(kunci, jenis) { return hak === null || (!!hak[kunci] && hak[kunci].indexOf(jenis) !== -1); }
+    var tanpa = [];
+    if (!admin) {
+        Object.keys(MENU_HAK).forEach(function (kunci) {
+            JENIS_HAK.forEach(function (jenis) { if (!ada(kunci, jenis)) { tanpa.push(jenis + ":" + kunci); } });
+        });
+    }
+    document.body.dataset.tanpaHak = tanpa.join(" ");
+    document.querySelectorAll("section.isi-tab[id^='isi-']").forEach(function (seksi) {
+        var kunci = seksi.id.slice(4);
+        ["buat", "ubah", "hapus"].forEach(function (jenis) {
+            var boleh = admin || (!!MENU_HAK[kunci] && MENU_HAK[kunci].hak.indexOf(jenis) !== -1 && ada(kunci, jenis));
+            seksi.classList.toggle("tanpa-" + jenis, !boleh);
+        });
+    });
 }
