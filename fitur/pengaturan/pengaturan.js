@@ -179,6 +179,7 @@ function tampilkanGalatPengguna(nama, pesan, kolomFokus) {
 function terapkanJenisAkses() {
     document.getElementById("petunjuk-pg-jenis-akses").textContent = keteranganJenisAkses[jenisAksesDipilih()];
     document.getElementById("baris-pg-akses-grup").hidden = jenisAksesDipilih() !== "operator";
+    aturKolomSandi(penggunaFormSandi);   // keterangan kata sandi Operator berbeda (PRD 6.14)
 }
 
 // Pilihan Akses Grup (daftar grup dari umum/hak-akses.js; grup bisa berubah di halaman Akses Grup)
@@ -193,13 +194,29 @@ function isiPilihanAksesGrupPengguna(idTerpilih) {
 }
 pilihanJenisAkses.forEach(function (r) { r.addEventListener("change", terapkanJenisAkses); });
 
-// Label dan petunjuk kolom kata sandi berbeda saat menambah dan saat mengubah
-function aturKolomSandi(sedangMengubah) {
-    document.getElementById("label-pg-sandi").textContent = sedangMengubah ? "Atur Ulang Kata Sandi" : "Kata Sandi Awal";
+// Label dan petunjuk kolom kata sandi berbeda saat menambah dan saat mengubah, dan untuk Operator: kata sandi Operator
+// hanya diatur Administrator (Operator tidak bisa menggantinya sendiri, PRD 6.14, Temuan 52).
+// pengguna = data yang sedang diubah (null = Data Baru). Permintaan atur ulang dari pengguna itu ikut disebut.
+var penggunaFormSandi = null;
+function aturKolomSandi(pengguna) {
+    penggunaFormSandi = pengguna || null;
+    var sedangMengubah = !!pengguna;
+    var operator = jenisAksesDipilih() === "operator";
+    var petunjuk;
+    if (operator) {
+        petunjuk = sedangMengubah
+            ? "Kosongkan kalau kata sandi tidak diganti. Operator tidak bisa mengganti kata sandinya sendiri; kalau lupa, isi kata sandi baru di sini lalu berikan kepadanya."
+            : "Kata sandi untuk masuk. Berikan kepada pengguna ini; Operator tidak bisa menggantinya sendiri.";
+    } else {
+        petunjuk = sedangMengubah
+            ? "Kosongkan kalau kata sandi tidak diganti. Kalau diisi, pengguna wajib menggantinya lagi saat masuk."
+            : "Kata sandi sementara. Pengguna wajib menggantinya saat pertama masuk.";
+    }
+    var minta = sedangMengubah ? permintaanAturUlangAktif().find(function (m) { return m.pengguna.id === pengguna.id; }) : null;
+    if (minta) { petunjuk = "Pengguna ini meminta kata sandinya diatur ulang (" + teksWaktuLog(minta.waktu) + "). " + petunjuk; }
+    document.getElementById("label-pg-sandi").textContent = sedangMengubah ? "Atur Ulang Kata Sandi" : (operator ? "Kata Sandi" : "Kata Sandi Awal");
     document.getElementById("tanda-wajib-pg-sandi").hidden = sedangMengubah;
-    document.getElementById("petunjuk-pg-sandi").textContent = sedangMengubah
-        ? "Kosongkan kalau kata sandi tidak diganti. Kalau diisi, pengguna wajib menggantinya lagi saat masuk."
-        : "Kata sandi sementara. Pengguna wajib menggantinya saat pertama masuk.";
+    document.getElementById("petunjuk-pg-sandi").textContent = petunjuk;
 }
 
 // Nama isian dan cara menampilkan nilainya di rincian log. Kata sandi sengaja tidak masuk;
@@ -242,7 +259,7 @@ var modulPengguna = buatModulDaftar({
             document.getElementById(kolomPengguna[nama]).value = pengguna ? teksAman(pengguna[nama]) : "";
         });
         kolomSandiPengguna.value = "";   // kata sandi tidak pernah ditampilkan kembali
-        aturKolomSandi(!!pengguna);
+        aturKolomSandi(pengguna);
         // Data Baru: Operator (bawaan Accurate). Ubah: Jenis Akses pengguna itu.
         var jenis = pengguna ? jenisAksesPengguna(pengguna) : "operator";
         pilihanJenisAkses.forEach(function (r) { r.checked = r.value === jenis; });
@@ -262,6 +279,12 @@ function adaAdministratorAktif(daftar) {
 function bacaPengguna() {
     return modulPengguna.ambil();
 }
+
+// Setiap halaman Pengguna dibuka: Administrator diingatkan permintaan atur ulang kata sandi yang belum dikerjakan
+// (beriTahuPermintaanAturUlang ada di umum/sesi-aplikasi.js, dimuat sesudah file ini)
+saatTabDibuka.pengguna = function () {
+    if (typeof beriTahuPermintaanAturUlang === "function") { beriTahuPermintaanAturUlang(); }
+};
 
 // Dipanggil saat kotak Pengguna di Pengaturan diklik
 function bukaPenggunaBaru() {
@@ -353,7 +376,8 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         sedangMenyimpanPengguna = true;
         try {
             data.sandi = await acakKataSandi(sandi);
-            data.wajibGantiSandi = true;       // pengguna harus menggantinya saat masuk
+            // Administrator harus menggantinya saat masuk; Operator memakai kata sandi ini (tidak mengatur sendiri, PRD 6.14)
+            data.wajibGantiSandi = data.jenisAkses === "administrator";
             data.sandiDiatur = waktuSekarang();
         } catch (galat) {
             tampilkanNotifikasi(galat.message, "galat");
@@ -390,6 +414,8 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         untukLog.sandiDiatur = lama.sandiDiatur;
     }
     if (modulPengguna.simpan(daftar)) {
+        // Kata sandi sudah diatur ulang: permintaan atur ulang dari pengguna ini selesai (umum/sesi.js)
+        if (sandi !== "" && sedangMengubah) { hapusPermintaanAturUlang(modulPengguna.idDiubah); }
         modulPengguna.selesaiSimpan(sedangMengubah, untukLog, lama);
         if (!sedangMengubah) {
             document.getElementById(kolomPengguna.nama).focus();

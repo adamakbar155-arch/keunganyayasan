@@ -318,6 +318,12 @@ button[type="submit"]:hover {
     text-decoration: underline;
 }
 
+/* Tautan di dalam kalimat (misalnya "Minta atur ulang ke Administrator") */
+.sapaan a {
+    font-weight: 600;
+    color: var(--biru);
+}
+
 /* Kode pemulihan: huruf rata lebar dan besar supaya mudah dicatat; sekali klik tiga kali = terpilih semua */
 .kode-pemulihan {
     margin: 0 0 24px;

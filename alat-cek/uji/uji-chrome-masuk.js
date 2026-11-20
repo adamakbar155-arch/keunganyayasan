@@ -1,4 +1,5 @@
-// Uji J.25, J.26, J.29: Masuk, Keluar, keluar otomatis 40 menit, wajib ganti kata sandi, Jenis Akses Administrator/Operator,
+// Uji J.25, J.26, J.29, J.32: Masuk, Keluar, keluar otomatis 40 menit, wajib ganti kata sandi (Administrator), Jenis Akses Administrator/Operator,
+// kata sandi Operator hanya diatur Administrator dan permintaan atur ulang,
 // pemindahan peran lama, dan kode pemulihan (PRD 6.12, 6.14)
 // di Chrome asli (tanpa jendela, headless). Uji ini SENGAJA tidak memakai alat bantu bantu-sesi.js: semuanya lewat layar Masuk.
 // Data rekaan; kata sandi uji hanya contoh.
@@ -98,6 +99,7 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
       d.push({id:'u2', nama:'Budi Pengawas', username:'budi', peran:'pengawas', nonAktif:false, sandi:s, wajibGantiSandi:true});
       d.push({id:'u3', nama:'Rina', username:'rina', peran:'finance-sekolah', nonAktif:false, sandi:s, wajibGantiSandi:false});
       d.push({id:'u4', nama:'Lama', username:'lama', peran:'finance-yayasan', nonAktif:true, sandi:s, wajibGantiSandi:false});
+      d.push({id:'u5', nama:'Dewi Admin', username:'dewi', peran:'finance-yayasan', nonAktif:false, sandi:s, wajibGantiSandi:true});
       localStorage.setItem('daftarPengguna', JSON.stringify(d)); return true; })()`);
     // Pengaman akun sendiri
     await evalJs("bukaTab('pengguna'); modulPengguna.hapus(modulPengguna.ambil()[0]); true"); await tunggu(150);
@@ -113,16 +115,21 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
 
     await masuk("lama", "awal-1234"); await tungguPeriksa();
     catat("Akun Non Aktif ditolak", /Non Aktif/.test(await pesan("pesan-error")), await pesan("pesan-error"));
-    await masuk("budi", "awal-1234"); await tungguPeriksa();
-    catat("Kata sandi baru dibuat/diatur ulang: wajib ganti dulu sebelum masuk", await evalJs("!document.getElementById('layar-ganti-sandi').hidden") && (await evalJs("location.pathname")).endsWith("login.html"));
+    await masuk("dewi", "awal-1234"); await tungguPeriksa();
+    catat("Administrator dengan kata sandi baru dibuat/diatur ulang: wajib ganti dulu sebelum masuk", await evalJs("!document.getElementById('layar-ganti-sandi').hidden") && (await evalJs("location.pathname")).endsWith("login.html"));
     await isi({ "gs-baru": "awal-1234", "gs-ulang": "awal-1234" }); await kirimForm("form-ganti-sandi"); await tungguPeriksa();
     catat("Kata sandi baru tidak boleh sama dengan yang lama", /tidak boleh sama/.test(await pesan("pesan-error-ganti")));
-    await isi({ "gs-baru": "baru-budi-99", "gs-ulang": "baru-budi-99" }); await kirimForm("form-ganti-sandi");
+    await isi({ "gs-baru": "baru-dewi-99", "gs-ulang": "baru-dewi-99" }); await kirimForm("form-ganti-sandi");
     catat("Sesudah ganti kata sandi langsung masuk", await tungguHalaman(/index\.html$/));
+    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
+    // Operator tidak mengatur kata sandinya sendiri (PRD 6.14, Temuan 52): tanda wajib ganti diabaikan, langsung masuk
+    await masuk("budi", "awal-1234");
+    catat("Operator dengan tanda wajib ganti: langsung masuk tanpa layar ganti kata sandi", await tungguHalaman(/index\.html$/),
+      await evalJs("location.pathname.split('/').pop() + ' | ' + [...document.querySelectorAll('section[id^=layar-]')].filter(function(s){return !s.hidden;}).map(function(s){return s.id;}).join() + ' | ' + (document.getElementById('pesan-error') ? document.getElementById('pesan-error').textContent : '')").catch(() => "?"));
     const pindah = JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"));
     catat("Peran lama dipindahkan: Pengawas dan Finance Sekolah jadi Operator, Finance Yayasan jadi Administrator, isian peran dibuang",
-      pindah.find(p => p.id === "u2").jenisAkses === "operator" && pindah.find(p => p.id === "u3").jenisAkses === "operator" && pindah.find(p => p.id === "u4").jenisAkses === "administrator" && pindah.every(p => !("peran" in p)), JSON.stringify(pindah.map(p => [p.id, p.jenisAkses, p.peran])));
-    catat("Pemindahan dicatat di Log Aktivitas", await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return /Peran lama diganti Jenis Akses \\(3 pengguna\\)/.test(l.referensi);})"));
+      pindah.find(p => p.id === "u2").jenisAkses === "operator" && pindah.find(p => p.id === "u3").jenisAkses === "operator" && pindah.find(p => p.id === "u4").jenisAkses === "administrator" && pindah.find(p => p.id === "u5").jenisAkses === "administrator" && pindah.every(p => !("peran" in p)), JSON.stringify(pindah.map(p => [p.id, p.jenisAkses, p.peran])));
+    catat("Pemindahan dicatat di Log Aktivitas", await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return /Peran lama diganti Jenis Akses \\(4 pengguna\\)/.test(l.referensi);})"));
 
     // ---- 4. Operator (dulu Pengawas): hanya melihat, sampai hak Akses Grup berlaku (J.31) ----
     const pengawas = JSON.parse(await evalJs(`JSON.stringify({kelas: document.body.classList.contains('hanya-lihat'),
@@ -135,12 +142,13 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Operator membuka Preferensi lewat kode: ditolak 'hanya untuk Administrator'", /hanya untuk Administrator/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && await evalJs("document.getElementById('isi-preferensi').hidden"));
     await evalJs("modulDivisi.bukaDariMenu(); true"); await tunggu(200);
     await foto("masuk-pengawas.png");
-    // Ganti Kata Sandi sendiri tetap boleh untuk Operator
-    await evalJs("document.getElementById('tombol-pengguna').click(); document.getElementById('menu-ganti-sandi').click(); true"); await tunggu(150);
-    await isi({ "gsa-lama": "salah-salah", "gsa-baru": "budi-baru-77", "gsa-ulang": "budi-baru-77" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
-    catat("Ganti Kata Sandi: kata sandi sekarang salah ditolak", /salah/.test(await evalJs("document.getElementById('galat-ganti-sandi').textContent")));
-    await isi({ "gsa-lama": "baru-budi-99" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
-    catat("Ganti Kata Sandi berhasil (juga untuk Operator)", await evalJs("!document.getElementById('dialog-ganti-sandi').open && /diganti/.test(document.getElementById('area-notifikasi').textContent)"));
+    // Operator tidak boleh mengganti kata sandinya sendiri (PRD 6.14, Temuan 52): menu tidak ada, penyimpanan ditolak
+    catat("Operator: menu Ganti Kata Sandi tidak ada", await evalJs("document.getElementById('menu-ganti-sandi').hidden && getComputedStyle(document.getElementById('menu-ganti-sandi')).display==='none'"));
+    const hashBudi = await evalJs("bacaPenggunaTersimpan().find(function(p){return p.id==='u2';}).sandi.hash");
+    await evalJs("document.getElementById('menu-ganti-sandi').click(); true"); await tunggu(150);
+    catat("Operator: klik paksa Ganti Kata Sandi tidak membuka popup", !(await evalJs("document.getElementById('dialog-ganti-sandi').open")));
+    await isi({ "gsa-lama": "awal-1234", "gsa-baru": "budi-baru-77", "gsa-ulang": "budi-baru-77" }); await kirimForm("form-ganti-sandi-app"); await tunggu(1500);
+    catat("Operator: simpan ganti kata sandi lewat kode ditolak (kata sandi tetap)", hashBudi === await evalJs("bacaPenggunaTersimpan().find(function(p){return p.id==='u2';}).sandi.hash"));
 
     // ---- 5. Keluar otomatis 40 menit ----
     await evalJs("var s=JSON.parse(sessionStorage.getItem('sesiMasuk')); s.terakhirAktif=Date.now()-41*60*1000; sessionStorage.setItem('sesiMasuk', JSON.stringify(s)); document.dispatchEvent(new MouseEvent('mousemove')); true");
@@ -148,11 +156,11 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Keluar otomatis tercatat di Log Aktivitas", await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return l.tindakan==='Keluar' && /40 menit/.test(l.referensi) && l.pengguna==='Budi Pengawas';})"));
     await foto("masuk-keluar-otomatis.png");
     catat("Tombol mata: hanya satu ikon yang tampil, dan bertukar saat diklik", await evalJs("(function(){var a=document.getElementById('ikon-mata'), b=document.getElementById('ikon-mata-coret'); var awal=a.getBoundingClientRect().width>0 && b.getBoundingClientRect().width===0; document.getElementById('tombol-lihat').click(); var sesudah=a.getBoundingClientRect().width===0 && b.getBoundingClientRect().width>0 && document.getElementById('password').type==='text'; document.getElementById('tombol-lihat').click(); return awal && sesudah;})()"), await evalJs("JSON.stringify([document.getElementById('ikon-mata').getBoundingClientRect().width, document.getElementById('ikon-mata-coret').getBoundingClientRect().width, getComputedStyle(document.getElementById('ikon-mata-coret')).display, document.getElementById('layar-masuk').hidden])"));
-    await masuk("budi", "budi-baru-77");
-    catat("Masuk dengan kata sandi yang baru diganti", await tungguHalaman(/index\.html$/));
+    await masuk("budi", "awal-1234");
+    catat("Masuk lagi dengan kata sandi dari Administrator", await tungguHalaman(/index\.html$/));
     await evalJs("var s=JSON.parse(sessionStorage.getItem('sesiMasuk')); s.terakhirAktif=Date.now()-40*60*1000-1000; sessionStorage.setItem('sesiMasuk', JSON.stringify(s)); periksaSesiBerkala(); true").catch(() => true);
     catat("Pemeriksa berkala: lewat 40 menit tanpa aktivitas = keluar", await tungguHalaman(/login\.html$/));
-    await masuk("budi", "budi-baru-77"); await tungguHalaman(/index\.html$/);
+    await masuk("budi", "awal-1234"); await tungguHalaman(/index\.html$/);
     await evalJs("var s=JSON.parse(sessionStorage.getItem('sesiMasuk')); s.terakhirAktif=Date.now()-39*60*1000; sessionStorage.setItem('sesiMasuk', JSON.stringify(s)); periksaSesiBerkala(); true");
     await tunggu(500);
     catat("39 menit tanpa aktivitas: masih masuk", (await evalJs("location.pathname")).endsWith("index.html"));
@@ -198,6 +206,31 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await pulih("siti", kodeKedua, "siti-lagi-123");
     catat("Kode yang sudah diganti tidak berlaku lagi", await pesan("pesan-error-lupa") === "Nama pengguna atau kode pemulihan salah.");
     await evalJs("document.getElementById('kembali-masuk').click(); true"); await tunggu(150);
+
+    // ---- 6c. Operator lupa kata sandi: kirim permintaan ke Administrator (PRD 6.14, Temuan 52) ----
+    await evalJs("document.getElementById('lupa-sandi').click(); document.getElementById('buka-minta-ulang').click(); true"); await tunggu(150);
+    catat("Minta atur ulang: layar tampil", await evalJs("!document.getElementById('layar-minta-ulang').hidden && document.getElementById('layar-lupa-sandi').hidden"));
+    await isi({ "mu-username": "BUDI" }); await kirimForm("form-minta-ulang"); await tunggu(150);
+    const pesanMinta = await pesan("pesan-minta-ulang");
+    catat("Kirim permintaan (huruf besar/kecil bebas): pesan terkirim, permintaan tercatat untuk Budi", /sudah dikirim/.test(pesanMinta) && await evalJs("JSON.parse(localStorage.getItem('permintaanAturUlang')).map(function(m){return m.penggunaId;}).join()==='u2'"), pesanMinta);
+    await foto("masuk-minta-atur-ulang.png");
+    await isi({ "mu-username": "tidak-ada" }); await kirimForm("form-minta-ulang"); await tunggu(150);
+    catat("Nama yang tidak terdaftar: pesan sama persis, tidak ada yang dicatat", await pesan("pesan-minta-ulang") === pesanMinta && await evalJs("JSON.parse(localStorage.getItem('permintaanAturUlang')).length===1"));
+    await isi({ "mu-username": "budi" }); await kirimForm("form-minta-ulang"); await tunggu(150);
+    catat("Permintaan kedua dari pengguna yang sama tidak kembar", await evalJs("JSON.parse(localStorage.getItem('permintaanAturUlang')).length===1"));
+    await evalJs("document.getElementById('kembali-masuk-minta').click(); true"); await tunggu(150);
+    await masuk("siti", "siti-baru-123"); await tungguHalaman(/index\.html$/);
+    catat("Administrator masuk: pemberitahuan permintaan dari Budi Pengawas (budi)", /Permintaan atur ulang kata sandi dari: Budi Pengawas \(budi\)/.test(await evalJs("document.getElementById('area-notifikasi').textContent")));
+    await evalJs("bukaTab('pengguna'); modulPengguna.bukaUbah(modulPengguna.ambil().find(function(p){return p.id==='u2';})); true"); await tunggu(250);
+    catat("Formulir Budi: petunjuk menyebut permintaan, keterangan kata sandi Operator", /meminta kata sandinya diatur ulang/.test(await evalJs("document.getElementById('petunjuk-pg-sandi').textContent")) && /tidak bisa mengganti kata sandinya sendiri/.test(await evalJs("document.getElementById('petunjuk-pg-sandi').textContent")));
+    await foto("masuk-pengguna-permintaan.png");
+    await isi({ "pg-sandi": "budi-baru-55" }); await kirimForm("form-pengguna");
+    await tunggu(300); for (let i = 0; i < 60 && await evalJs("sedangMenyimpanPengguna"); i++) { await tunggu(100); } await tunggu(300);
+    catat("Sesudah diatur ulang: permintaan hilang, Operator tidak wajib ganti", await evalJs("JSON.parse(localStorage.getItem('permintaanAturUlang')||'[]').length===0 && bacaPenggunaTersimpan().find(function(p){return p.id==='u2';}).wajibGantiSandi===false"));
+    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
+    await masuk("budi", "budi-baru-55");
+    catat("Operator masuk dengan kata sandi baru dari Administrator, tanpa layar ganti", await tungguHalaman(/index\.html$/));
+    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
 
     // ---- 7. Lima kali salah: tunggu 1 menit ----
     for (let i = 0; i < 5; i++) { await masuk("siti", "salah-" + i); await tunggu(700); }

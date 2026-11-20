@@ -93,8 +93,9 @@
                 <!-- ===== Lupa kata sandi (PRD 6.14): Administrator memakai kode pemulihan; Operator minta Administrator ===== -->
                 <section id="layar-lupa-sandi" hidden>
                     <h2>Lupa kata sandi</h2>
-                    <p class="sapaan">Khusus <strong>Administrator</strong>: isi kode pemulihan yang dulu Anda catat, lalu buat kata sandi baru.
-                        Operator: minta Administrator mengatur ulang kata sandi Anda di Pengaturan, Pengguna.</p>
+                    <p class="sapaan">Khusus <strong>Administrator</strong>: isi kode pemulihan yang dulu Anda catat, lalu buat kata sandi baru.</p>
+                    <!-- Operator tidak mengatur kata sandinya sendiri (PRD 6.14): kirim permintaan ke Administrator -->
+                    <p class="sapaan">Bukan Administrator? <a href="#" id="buka-minta-ulang">Minta atur ulang ke Administrator</a></p>
                     <div id="pesan-error-lupa" class="pesan-error" role="alert" hidden></div>
                     <form id="form-lupa-sandi" novalidate>
                         <label for="ls-username">Nama pengguna</label>
@@ -108,6 +109,20 @@
                         <button type="submit" id="tombol-pulihkan-sandi">Atur kata sandi baru</button>
                     </form>
                     <a href="#" id="kembali-masuk" class="tautan-kembali">Kembali ke Masuk</a>
+                </section>
+
+                <!-- ===== Minta atur ulang kata sandi (Operator, PRD 6.14): permintaan muncul untuk Administrator saat masuk ===== -->
+                <section id="layar-minta-ulang" hidden>
+                    <h2>Minta atur ulang kata sandi</h2>
+                    <p class="sapaan">Isi nama pengguna Anda. Administrator akan melihat permintaan ini saat masuk, lalu memberi Anda kata sandi baru.</p>
+                    <div id="pesan-minta-ulang" class="pesan-info" role="status" hidden></div>
+                    <div id="pesan-error-minta" class="pesan-error" role="alert" hidden></div>
+                    <form id="form-minta-ulang" novalidate>
+                        <label for="mu-username">Nama pengguna</label>
+                        <input id="mu-username" type="text" autocomplete="username" maxlength="60">
+                        <button type="submit" id="tombol-minta-ulang">Kirim permintaan</button>
+                    </form>
+                    <a href="#" id="kembali-masuk-minta" class="tautan-kembali">Kembali ke Masuk</a>
                 </section>
 
                 <!-- ===== Kode pemulihan baru: ditampilkan SEKALI (akun pertama, dan sesudah kode lama dipakai) ===== -->

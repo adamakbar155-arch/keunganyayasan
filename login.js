@@ -2,8 +2,9 @@
 // Beberapa keadaan di satu kotak:
 //   - Masuk                : nama pengguna + kata sandi, dicocokkan dengan data Pengguna (kata sandi teracak, umum/sandi.js)
 //   - Buat akun pertama    : hanya saat belum ada pengguna sama sekali; akun Administrator (PRD 6.14)
-//   - Ganti kata sandi     : wajib sesudah akun dibuat/diatur ulang di Pengaturan, Pengguna
+//   - Ganti kata sandi     : wajib (hanya Administrator) sesudah akun dibuat/diatur ulang di Pengaturan, Pengguna
 //   - Lupa kata sandi      : khusus Administrator, dengan kode pemulihan (PRD 6.14)
+//   - Minta atur ulang     : Operator mengirim permintaan ke Administrator (PRD 6.14, Temuan 52)
 //   - Kode pemulihan baru  : ditampilkan sekali sesudah akun pertama dibuat dan sesudah kode lama dipakai
 // Sesudah berhasil, sesi dibuat (umum/sesi.js) lalu pindah ke index.html. Semua pesan lewat textContent.
 // CATATAN: tanpa server, ini kunci layar dan pencatat siapa yang bekerja, bukan pengaman penuh (PRD 6.12, Batasan).
@@ -14,7 +15,7 @@ var KUNCI_GAGAL_MASUK = "gagalMasuk";
 
 function el(id) { return document.getElementById(id); }
 function tampilkanLayar(nama) {
-    ["layar-masuk", "layar-akun-pertama", "layar-ganti-sandi", "layar-lupa-sandi", "layar-kode-pemulihan"].forEach(function (id) { el(id).hidden = (id !== nama); });
+    ["layar-masuk", "layar-akun-pertama", "layar-ganti-sandi", "layar-lupa-sandi", "layar-minta-ulang", "layar-kode-pemulihan"].forEach(function (id) { el(id).hidden = (id !== nama); });
 }
 function tampilkanPesan(idKotak, pesan) {
     el(idKotak).textContent = pesan;   // textContent: aman dari kode HTML
@@ -107,7 +108,8 @@ el("form-login").addEventListener("submit", function (k) {
         }
         tulisGagal({ jumlah: 0, sampai: 0 });
         if (pengguna.nonAktif) { tampilkanPesan("pesan-error", "Akun ini Non Aktif. Hubungi Administrator."); return; }
-        if (pengguna.wajibGantiSandi) {
+        // Wajib ganti kata sandi hanya untuk Administrator: kata sandi Operator ditentukan Administrator (PRD 6.14, Temuan 52)
+        if (pengguna.wajibGantiSandi && jenisAksesPengguna(pengguna) === "administrator") {
             penggunaWajibGanti = { pengguna: pengguna, sandiLama: sandi };
             tampilkanLayar("layar-ganti-sandi");
             el("gs-baru").focus();
@@ -246,6 +248,38 @@ el("form-lupa-sandi").addEventListener("submit", function (k) {
         el("tombol-pulihkan-sandi").disabled = false;
         tampilkanPesan("pesan-error-lupa", galat.message);
     });
+});
+
+// ----- Minta atur ulang ke Administrator (Operator, PRD 6.14, Temuan 52) -----
+// Operator tidak mengatur kata sandinya sendiri. Permintaan dicatat (umum/sesi.js) dan muncul untuk Administrator saat masuk.
+// Pesannya SELALU sama, apa pun nama yang diisi, supaya tidak ketahuan nama mana yang terdaftar. Yang dicatat hanya permintaan
+// untuk Operator yang ada (Administrator memakai kode pemulihan); satu permintaan per pengguna, waktunya diperbarui.
+el("buka-minta-ulang").addEventListener("click", function (k) {
+    k.preventDefault();
+    el("mu-username").value = el("ls-username").value.trim() || el("username").value.trim();
+    tampilkanPesan("pesan-minta-ulang", "");
+    tampilkanPesan("pesan-error-minta", "");
+    tampilkanLayar("layar-minta-ulang");
+    el("mu-username").focus();
+});
+el("kembali-masuk-minta").addEventListener("click", function (k) {
+    k.preventDefault();
+    tampilkanLayar("layar-masuk");
+    el("username").focus();
+});
+el("form-minta-ulang").addEventListener("submit", function (k) {
+    k.preventDefault();
+    tampilkanPesan("pesan-minta-ulang", "");
+    tampilkanPesan("pesan-error-minta", "");
+    var nama = el("mu-username").value.trim();
+    if (nama === "") { tampilkanPesan("pesan-error-minta", "Nama pengguna belum diisi."); el("mu-username").focus(); return; }
+    var pengguna = bacaPenggunaTersimpan().find(function (p) { return String(p.username || "").toLowerCase() === nama.toLowerCase(); });
+    if (pengguna && jenisAksesPengguna(pengguna) === "operator") {
+        var daftar = bacaPermintaanAturUlang().filter(function (m) { return m.penggunaId !== pengguna.id; });
+        daftar.push({ penggunaId: pengguna.id, waktu: waktuSekarangLogin() });
+        simpanPermintaanAturUlang(daftar);
+    }
+    tampilkanPesan("pesan-minta-ulang", "Permintaan sudah dikirim. Administrator akan melihatnya saat masuk. Hubungi juga Administrator supaya kata sandi Anda segera diatur ulang.");
 });
 
 // ----- Bantuan kecil -----

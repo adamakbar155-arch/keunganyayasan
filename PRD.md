@@ -690,6 +690,13 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
   Dashboard sampai Administrator memberi grup). Dicatat di Log Aktivitas.
 - **Lupa kata sandi Administrator:** memakai **kode pemulihan** yang ditampilkan sekali saat akun Administrator dibuat (disimpan sebagai
   hash, seperti kata sandi). Di layar masuk ada "Lupa kata sandi?" untuk memasukkan nama pengguna + kode pemulihan, lalu membuat sandi baru.
+- **Kata sandi Operator** (keputusan pengguna 2026-11-20, Temuan 52): hanya Administrator yang menentukan kata sandi Operator
+  (Pengaturan, Pengguna, Atur Ulang Kata Sandi). Operator tidak punya menu Ganti Kata Sandi dan tidak diminta mengganti kata sandi
+  saat masuk. Administrator tetap bisa mengganti kata sandinya sendiri dan tetap wajib ganti sesudah diatur ulang.
+- **Operator lupa kata sandi:** di layar "Lupa kata sandi?" ada "Minta atur ulang ke Administrator": isi nama pengguna, lalu Kirim
+  Permintaan. Pesannya selalu sama (tidak menunjukkan nama mana yang terdaftar). Permintaan muncul sebagai pemberitahuan saat
+  Administrator masuk dan hilang sesudah Administrator mengatur ulang kata sandi pengguna itu. Tanpa server, permintaan hanya
+  terlihat di browser dan komputer yang sama.
 - Beberapa tab sekaligus: tidak ada peringatan (keputusan pengguna).
 - Batasan tetap sama (6.12): tanpa server, hak akses ini kunci di layar, bukan pengaman penuh.
 

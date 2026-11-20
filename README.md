@@ -49,7 +49,7 @@ umum/                     dipakai semua fitur
   komponen-histori.js       logika bersama halaman histori: Saldo Awal, saldo berjalan, Total, ceklis, ekspor CSV
   histori.css               gaya bersama halaman histori (juga baris atas Rekonsiliasi Bank)
   sesi.js                   sesi masuk (dimuat paling awal; belum masuk/40 menit diam = ke login.html), hak akses dasar
-  sesi-aplikasi.js, sesi.css menu pengguna (Ganti Kata Sandi, Buat Kode Pemulihan, Keluar), keluar otomatis 40 menit, Log Masuk/Keluar, Jenis Akses
+  sesi-aplikasi.js, sesi.css menu pengguna (Ganti Kata Sandi dan Buat Kode Pemulihan khusus Administrator, Keluar), permintaan atur ulang kata sandi Operator, keluar otomatis 40 menit, Log Masuk/Keluar, Jenis Akses
   sandi.js                  mengacak dan mencocokkan kata sandi (PBKDF2), dipakai layar Masuk dan halaman Pengguna
   hak-akses.js              daftar menu Hak Akses (Aktif/Buat/Ubah/Hapus/Lihat per menu) untuk Akses Grup dan penerapan hak
   pintasan.js               pintasan keyboard (Ctrl+S, Alt+N, Alt+D, Alt+W, Ctrl+P, Alt+L, F1) dan popup daftarnya; hanya menekan tombol yang ada

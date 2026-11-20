@@ -47,13 +47,14 @@ function mulaiSesi(pengguna, lewatKodePemulihan) {
 }
 
 // Sesi yang sah: ada, penggunanya masih ada dan aktif, belum wajib ganti sandi, dan belum 40 menit tanpa aktivitas.
+// Wajib ganti sandi hanya berlaku untuk Administrator: kata sandi Operator ditentukan Administrator (PRD 6.14, Temuan 52).
 // Mengembalikan "" kalau sah, atau alasan: "belum", "diam", "akun".
 function alasanSesiTidakSah() {
     var s = bacaSesi();
     if (!s) { return "belum"; }
     if (!(Date.now() - Number(s.terakhirAktif) < BATAS_DIAM_MS)) { return "diam"; }
     var p = bacaPenggunaTersimpan().find(function (x) { return x.id === s.penggunaId; });
-    if (!p || p.nonAktif || p.wajibGantiSandi) { return "akun"; }
+    if (!p || p.nonAktif || (p.wajibGantiSandi && jenisAksesPengguna(p) === "administrator")) { return "akun"; }
     return "";
 }
 
@@ -83,6 +84,38 @@ function bolehBukaHalaman(nama) {
     if (adalahAdministrator()) { return true; }
     if (HALAMAN_ADMINISTRATOR.indexOf(nama) !== -1) { return false; }
     return typeof bolehHalamanOperator === "function" ? bolehHalamanOperator(nama) : nama === "dashboard";
+}
+
+// ----- Permintaan atur ulang kata sandi dari Operator (PRD 6.14, Temuan 52) -----
+// Operator tidak mengatur kata sandinya sendiri. Kalau lupa, layar Masuk (login.js) mencatat permintaan di sini, lalu
+// Administrator diberi tahu saat masuk (umum/sesi-aplikasi.js). Permintaan hilang sesudah Administrator mengatur ulang
+// kata sandinya (fitur/pengaturan/pengaturan.js). Satu permintaan per pengguna: { penggunaId, waktu }.
+// Tanpa server, permintaan hanya terlihat di browser dan komputer yang sama.
+var KUNCI_PERMINTAAN_ATUR_ULANG = "permintaanAturUlang";
+var BATAS_PERMINTAAN_ATUR_ULANG = 50;   // data rusak atau berlebihan tidak membuat penyimpanan penuh
+function bacaPermintaanAturUlang() {
+    try {
+        var daftar = JSON.parse(localStorage.getItem(KUNCI_PERMINTAAN_ATUR_ULANG) || "[]");
+        return Array.isArray(daftar) ? daftar.filter(function (m) { return m && typeof m.penggunaId === "string"; }) : [];
+    } catch (galat) { return []; }
+}
+function simpanPermintaanAturUlang(daftar) {
+    try { localStorage.setItem(KUNCI_PERMINTAAN_ATUR_ULANG, JSON.stringify(daftar.slice(-BATAS_PERMINTAAN_ATUR_ULANG))); return true; }
+    catch (galat) { return false; }
+}
+// Permintaan yang masih berlaku: penggunanya masih ada dan masih Operator. Hasil: [{ pengguna, waktu }]
+function permintaanAturUlangAktif() {
+    var pengguna = bacaPenggunaTersimpan();
+    return bacaPermintaanAturUlang().map(function (m) {
+        var p = pengguna.find(function (x) { return x.id === m.penggunaId; });
+        return p && jenisAksesPengguna(p) === "operator" ? { pengguna: p, waktu: m.waktu } : null;
+    }).filter(Boolean);
+}
+// Menghapus permintaan satu pengguna (sesudah kata sandinya diatur ulang Administrator)
+function hapusPermintaanAturUlang(penggunaId) {
+    var daftar = bacaPermintaanAturUlang();
+    var sisa = daftar.filter(function (m) { return m.penggunaId !== penggunaId; });
+    if (sisa.length !== daftar.length) { simpanPermintaanAturUlang(sisa); }
 }
 
 // Di index.html: periksa sesi sebelum apa pun tampil. Halaman disembunyikan dulu (kelas belum-masuk, umum/dasar.css)

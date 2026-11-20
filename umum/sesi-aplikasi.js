@@ -65,6 +65,14 @@ function catatAktivitas() {
     simpanSesi(s);
 }
 
+// Pemberitahuan permintaan atur ulang kata sandi untuk Administrator (umum/sesi.js). Juga dipanggil saat halaman Pengguna dibuka.
+function beriTahuPermintaanAturUlang() {
+    var minta = permintaanAturUlangAktif();
+    if (!minta.length || !adalahAdministrator()) { return; }
+    var nama = minta.map(function (m) { return teksAman(m.pengguna.nama) + " (" + teksAman(m.pengguna.username) + ")"; }).join(", ");
+    tampilkanNotifikasi("Permintaan atur ulang kata sandi dari: " + nama + ". Atur ulang di Pengaturan, Pengguna.", "peringatan");
+}
+
 if (sesiAktif) {
     ["mousedown", "mousemove", "keydown", "wheel", "touchstart", "scroll"].forEach(function (nama) {
         document.addEventListener(nama, catatAktivitas, { passive: true, capture: true });
@@ -86,6 +94,8 @@ if (sesiAktif) {
         if (sayaMasuk && jenisAksesPengguna(sayaMasuk) === "administrator" && !sayaMasuk.kodePemulihan) {
             tampilkanNotifikasi("Anda belum punya kode pemulihan. Buat lewat menu pengguna (inisial di kanan atas), Buat Kode Pemulihan.", "peringatan");
         }
+        // Permintaan atur ulang kata sandi dari Operator (PRD 6.14, Temuan 52): Administrator diberi tahu saat masuk
+        if (sayaMasuk && jenisAksesPengguna(sayaMasuk) === "administrator") { beriTahuPermintaanAturUlang(); }
         // Operator tanpa Akses Grup (atau grupnya sudah dihapus) hanya bisa membuka Dashboard (PRD 6.14): diberi tahu sekali
         if (sayaMasuk && jenisAksesPengguna(sayaMasuk) === "operator" && !namaAksesGrup(sayaMasuk.aksesGrupId)) {
             tampilkanNotifikasi("Akun Anda belum punya Akses Grup, jadi hanya Dashboard yang bisa dibuka. Hubungi Administrator.", "peringatan");
@@ -101,6 +111,8 @@ tombolPengguna.title = penggunaAktif;
 document.getElementById("menu-pengguna-nama").textContent = penggunaAktif;
 document.getElementById("menu-pengguna-peran").textContent = penggunaSesi() ? NAMA_JENIS_AKSES[jenisAksesPengguna(penggunaSesi())] : "";
 document.getElementById("menu-kode-pemulihan").hidden = !adalahAdministrator();
+// Kata sandi Operator hanya diatur Administrator (PRD 6.14, Temuan 52): Ganti Kata Sandi hanya untuk Administrator
+document.getElementById("menu-ganti-sandi").hidden = !adalahAdministrator();
 function aturMenuPengguna(buka) {
     menuPengguna.hidden = !buka;
     tombolPengguna.setAttribute("aria-expanded", buka ? "true" : "false");
@@ -122,6 +134,7 @@ function galatGantiSandi(pesan, kolom) {
 }
 document.getElementById("menu-ganti-sandi").addEventListener("click", function () {
     aturMenuPengguna(false);
+    if (!adalahAdministrator()) { return; }
     ["gsa-lama", "gsa-baru", "gsa-ulang"].forEach(function (id) { document.getElementById(id).value = ""; });
     galatGantiSandi("");
     dialogGantiSandi.showModal();
@@ -133,7 +146,8 @@ document.getElementById("batal-ganti-sandi").addEventListener("click", tutupGant
 var sedangGantiSandi = false;
 document.getElementById("form-ganti-sandi-app").addEventListener("submit", function (k) {
     k.preventDefault();
-    if (sedangGantiSandi || !sesiAktif) { return; }
+    // Pengaman kedua: Operator tidak boleh mengganti kata sandinya sendiri (PRD 6.14)
+    if (sedangGantiSandi || !sesiAktif || !adalahAdministrator()) { return; }
     var lama = document.getElementById("gsa-lama"), baru = document.getElementById("gsa-baru"), ulang = document.getElementById("gsa-ulang");
     galatGantiSandi("");
     if (lama.value === "") { galatGantiSandi("Kata sandi sekarang wajib diisi.", lama); return; }
@@ -147,7 +161,7 @@ document.getElementById("form-ganti-sandi-app").addEventListener("submit", funct
         if (!cocok) { sedangGantiSandi = false; galatGantiSandi("Kata sandi sekarang salah.", lama); return null; }
         return acakKataSandi(baru.value).then(function (simpanan) {
             sedangGantiSandi = false;
-            // Ditulis langsung (bukan lewat halaman Pengguna): akun sendiri, juga untuk Operator
+            // Ditulis langsung (bukan lewat halaman Pengguna): akun Administrator sendiri
             var daftar = bacaPenggunaTersimpan();
             var p = daftar.find(function (x) { return x.id === sesiAktif.penggunaId; });
             if (!p) { keLayarMasuk(""); return; }
