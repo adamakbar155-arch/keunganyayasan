@@ -94,6 +94,15 @@ pasangTampilan("isi-pengguna", /*html*/ `
                                     </div>
                                 </div>
 
+                                <!-- Akses Grup (PRD 6.14): hanya untuk Operator; grupnya dibuat di Pengaturan, Akses Grup -->
+                                <div id="baris-pg-akses-grup" class="baris-form">
+                                    <label for="pg-akses-grup">Akses Grup</label>
+                                    <div>
+                                        <select id="pg-akses-grup"></select>
+                                        <p class="petunjuk">Tanpa Akses Grup, Operator hanya bisa membuka Dashboard. Grup dibuat di Pengaturan, Akses Grup.</p>
+                                    </div>
+                                </div>
+
                                 <div class="baris-form">
                                     <span class="label-kelompok">Non Aktif</span>
                                     <div>

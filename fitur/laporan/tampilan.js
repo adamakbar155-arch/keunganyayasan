@@ -230,7 +230,7 @@ pasangTampilan("dialog-parameter-laporan", /*html*/ `
                  Hanya isian yang berlaku untuk laporan itu yang tampil (kolom parameter di DAFTAR_LAPORAN). -->
             <div class="baris-form" id="param-baris-divisi">
                 <label for="param-divisi-cari">Divisi</label>
-                <div class="pemilih-banyak param-pilih" id="param-divisi">
+                <div class="pemilih-banyak pemilih-mengalir param-pilih" id="param-divisi">
                     <div class="pemilih-chip"></div>
                     <input id="param-divisi-cari" class="pemilih-cari" type="text" placeholder="Cari/Pilih..." autocomplete="off" role="combobox" aria-expanded="false" aria-controls="param-divisi-daftar">
                     <ul id="param-divisi-daftar" class="jurnal-daftar-akun" role="listbox" hidden></ul>
@@ -238,7 +238,7 @@ pasangTampilan("dialog-parameter-laporan", /*html*/ `
             </div>
             <div class="baris-form" id="param-baris-program">
                 <label for="param-program-cari">Program</label>
-                <div class="pemilih-banyak param-pilih" id="param-program">
+                <div class="pemilih-banyak pemilih-mengalir param-pilih" id="param-program">
                     <div class="pemilih-chip"></div>
                     <input id="param-program-cari" class="pemilih-cari" type="text" placeholder="Cari/Pilih... (kosong = semua)" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="param-program-daftar">
                     <ul id="param-program-daftar" class="jurnal-daftar-akun" role="listbox" hidden></ul>
@@ -246,7 +246,7 @@ pasangTampilan("dialog-parameter-laporan", /*html*/ `
             </div>
             <div class="baris-form" id="param-baris-akun" hidden>
                 <label for="param-akun-cari">Akun</label>
-                <div class="pemilih-banyak param-pilih" id="param-akun">
+                <div class="pemilih-banyak pemilih-mengalir param-pilih" id="param-akun">
                     <div class="pemilih-chip"></div>
                     <input id="param-akun-cari" class="pemilih-cari" type="text" placeholder="Cari/Pilih... (kosong = semua)" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="param-akun-daftar">
                     <ul id="param-akun-daftar" class="jurnal-daftar-akun" role="listbox" hidden></ul>

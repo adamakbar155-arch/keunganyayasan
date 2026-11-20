@@ -1,5 +1,5 @@
 // ==================== Pengaturan: Log Aktivitas, Pengguna, Penomoran ====================
-// Berisi: Log Aktivitas (catatLog, waktuSekarang, penggunaAktif), halaman Pengguna (peran, kata sandi PBKDF2),
+// Berisi: Log Aktivitas (catatLog, waktuSekarang, penggunaAktif), halaman Pengguna (Jenis Akses, Akses Grup, kata sandi PBKDF2),
 // dan halaman Penomoran (aturan nomor otomatis: formatNomor, nomorBerikutnya, intipNomorBerikutnya, bacaPenomoran).
 // HTML-nya ada di fitur/pengaturan/tampilan.js. Dipanggil dari index.html sesudah fitur/kas-bank/kas-bank.js.
 // Fungsi di sini dipakai halaman lain saat dijalankan (bukan saat dimuat).
@@ -175,9 +175,21 @@ function tampilkanGalatPengguna(nama, pesan, kolomFokus) {
     if (kolomFokus) { kolomFokus.focus(); }
 }
 
-// Keterangan di bawah Jenis Akses mengikuti pilihan (seperti Accurate)
+// Keterangan di bawah Jenis Akses mengikuti pilihan (seperti Accurate). Akses Grup hanya untuk Operator.
 function terapkanJenisAkses() {
     document.getElementById("petunjuk-pg-jenis-akses").textContent = keteranganJenisAkses[jenisAksesDipilih()];
+    document.getElementById("baris-pg-akses-grup").hidden = jenisAksesDipilih() !== "operator";
+}
+
+// Pilihan Akses Grup (daftar grup dari umum/hak-akses.js; grup bisa berubah di halaman Akses Grup)
+var pilihAksesGrupPengguna = document.getElementById("pg-akses-grup");
+function isiPilihanAksesGrupPengguna(idTerpilih) {
+    var grup = bacaAksesGrup().sort(function (a, b) { return teksAman(a.nama).localeCompare(teksAman(b.nama), "id"); });
+    isiPilihan(pilihAksesGrupPengguna, grup, {
+        teks: function (g) { return teksAman(g.nama); },
+        kosong: "Tanpa Akses Grup (hanya Dashboard)",
+        terpilih: idTerpilih
+    });
 }
 pilihanJenisAkses.forEach(function (r) { r.addEventListener("change", terapkanJenisAkses); });
 
@@ -194,10 +206,11 @@ function aturKolomSandi(sedangMengubah) {
 // yang dicatat hanya KAPAN terakhir diatur.
 var labelPengguna = {
     nama: "Nama Lengkap", username: "Nama Pengguna", kontak: "Email/No Handphone",
-    jenisAkses: "Jenis Akses", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
+    jenisAkses: "Jenis Akses", aksesGrupId: "Akses Grup", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
 };
 var formatPengguna = {
     jenisAkses: function (kunci) { return NAMA_JENIS_AKSES[kunci] || kunci; },
+    aksesGrupId: function (id) { return id ? (namaAksesGrup(id) || "(grup sudah dihapus)") : ""; },
     nonAktif: function (nilai) { return nilai ? "Ya" : "Tidak"; },
     sandiDiatur: function (waktu) { return teksWaktuLog(waktu); }
 };
@@ -215,6 +228,8 @@ var modulPengguna = buatModulDaftar({
         { kunci: "jenisAkses", judul: "Jenis Akses", tampil: function (p) { return NAMA_JENIS_AKSES[jenisAksesPengguna(p)]; } },
         { kunci: "nonAktif", judul: "Non Aktif", tampil: function (p) { return p.nonAktif ? "Ya" : "Tidak"; } }
     ],
+    // Pilihan Akses Grup dimuat ulang setiap pindah tampilan (grup bisa baru dibuat atau dihapus di halaman Akses Grup)
+    saatTampil: function () { isiPilihanAksesGrupPengguna(pilihAksesGrupPengguna.value); },
     // Pengaman akun (PRD 6.12, 6.14): akun sendiri dan Administrator aktif terakhir tidak bisa dihapus
     alasanTolakHapus: function (p) {
         var s = bacaSesi();
@@ -231,6 +246,7 @@ var modulPengguna = buatModulDaftar({
         // Data Baru: Operator (bawaan Accurate). Ubah: Jenis Akses pengguna itu.
         var jenis = pengguna ? jenisAksesPengguna(pengguna) : "operator";
         pilihanJenisAkses.forEach(function (r) { r.checked = r.value === jenis; });
+        isiPilihanAksesGrupPengguna(pengguna ? teksAman(pengguna.aksesGrupId) : "");
         terapkanJenisAkses();
         kotakNonAktifPengguna.checked = pengguna ? !!pengguna.nonAktif : false;
         sembunyikanGalatPengguna();
@@ -306,6 +322,9 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         return;
     }
     data.jenisAkses = jenisAksesDipilih();
+    // Akses Grup hanya untuk Operator, dan hanya grup yang masih ada (bisa saja baru dihapus di tab lain)
+    var grupDipilih = pilihAksesGrupPengguna.value;
+    data.aksesGrupId = (data.jenisAkses === "operator" && grupDipilih && namaAksesGrup(grupDipilih)) ? grupDipilih : "";
     data.nonAktif = kotakNonAktifPengguna.checked;
 
     // Pengaman akun (PRD 6.12, 6.14): akun yang sedang dipakai tidak bisa dijadikan Non Aktif atau diturunkan menjadi

@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="umum/popup-dan-preferensi.css">
     <link rel="stylesheet" href="umum/halaman-daftar.css">
     <link rel="stylesheet" href="fitur/pengaturan/penomoran.css">
+    <link rel="stylesheet" href="fitur/akses-grup/akses-grup.css">
     <link rel="stylesheet" href="fitur/cetakan/cetakan.css">
     <link rel="stylesheet" href="fitur/akun/akun.css">
     <link rel="stylesheet" href="fitur/cadangan/cadangan.css">
@@ -95,6 +96,7 @@
                 <template data-tempat="tab-favorit"></template>
                 <template data-tempat="tab-log"></template>
                 <template data-tempat="tab-pengguna"></template>
+                <template data-tempat="tab-akses-grup"></template>
                 <template data-tempat="tab-penomoran"></template>
                 <template data-tempat="tab-cetakan"></template>
                 <template data-tempat="tab-cadangan"></template>
@@ -143,6 +145,8 @@
             <template data-tempat="isi-log"></template>
 
             <template data-tempat="isi-pengguna"></template>
+
+            <template data-tempat="isi-akses-grup"></template>
 
             <template data-tempat="isi-penomoran"></template>
 
@@ -234,6 +238,7 @@
     <script src="fitur/akun/tampilan.js"></script>
     <script src="fitur/master-data/tampilan.js"></script>
     <script src="fitur/pengaturan/tampilan.js"></script>
+    <script src="fitur/akses-grup/tampilan.js"></script>
     <script src="fitur/cetakan/tampilan.js"></script>
     <script src="fitur/cadangan/tampilan.js"></script>
     <script src="fitur/dashboard/tampilan.js"></script>
@@ -241,6 +246,8 @@
     <script src="umum/inti.js"></script>
     <script src="umum/alat.js"></script>
     <script src="umum/sandi.js"></script>
+    <!-- Daftar menu Hak Akses (PRD 6.14): dipakai halaman Pengguna, Akses Grup, dan penerapan hak -->
+    <script src="umum/hak-akses.js"></script>
     <!-- Berkas Excel (.xlsx) tanpa pustaka luar, dipakai unduhan laporan. -->
     <script src="umum/unduh-excel.js"></script>
     <script src="umum/preferensi.js"></script>
@@ -322,9 +329,11 @@
     <script src="fitur/laporan-bukti/laporan-bukti.js"></script>
     <script src="fitur/laporan-kas-donasi/laporan-kas-donasi.js"></script>
     <script src="fitur/laporan-buku-besar/laporan-buku-besar.js"></script>
-    <!-- Pengaturan (Log Aktivitas, Pengguna, Penomoran), Desain Cetakan, dan Cadangan Data ada di file sendiri.
+    <!-- Pengaturan (Log Aktivitas, Pengguna, Penomoran), Akses Grup, Desain Cetakan, dan Cadangan Data ada di file sendiri.
          Cadangan Data paling akhir, supaya semua halaman sudah mendaftarkan kunci datanya. -->
     <script src="fitur/pengaturan/pengaturan.js"></script>
+    <!-- Akses Grup (PRD 6.14): sesudah pengaturan.js (memakai modulPengguna dan catatLog) -->
+    <script src="fitur/akses-grup/akses-grup.js"></script>
     <script src="fitur/cetakan/cetakan.js"></script>
     <script src="fitur/cadangan/cadangan.js"></script>
     <!-- Isi/Hapus Data Contoh (PRD 6.13): sesudah semua fitur dan Cadangan Data (memakai muatUlangHalaman) -->

@@ -301,6 +301,13 @@ pasangTampilan("panel-pengaturan", /*html*/ `
                     </span>
                     <span class="kotak-label-menu">Pengguna</span>
                 </a>
+                <a href="#" class="kotak-menu" data-halaman="Akses Grup">
+                    <span class="kotak-ikon">
+                        <!-- Ikon perisai dengan tanda centang: hak akses grup (PRD 6.14) -->
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+                    </span>
+                    <span class="kotak-label-menu">Akses Grup</span>
+                </a>
                 <a href="#" class="kotak-menu" data-halaman="Penomoran">
                     <span class="kotak-ikon">
                         <!-- Ikon kotak berisi garis bernomor: penomoran -->

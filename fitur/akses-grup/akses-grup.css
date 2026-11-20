@@ -1,0 +1,37 @@
+/* fitur/akses-grup/akses-grup.css: halaman Akses Grup (PRD 6.14). HTML: fitur/akses-grup/tampilan.js. */
+
+/* Tab Hak Akses: kelompok menu di kiri, tabel di kanan; di layar sempit kelompok pindah ke atas */
+.hak-akses { display: flex; align-items: flex-start; gap: 16px; }
+.hak-kelompok { display: flex; flex-direction: column; flex: 0 0 170px; gap: 2px; padding: 6px; border: 1px solid var(--garis); border-radius: 10px; background: #f8fafd; }
+.hak-kelompok button { padding: 9px 10px; border: 0; border-radius: 6px; background: none; font: inherit; font-size: 0.9rem; color: var(--teks); text-align: left; cursor: pointer; }
+.hak-kelompok button:hover { background: #eef3fa; }
+.hak-kelompok button[aria-pressed="true"] { background: var(--biru); color: #fff; font-weight: 600; }
+.hak-kelompok button:focus-visible { outline: 3px solid var(--biru); outline-offset: 1px; }
+.hak-kanan { flex: 1; min-width: 0; }
+
+.hak-alat { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+/* Kotak Cari dan kolom pilihan Salin Hak (kotak pilihan berlabel bersama, umum/pemilih-opsi.js) sama tinggi dan sama gaya */
+#ag-cari, .hak-alat .pemilih-opsi input { padding: 8px 10px; font: inherit; font-size: 0.9rem; color: var(--teks); background: var(--putih);
+                                          border: 1px solid var(--garis); border-radius: 8px; }
+#ag-cari { flex: 1 1 180px; min-width: 0; }
+.hak-alat .pemilih-opsi { flex: 0 1 240px; width: auto; min-width: 0; }
+.hak-alat .pemilih-opsi input { width: 100%; padding-right: 32px; }
+.hak-alat .pemilih-opsi input:disabled { color: var(--teks-redup); background: #f1f4f8; }
+#ag-cari:focus, .hak-alat .pemilih-opsi input:focus { outline: none; border-color: var(--biru); box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2); }
+
+/* Tabel bisa digeser sendiri di layar sempit, supaya halaman tidak melebar */
+.hak-bungkus-tabel { overflow-x: auto; border: 1px solid var(--garis); border-radius: 10px; }
+.tabel-hak th, .tabel-hak td { padding: 9px 12px; }
+.tabel-hak th:not(:first-child), .tabel-hak td:not(:first-child) { width: 64px; text-align: center; }
+.tabel-hak input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--biru); cursor: pointer; }
+.tabel-hak input[type="checkbox"]:disabled { cursor: not-allowed; }
+/* Nama menu di tiap baris: tulisan biasa di latar putih (bukan gaya judul kolom) */
+.tabel-hak tbody th { font-weight: 500; color: var(--teks); background: none; border-bottom: 1px solid #e8edf4; }
+.tabel-hak .hak-pilih-semua th { padding-top: 6px; padding-bottom: 6px; font-weight: 500; font-size: 0.85rem; background: #f6f9fd; }
+.tabel-hak .hak-judul-kelompok th { padding-top: 6px; padding-bottom: 6px; font-size: 0.85rem; color: var(--teks-redup); background: #f8fafd; text-align: left; }
+.tabel-hak tr[hidden] { display: none; }
+
+@media (max-width: 760px) {
+    .hak-akses { flex-direction: column; align-items: stretch; }
+    .hak-kelompok { flex-direction: row; flex-wrap: wrap; flex-basis: auto; }
+}

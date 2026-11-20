@@ -19,6 +19,7 @@ var labelRingkasanCadangan = [
     { kunci: "daftarKaryawan", label: "Karyawan" },
     { kunci: "daftarGaji", label: "Gaji/Tunjangan" },
     { kunci: "daftarPengguna", label: "Pengguna" },
+    { kunci: "daftarAksesGrup", label: "Akses Grup" },
     { kunci: "daftarPenomoran", label: "Aturan penomoran" },
     { kunci: "daftarCetakan", label: "Desain cetakan" },
     { kunci: "daftarJurnal", label: "Jurnal Umum" },

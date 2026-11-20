@@ -13,8 +13,8 @@
 
 var KUNCI_DATA_CONTOH = "dataContoh";
 jenisKunciCadangan[KUNCI_DATA_CONTOH] = "objek";   // ikut Cadangan Data, supaya Hapus Data Contoh tetap bisa sesudah dipulihkan
-// Kunci yang TIDAK dikembalikan oleh Hapus Data Contoh
-var KUNCI_TETAP_DATA_CONTOH = ["daftarPengguna", "logAktivitas", KUNCI_DATA_CONTOH];
+// Kunci yang TIDAK dikembalikan oleh Hapus Data Contoh (Akses Grup ikut akun pengguna: anggotanya tersimpan di data Pengguna)
+var KUNCI_TETAP_DATA_CONTOH = ["daftarPengguna", "daftarAksesGrup", "logAktivitas", KUNCI_DATA_CONTOH];
 
 // ----- Kosong atau belum -----
 // "Kosong" = belum ada transaksi dan master data yang dibuat pengguna. Bagan akun awal, donatur bawaan Hamba Allah, desain cetakan

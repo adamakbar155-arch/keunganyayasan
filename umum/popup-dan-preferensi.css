@@ -583,6 +583,12 @@
 }
 
 .pemilih-akun:focus-within,
+/* .pemilih-mengalir: label pilihan berderet ke samping lalu turun, kolom cari mengisi sisa baris
+   (Divisi/Program/Akun di Parameter Laporan, Daftar Pengguna di Akses Grup) */
+.pemilih-mengalir { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; }
+.pemilih-mengalir .pemilih-chip { display: contents; }
+.pemilih-mengalir .pemilih-cari { flex: 1 1 140px; min-width: 0; }
+
 .pemilih-banyak:focus-within {
     border-color: var(--biru);
     box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.2);

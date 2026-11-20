@@ -76,7 +76,7 @@ function adalahAdministrator() {
 // Belum masuk atau akun tidak dikenal juga hanya melihat (aman).
 function hanyaLihat() { return !adalahAdministrator(); }
 // Halaman yang hanya boleh dibuka Administrator (PRD 6.14): id tab "pengguna", "preferensi", "cadangan"
-var HALAMAN_ADMINISTRATOR = ["pengguna", "preferensi", "cadangan"];
+var HALAMAN_ADMINISTRATOR = ["pengguna", "akses-grup", "preferensi", "cadangan"];
 function bolehBukaHalaman(nama) { return HALAMAN_ADMINISTRATOR.indexOf(nama) === -1 || adalahAdministrator(); }
 
 // Di index.html: periksa sesi sebelum apa pun tampil. Halaman disembunyikan dulu (kelas belum-masuk, umum/dasar.css)

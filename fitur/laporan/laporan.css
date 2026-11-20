@@ -51,10 +51,6 @@
 .param-subjudul { margin: 16px 0 12px; padding-bottom: 6px; font-size: 1.15rem; font-weight: 500; color: #374151;
     border-bottom: 1px solid var(--garis); }
 .dialog-parameter-laporan .baris-form { grid-template-columns: 110px minmax(0, 1fr); margin-bottom: 12px; }
-/* Label Divisi/Program berderet ke samping lalu turun, kolom cari mengisi sisa baris */
-.dialog-parameter-laporan .param-pilih { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; cursor: text; }
-.dialog-parameter-laporan .param-pilih .pemilih-chip { display: contents; }
-.dialog-parameter-laporan .param-pilih .pemilih-cari { flex: 1 1 140px; min-width: 0; }
 .param-centang { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
 .param-centang label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
 .param-centang input { width: 18px; height: 18px; margin: 0; accent-color: var(--biru); }

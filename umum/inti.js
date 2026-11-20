@@ -111,6 +111,7 @@ var panelPengaturan = document.getElementById("panel-pengaturan");
 pasangPopupMenu(panelPengaturan, "tombol-pengaturan", "tutup-pengaturan", {
     "Preferensi": function () { bukaTab("preferensi"); },
     "Pengguna": function () { bukaPenggunaBaru(); },
+    "Akses Grup": function () { bukaAksesGrupBaru(); },   // fitur/akses-grup/akses-grup.js
     "Penomoran": function () { bukaPenomoranBaru(); },
     "Desain Cetakan": function () { bukaCetakanBaru(); },
     "Cadangan Data": function () { bukaCadangan(); },
@@ -193,7 +194,7 @@ function tampilkanTab(nama) {
 
 // Buka tab: munculkan tombol tabnya (kalau masih tersembunyi), lalu tampilkan
 function bukaTab(nama) {
-    // Hak akses (PRD 6.14, umum/sesi.js): Pengguna, Preferensi, Cadangan Data hanya untuk Administrator
+    // Hak akses (PRD 6.14, umum/sesi.js): Pengguna, Akses Grup, Preferensi, Cadangan Data hanya untuk Administrator
     if (!bolehBukaHalaman(nama)) { tampilkanNotifikasi("Halaman ini hanya untuk Administrator.", "peringatan"); return; }
     var tab = document.getElementById("tab-" + nama);
     if (tab.hidden) {

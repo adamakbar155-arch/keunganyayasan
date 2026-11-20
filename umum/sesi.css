@@ -39,7 +39,8 @@ body.hanya-lihat #daftar-lampiran .tombol-garis-bahaya,
 body.hanya-lihat #lap-simpan,
 body.hanya-lihat #ec-simpan { display: none !important; }
 
-/* ----- Pengguna, Preferensi, Cadangan Data hanya untuk Administrator (PRD 6.14) ----- */
+/* ----- Pengguna, Akses Grup, Preferensi, Cadangan Data hanya untuk Administrator (PRD 6.14) ----- */
 body.bukan-administrator .kotak-menu[data-halaman="Pengguna"],
+body.bukan-administrator .kotak-menu[data-halaman="Akses Grup"],
 body.bukan-administrator .kotak-menu[data-halaman="Preferensi"],
 body.bukan-administrator .kotak-menu[data-halaman="Cadangan Data"] { display: none !important; }
