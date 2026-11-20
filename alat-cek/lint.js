@@ -5,7 +5,7 @@ const { ESLint } = require("eslint");
 const akar = path.join(__dirname, "..");
 // Skrip index.html, lalu skrip login.html yang belum ada (umum/sesi.js dan umum/sandi.js dipakai keduanya, cukup sekali),
 // supaya alat bersama yang hanya dipakai layar Masuk (misalnya mulaiSesi) tidak dianggap tidak terpakai
-const skripDari = (nama) => [...fs.readFileSync(path.join(akar, nama), "utf8").matchAll(/<script src="([^"]+\.js)"><\/script>/g)].map(m => m[1]);
+const skripDari = (nama) => [...fs.readFileSync(path.join(akar, nama), "utf8").matchAll(/<script src="([^"?]+\.js)(?:\?v=[^"]*)?"><\/script>/g)].map(m => m[1]);
 const berkas = skripDari("index.html");
 skripDari("login.html").forEach(b => { if (berkas.indexOf(b) === -1) { berkas.push(b); } });
 let teks = "";

@@ -3,7 +3,7 @@
 // Pencatatan Donasi, Pemindahan Dana. Pemakaian: node uji-formulir-bersih.js <jalur-jsdom> <jalur-index.html>
 const { JSDOM, VirtualConsole } = require(process.argv[2]);
 const fs = require("fs"), path = require("path");
-const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":]+\.js)"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
+const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":?]+\.js)(?:\?v=[^"]*)?"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
 const kesalahan = [];
 const vc = new VirtualConsole();
 vc.on("jsdomError", (e) => kesalahan.push("jsdomError: " + (e.detail || e.message)));

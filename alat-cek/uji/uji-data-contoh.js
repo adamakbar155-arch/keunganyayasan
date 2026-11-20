@@ -1,7 +1,7 @@
 // Uji J.27: Isi Data Contoh dan Hapus Data Contoh (PRD 6.13). Pemakaian: node uji-data-contoh.js <jalur-jsdom> <index.html>
 const { JSDOM, VirtualConsole } = require(process.argv[2]);
 const fs = require("fs"), path = require("path");
-const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":]+\.js)"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
+const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":?]+\.js)(?:\?v=[^"]*)?"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
 let lolos = 0, gagal = 0; const cek = (n, k, i) => { if (k) { lolos++; console.log("  ok    " + n); } else { gagal++; console.log("  GAGAL " + n + (i !== undefined ? " -> " + JSON.stringify(i) : "")); } };
 const kesalahan = []; const vc = new VirtualConsole();
 // jsdom tidak punya kanvas gambar: foto nota rekaan memang dilewati di sini (diuji di Chrome), jadi keluhan itu bukan galat aplikasi

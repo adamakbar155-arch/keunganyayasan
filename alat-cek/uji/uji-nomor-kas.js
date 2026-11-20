@@ -1,7 +1,7 @@
 // Uji H2.7c: No Bukti mengikuti Kas/Bank (PRD 6.3). Pemakaian: node uji-nomor-kas.js <jalur-jsdom> <index.html>
 const { JSDOM, VirtualConsole } = require(process.argv[2]);
 const fs = require("fs"), path = require("path");
-const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":]+\.js)"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
+const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":?]+\.js)(?:\?v=[^"]*)?"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
 const kesalahan = []; const vc = new VirtualConsole();
 vc.on("jsdomError", e => kesalahan.push(String(e.detail && e.detail.stack || e.detail || e.message)));
 const akun = [

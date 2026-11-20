@@ -2,7 +2,7 @@
 // Pemakaian: node uji-skrip.js <jalur-jsdom> <jalur-menu.html>
 const { JSDOM, VirtualConsole } = require(process.argv[2]);
 const fs = require("fs");
-const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":]+\.js)"><\/script>/g, (m, p) => "<script>" + require("fs").readFileSync(require("path").join(require("path").dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
+const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":?]+\.js)(?:\?v=[^"]*)?"><\/script>/g, (m, p) => "<script>" + require("fs").readFileSync(require("path").join(require("path").dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
 
 const kesalahan = [];
 const vc = new VirtualConsole();

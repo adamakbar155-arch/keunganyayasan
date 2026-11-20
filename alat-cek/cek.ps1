@@ -21,6 +21,10 @@ Get-ChildItem $akar -Recurse -Include *.js | Where-Object { $_.FullName -notmatc
 }
 "Sintaks: " + $(if ($salah) { "$salah berkas salah" } else { "semua benar" }); $masalah += $salah
 
+# 1b) Tanda versi alamat file di index.html dan login.html (Temuan 49, versi.js)
+node (Join-Path $a "versi.js") --periksa 2>&1 | ForEach-Object { "  " + $_ }
+if ($LASTEXITCODE) { $masalah++ }
+
 # 2) ESLint
 $o = node (Join-Path $a "lint.js") 2>&1
 $o | Where-Object { $_ -notmatch '^Berkas diperiksa' } | ForEach-Object { "  " + $_ }

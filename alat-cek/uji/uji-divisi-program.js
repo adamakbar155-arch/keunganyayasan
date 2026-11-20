@@ -1,7 +1,7 @@
 // Uji singkat Divisi dan Program (Master Data). Pemakaian: node uji-divisi-program.js <jalur-jsdom> <menu.html>
 const { JSDOM, VirtualConsole } = require(process.argv[2]);
 const fs = require("fs"), path = require("path");
-const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":]+\.js)"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
+const html = fs.readFileSync(process.argv[3], "utf8").replace(/<script src="([^":?]+\.js)(?:\?v=[^"]*)?"><\/script>/g, (m, p) => "<script>" + fs.readFileSync(path.join(path.dirname(process.argv[3]), p), "utf8") + "</script>").replace(/<link[^>]*>/g, "");
 const kesalahan = []; const vc = new VirtualConsole();
 vc.on("jsdomError", e => kesalahan.push(String(e.detail || e.message))); vc.on("warn", m => kesalahan.push("warn: " + m));
 const dom = new JSDOM(html, { runScripts: "dangerously", url: "https://uji.test/", virtualConsole: vc, pretendToBeVisual: true, beforeParse: require("./bantu-sesi.js").pasang }); /* masuk sebagai pengguna uji (J.25) */

@@ -13,7 +13,8 @@ powershell -File "alat-cek\cek.ps1" -cepat   # tanpa uji Chrome
 
 Hasil akhirnya `HASIL: SEMUA BERSIH` atau `HASIL: ADA n MASALAH`. Yang diperiksa, berurutan:
 
-1. **Sintaks** semua berkas .js aplikasi.
+1. **Sintaks** semua berkas .js aplikasi, lalu **tanda versi** (`versi.js --periksa`): setiap alamat file di index.html
+   dan login.html harus bertanda `?v=` yang sesuai dengan isi filenya (Temuan 49).
 2. **ESLint** (`lint.js`, aturannya di `eslint.config.js`): nama global yang ditulis dua kali, nama yang tidak dikenal,
    dan fungsi yang tidak dipakai di mana pun (kode mati).
 3. **Banding tangkapan layar** (`banding.js`): dashboard, setiap popup menu, dan setiap halaman, di lebar 1366 dan 390 px,
@@ -29,6 +30,18 @@ Banding akan melaporkan `BEDA`. Lihat foto barunya di `.sementara/banding/`. Kal
 ```
 node alat-cek\banding.js acuan
 ```
+
+## Sebelum dikirim ke GitHub: tanda versi
+
+GitHub Pages menyuruh browser menyimpan file selama 10 menit, jadi perubahan bisa belum terlihat. Karena itu setiap
+alamat file di index.html dan login.html diberi `?v=` + sidik isi file. Sesudah mengubah file apa pun, perbarui tandanya:
+
+```
+node alat-cek\versi.js
+```
+
+File yang isinya berubah mendapat alamat baru (browser mengambilnya lagi); file lain tetap diambil dari simpanan browser.
+Kalau lupa, `cek.ps1` melaporkan `BELUM SESUAI`.
 
 ## Pemasangan (sekali saja, butuh internet)
 

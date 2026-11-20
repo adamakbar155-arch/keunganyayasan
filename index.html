@@ -9,45 +9,47 @@
          isian yang tidak sengaja dipasang sebagai HTML, skrip di dalamnya tetap tidak bisa berjalan. -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src blob:; base-uri 'none'; form-action 'none'">
     <title>Dashboard – Aplikasi Keuangan</title>
+    <!-- Ikon tab (Temuan 49) -->
+    <link rel="icon" type="image/svg+xml" href="ikon.svg?v=1ee502ca">
     <!-- Huruf Inter disimpan di umum/huruf/ (tanpa internet). Kalau gagal dimuat, browser memakai system-ui -->
-    <link rel="stylesheet" href="umum/huruf.css">
+    <link rel="stylesheet" href="umum/huruf.css?v=46d13d0e">
     <!-- Gaya tampilan: umum/ = dipakai bersama, fitur/<nama>/ = khusus satu fitur.
          URUTAN tag link di bawah menentukan aturan mana yang menang, jadi jangan ditukar. -->
-    <link rel="stylesheet" href="umum/dasar.css">
-    <link rel="stylesheet" href="umum/popup-dan-preferensi.css">
-    <link rel="stylesheet" href="umum/halaman-daftar.css">
-    <link rel="stylesheet" href="fitur/pengaturan/penomoran.css">
-    <link rel="stylesheet" href="fitur/akses-grup/akses-grup.css">
-    <link rel="stylesheet" href="fitur/cetakan/cetakan.css">
-    <link rel="stylesheet" href="fitur/akun/akun.css">
-    <link rel="stylesheet" href="fitur/cadangan/cadangan.css">
-    <link rel="stylesheet" href="fitur/cetakan/editor.css">
-    <link rel="stylesheet" href="umum/layar-sempit.css">
-    <link rel="stylesheet" href="umum/isi-halaman.css">
-    <link rel="stylesheet" href="fitur/dashboard/dashboard.css">
-    <link rel="stylesheet" href="fitur/jurnal/jurnal.css">
-    <link rel="stylesheet" href="umum/kalender.css">
-    <link rel="stylesheet" href="umum/lampiran.css">
-    <link rel="stylesheet" href="fitur/gaji/gaji.css">
-    <link rel="stylesheet" href="umum/transaksi-kas.css">
-    <link rel="stylesheet" href="fitur/pembayaran/pembayaran.css">
-    <link rel="stylesheet" href="fitur/transfer/transfer.css">
-    <link rel="stylesheet" href="umum/histori.css">
-    <link rel="stylesheet" href="fitur/rekonsiliasi-bank/rekonsiliasi-bank.css">
-    <link rel="stylesheet" href="fitur/donatur/donatur.css">
-    <link rel="stylesheet" href="fitur/target-donasi/target-donasi.css">
-    <link rel="stylesheet" href="fitur/pemindahan-dana/pemindahan-dana.css">
-    <link rel="stylesheet" href="fitur/laporan/laporan.css">
-    <link rel="stylesheet" href="fitur/laporan-bukti/laporan-bukti.css">
-    <link rel="stylesheet" href="fitur/anggaran/anggaran.css">
-    <link rel="stylesheet" href="fitur/monitor-anggaran/monitor-anggaran.css">
-    <link rel="stylesheet" href="fitur/transfer-anggaran/transfer-anggaran.css">
-    <link rel="stylesheet" href="fitur/aset-tetap/aset-tetap.css">
-    <link rel="stylesheet" href="fitur/favorit/favorit.css">
-    <link rel="stylesheet" href="umum/halaman-pdf.css">
-    <link rel="stylesheet" href="umum/sesi.css">
+    <link rel="stylesheet" href="umum/dasar.css?v=fda4dc27">
+    <link rel="stylesheet" href="umum/popup-dan-preferensi.css?v=b40f324a">
+    <link rel="stylesheet" href="umum/halaman-daftar.css?v=ba162769">
+    <link rel="stylesheet" href="fitur/pengaturan/penomoran.css?v=2bdd1c29">
+    <link rel="stylesheet" href="fitur/akses-grup/akses-grup.css?v=4ab700db">
+    <link rel="stylesheet" href="fitur/cetakan/cetakan.css?v=8f9016f3">
+    <link rel="stylesheet" href="fitur/akun/akun.css?v=0f1a0f40">
+    <link rel="stylesheet" href="fitur/cadangan/cadangan.css?v=7f3f538c">
+    <link rel="stylesheet" href="fitur/cetakan/editor.css?v=84aaa75a">
+    <link rel="stylesheet" href="umum/layar-sempit.css?v=52c47a4a">
+    <link rel="stylesheet" href="umum/isi-halaman.css?v=29a1208d">
+    <link rel="stylesheet" href="fitur/dashboard/dashboard.css?v=6bff96a2">
+    <link rel="stylesheet" href="fitur/jurnal/jurnal.css?v=66fb0402">
+    <link rel="stylesheet" href="umum/kalender.css?v=e991fb21">
+    <link rel="stylesheet" href="umum/lampiran.css?v=30264107">
+    <link rel="stylesheet" href="fitur/gaji/gaji.css?v=356bae16">
+    <link rel="stylesheet" href="umum/transaksi-kas.css?v=f8b430dc">
+    <link rel="stylesheet" href="fitur/pembayaran/pembayaran.css?v=c0427077">
+    <link rel="stylesheet" href="fitur/transfer/transfer.css?v=24a07c4e">
+    <link rel="stylesheet" href="umum/histori.css?v=bc6b9548">
+    <link rel="stylesheet" href="fitur/rekonsiliasi-bank/rekonsiliasi-bank.css?v=0f4afa0a">
+    <link rel="stylesheet" href="fitur/donatur/donatur.css?v=06211a3e">
+    <link rel="stylesheet" href="fitur/target-donasi/target-donasi.css?v=cad76cb2">
+    <link rel="stylesheet" href="fitur/pemindahan-dana/pemindahan-dana.css?v=bbc42503">
+    <link rel="stylesheet" href="fitur/laporan/laporan.css?v=4bcac60c">
+    <link rel="stylesheet" href="fitur/laporan-bukti/laporan-bukti.css?v=2476ea4a">
+    <link rel="stylesheet" href="fitur/anggaran/anggaran.css?v=548364af">
+    <link rel="stylesheet" href="fitur/monitor-anggaran/monitor-anggaran.css?v=76757930">
+    <link rel="stylesheet" href="fitur/transfer-anggaran/transfer-anggaran.css?v=165b9cf1">
+    <link rel="stylesheet" href="fitur/aset-tetap/aset-tetap.css?v=658a9ba3">
+    <link rel="stylesheet" href="fitur/favorit/favorit.css?v=54e57a5a">
+    <link rel="stylesheet" href="umum/halaman-pdf.css?v=d257d8e0">
+    <link rel="stylesheet" href="umum/sesi.css?v=069585b7">
     <!-- Sesi masuk (PRD 6.12) diperiksa PALING AWAL: belum masuk = pindah ke login.html sebelum aplikasi tampil -->
-    <script src="umum/sesi.js"></script>
+    <script src="umum/sesi.js?v=c53f93d5"></script>
     <!-- index.html hanya KERANGKA. Setiap <template data-tempat="..."> diganti HTML dari file tampilan:
          - umum/tampilan-kerangka.js : bilah atas, menu samping
          - umum/tampilan-popup.js    : popup menu (Pengaturan, Master Data, Buku Besar, Kas & Bank) dan konfirmasi
@@ -204,153 +206,153 @@
     <!-- ===== Skrip aplikasi: umum/ = dipakai bersama, fitur/<nama>/ = satu fitur. URUTAN PENTING: file di bawah memakai isi file di atasnya.
          Semua file memakai skrip biasa (bukan module) supaya tetap jalan saat index.html dibuka langsung dari komputer. ===== -->
     <!-- Pemasang tampilan fitur: harus paling awal (lihat penjelasan di dalam filenya). -->
-    <script src="umum/pasang-tampilan.js"></script>
-    <script src="umum/tampilan-kerangka.js"></script>
-    <script src="umum/tampilan-popup.js"></script>
+    <script src="umum/pasang-tampilan.js?v=d2f321b0"></script>
+    <script src="umum/tampilan-kerangka.js?v=64d57838"></script>
+    <script src="umum/tampilan-popup.js?v=1a04758a"></script>
     <!-- Cetakan HTML bersama transaksi Kas/Bank: harus sebelum tampilan.js Pembayaran dan Penerimaan -->
-    <script src="umum/tampilan-transaksi-kas.js"></script>
-    <script src="umum/tampilan-histori.js"></script>
-    <script src="fitur/jurnal/tampilan.js"></script>
-    <script src="fitur/gaji/tampilan.js"></script>
-    <script src="fitur/pembayaran/tampilan.js"></script>
-    <script src="fitur/penerimaan/tampilan.js"></script>
-    <script src="fitur/transfer/tampilan.js"></script>
-    <script src="fitur/histori-bank/tampilan.js"></script>
-    <script src="fitur/histori-akun/tampilan.js"></script>
-    <script src="fitur/kategori-donasi/tampilan.js"></script>
-    <script src="fitur/donatur/tampilan.js"></script>
-    <script src="fitur/pencatatan-donasi/tampilan.js"></script>
-    <script src="fitur/target-donasi/tampilan.js"></script>
-    <script src="fitur/pemindahan-dana/tampilan.js"></script>
-    <script src="fitur/rekonsiliasi-bank/tampilan.js"></script>
-    <script src="fitur/laporan/tampilan.js"></script>
-    <script src="fitur/laporan-bukti/tampilan.js"></script>
-    <script src="fitur/anggaran/tampilan.js"></script>
-    <script src="fitur/monitor-anggaran/tampilan.js"></script>
-    <script src="fitur/transfer-anggaran/tampilan.js"></script>
-    <script src="fitur/log-jurnal/tampilan.js"></script>
-    <script src="fitur/aset-tetap/tampilan.js"></script>
-    <script src="fitur/kategori-aset/tampilan.js"></script>
-    <script src="fitur/penyusutan/tampilan.js"></script>
-    <script src="fitur/lepas-aset/tampilan.js"></script>
-    <script src="fitur/favorit/tampilan.js"></script>
-    <script src="fitur/cetak-bukti/tampilan.js"></script>
-    <script src="fitur/akun/tampilan.js"></script>
-    <script src="fitur/master-data/tampilan.js"></script>
-    <script src="fitur/pengaturan/tampilan.js"></script>
-    <script src="fitur/akses-grup/tampilan.js"></script>
-    <script src="fitur/cetakan/tampilan.js"></script>
-    <script src="fitur/cadangan/tampilan.js"></script>
-    <script src="fitur/dashboard/tampilan.js"></script>
-    <script src="fitur/preferensi/tampilan.js"></script>
-    <script src="umum/inti.js"></script>
-    <script src="umum/alat.js"></script>
-    <script src="umum/sandi.js"></script>
+    <script src="umum/tampilan-transaksi-kas.js?v=8b33d1dd"></script>
+    <script src="umum/tampilan-histori.js?v=13eb1847"></script>
+    <script src="fitur/jurnal/tampilan.js?v=2bb8923d"></script>
+    <script src="fitur/gaji/tampilan.js?v=54d0d34e"></script>
+    <script src="fitur/pembayaran/tampilan.js?v=4360c6b9"></script>
+    <script src="fitur/penerimaan/tampilan.js?v=5fbf294f"></script>
+    <script src="fitur/transfer/tampilan.js?v=f0c02448"></script>
+    <script src="fitur/histori-bank/tampilan.js?v=2f1383ad"></script>
+    <script src="fitur/histori-akun/tampilan.js?v=5ee96195"></script>
+    <script src="fitur/kategori-donasi/tampilan.js?v=99d2c546"></script>
+    <script src="fitur/donatur/tampilan.js?v=bc5df9e7"></script>
+    <script src="fitur/pencatatan-donasi/tampilan.js?v=595903ad"></script>
+    <script src="fitur/target-donasi/tampilan.js?v=f7d35ea0"></script>
+    <script src="fitur/pemindahan-dana/tampilan.js?v=62cce546"></script>
+    <script src="fitur/rekonsiliasi-bank/tampilan.js?v=465f3165"></script>
+    <script src="fitur/laporan/tampilan.js?v=51b591a1"></script>
+    <script src="fitur/laporan-bukti/tampilan.js?v=d9079f8a"></script>
+    <script src="fitur/anggaran/tampilan.js?v=51824856"></script>
+    <script src="fitur/monitor-anggaran/tampilan.js?v=d9175449"></script>
+    <script src="fitur/transfer-anggaran/tampilan.js?v=4873606f"></script>
+    <script src="fitur/log-jurnal/tampilan.js?v=c08b7ae7"></script>
+    <script src="fitur/aset-tetap/tampilan.js?v=d0197557"></script>
+    <script src="fitur/kategori-aset/tampilan.js?v=f822a1f0"></script>
+    <script src="fitur/penyusutan/tampilan.js?v=2f3e16b6"></script>
+    <script src="fitur/lepas-aset/tampilan.js?v=fe8008c9"></script>
+    <script src="fitur/favorit/tampilan.js?v=c0ace9ca"></script>
+    <script src="fitur/cetak-bukti/tampilan.js?v=bcbd0e84"></script>
+    <script src="fitur/akun/tampilan.js?v=e2918327"></script>
+    <script src="fitur/master-data/tampilan.js?v=b97b3afd"></script>
+    <script src="fitur/pengaturan/tampilan.js?v=c5d962bd"></script>
+    <script src="fitur/akses-grup/tampilan.js?v=7bfde0e3"></script>
+    <script src="fitur/cetakan/tampilan.js?v=8300b5c5"></script>
+    <script src="fitur/cadangan/tampilan.js?v=da4229ab"></script>
+    <script src="fitur/dashboard/tampilan.js?v=dbba2842"></script>
+    <script src="fitur/preferensi/tampilan.js?v=c884e493"></script>
+    <script src="umum/inti.js?v=2a18a364"></script>
+    <script src="umum/alat.js?v=19a8c1af"></script>
+    <script src="umum/sandi.js?v=d105415f"></script>
     <!-- Daftar menu Hak Akses (PRD 6.14): dipakai halaman Pengguna, Akses Grup, dan penerapan hak -->
-    <script src="umum/hak-akses.js"></script>
+    <script src="umum/hak-akses.js?v=2f4a249f"></script>
     <!-- Berkas Excel (.xlsx) tanpa pustaka luar, dipakai unduhan laporan. -->
-    <script src="umum/unduh-excel.js"></script>
-    <script src="umum/preferensi.js"></script>
-    <script src="umum/komponen-daftar.js"></script>
-    <script src="umum/komponen-transaksi.js"></script>
-    <script src="umum/lampiran.js"></script>
+    <script src="umum/unduh-excel.js?v=baef7234"></script>
+    <script src="umum/preferensi.js?v=45e833da"></script>
+    <script src="umum/komponen-daftar.js?v=6157b400"></script>
+    <script src="umum/komponen-transaksi.js?v=d8afcb34"></script>
+    <script src="umum/lampiran.js?v=f01cae3f"></script>
     <!-- Kotak pilihan berlabel yang bisa dicari (PRD 5.1). Sesudah umum/komponen-transaksi.js, sebelum skrip fitur. -->
-    <script src="umum/pemilih-opsi.js"></script>
-    <script src="umum/komponen-transaksi-kas.js"></script>
-    <script src="umum/komponen-histori.js"></script>
+    <script src="umum/pemilih-opsi.js?v=9f705d2d"></script>
+    <script src="umum/komponen-transaksi-kas.js?v=1b2a49a7"></script>
+    <script src="umum/komponen-histori.js?v=ddf915d3"></script>
     <!-- Master Data (Divisi, Program, Karyawan, Gaji/Tunjangan) ada di file sendiri. Harus sebelum fitur/akun/akun.js. -->
-    <script src="fitur/master-data/master-data.js"></script>
+    <script src="fitur/master-data/master-data.js?v=ad7a8025"></script>
     <!-- Akun Perkiraan ada di file sendiri. Harus SEBELUM fitur/jurnal/jurnal.js (jurnal memakai perhitungan saldo dan daftar akun). -->
-    <script src="fitur/akun/akun.js"></script>
+    <script src="fitur/akun/akun.js?v=a0c4cf52"></script>
     <!-- Jurnal Umum (termasuk lampiran jurnal) ada di file sendiri supaya index.html tidak terlalu panjang.
          Urutan tag script penting: file ini memakai fungsi bersama dari skrip di atasnya, dan skrip di bawahnya memakai isinya. -->
-    <script src="fitur/jurnal/jurnal.js"></script>
+    <script src="fitur/jurnal/jurnal.js?v=fe5c3fb8"></script>
     <!-- Pencatatan Gaji ada di file sendiri. Harus sesudah fitur/jurnal/jurnal.js (memakai isinya). -->
-    <script src="fitur/gaji/gaji.js"></script>
+    <script src="fitur/gaji/gaji.js?v=f78a391e"></script>
     <!-- Pembayaran ada di folder sendiri. Harus sesudah fitur/gaji/gaji.js (memakai isi jurnal.js dan gaji.js).
          Popup menu Kas & Bank (kas-bank.js) membuka Pembayaran; fitur Kas & Bank berikutnya (Penerimaan, Transfer) juga di folder sendiri. -->
-    <script src="fitur/pembayaran/pembayaran.js"></script>
-    <script src="fitur/penerimaan/penerimaan.js"></script>
-    <script src="fitur/transfer/transfer.js"></script>
-    <script src="fitur/histori-bank/histori-bank.js"></script>
-    <script src="fitur/histori-akun/histori-akun.js"></script>
-    <script src="fitur/rekonsiliasi-bank/rekonsiliasi-bank.js"></script>
-    <script src="fitur/kas-bank/kas-bank.js"></script>
+    <script src="fitur/pembayaran/pembayaran.js?v=e8132bb1"></script>
+    <script src="fitur/penerimaan/penerimaan.js?v=fd2e4f77"></script>
+    <script src="fitur/transfer/transfer.js?v=8e43f36c"></script>
+    <script src="fitur/histori-bank/histori-bank.js?v=511a4a6a"></script>
+    <script src="fitur/histori-akun/histori-akun.js?v=c498af25"></script>
+    <script src="fitur/rekonsiliasi-bank/rekonsiliasi-bank.js?v=0e3f76ac"></script>
+    <script src="fitur/kas-bank/kas-bank.js?v=5740e65a"></script>
     <!-- Popup menu Donasi (PRD 6.1). Fitur Donasi berikutnya dibuat di folder sendiri. -->
-    <script src="fitur/donasi/donasi.js"></script>
+    <script src="fitur/donasi/donasi.js?v=d87b9e33"></script>
     <!-- Kategori Donasi (membuat akun donasi, PRD 6.1). Sesudah fitur/akun/akun.js (memakai petaAkun dan buatKodeAkun). -->
-    <script src="fitur/kategori-donasi/kategori-donasi.js"></script>
+    <script src="fitur/kategori-donasi/kategori-donasi.js?v=35ee32dd"></script>
     <!-- Donatur (PRD 6.1): data pemberi donasi, dibuka dari kotak Donatur di popup Donasi. -->
-    <script src="fitur/donatur/donatur.js"></script>
+    <script src="fitur/donatur/donatur.js?v=8a909f18"></script>
     <!-- Pencatatan Donasi (PRD 6.1). Sesudah fitur/donatur/donatur.js (namaDonaturDariId) dan fitur/jurnal/jurnal.js. -->
-    <script src="fitur/pencatatan-donasi/pencatatan-donasi.js"></script>
+    <script src="fitur/pencatatan-donasi/pencatatan-donasi.js?v=2e1056e7"></script>
     <!-- Target Donasi (PRD 6.1): target pengumpulan per Program. Sesudah fitur/master-data/master-data.js (Program). -->
-    <script src="fitur/target-donasi/target-donasi.js"></script>
+    <script src="fitur/target-donasi/target-donasi.js?v=a8f03963"></script>
     <!-- Pemindahan Dana (PRD 6.1). Sesudah fitur/akun/akun.js (sisaDanaProgram) dan fitur/jurnal/jurnal.js (jurnalMilik). -->
-    <script src="fitur/pemindahan-dana/pemindahan-dana.js"></script>
+    <script src="fitur/pemindahan-dana/pemindahan-dana.js?v=2cc29f77"></script>
     <!-- Anggaran (PRD 6.5): rencana per bulan, tanpa jurnal. Sesudah fitur/master-data/master-data.js dan umum/komponen-transaksi.js. -->
-    <script src="fitur/anggaran/hitung.js"></script>
-    <script src="fitur/anggaran/anggaran.js"></script>
-    <script src="fitur/monitor-anggaran/monitor-anggaran.js"></script>
-    <script src="fitur/transfer-anggaran/transfer-anggaran.js"></script>
-    <script src="fitur/laporan-anggaran/laporan-anggaran.js"></script>
-    <script src="fitur/log-jurnal/log-jurnal.js"></script>
+    <script src="fitur/anggaran/hitung.js?v=004a2e72"></script>
+    <script src="fitur/anggaran/anggaran.js?v=f66db6bf"></script>
+    <script src="fitur/monitor-anggaran/monitor-anggaran.js?v=191febf9"></script>
+    <script src="fitur/transfer-anggaran/transfer-anggaran.js?v=6520ff7d"></script>
+    <script src="fitur/laporan-anggaran/laporan-anggaran.js?v=1274db7d"></script>
+    <script src="fitur/log-jurnal/log-jurnal.js?v=dce90cc0"></script>
     <!-- Aset Tetap (PRD 6.6). hitung.js lebih dulu; sesudah Anggaran dan Jurnal Umum karena memakai alat keduanya. -->
-    <script src="fitur/aset-tetap/hitung.js"></script>
-    <script src="fitur/aset-tetap/aset-tetap.js"></script>
-    <script src="fitur/kategori-aset/kategori-aset.js"></script>
-    <script src="fitur/penyusutan/penyusutan.js"></script>
-    <script src="fitur/lepas-aset/lepas-aset.js"></script>
-    <script src="fitur/laporan-aset/laporan-aset.js"></script>
+    <script src="fitur/aset-tetap/hitung.js?v=3f923534"></script>
+    <script src="fitur/aset-tetap/aset-tetap.js?v=d6dd7f52"></script>
+    <script src="fitur/kategori-aset/kategori-aset.js?v=0434b376"></script>
+    <script src="fitur/penyusutan/penyusutan.js?v=8e58a3c5"></script>
+    <script src="fitur/lepas-aset/lepas-aset.js?v=0575cbcc"></script>
+    <script src="fitur/laporan-aset/laporan-aset.js?v=062c0fa1"></script>
     <!-- Menu Laporan (PRD 7). Laporan-laporannya dibuat di folder sendiri dan didaftarkan di DAFTAR_LAPORAN. -->
-    <script src="fitur/laporan/laporan.js"></script>
+    <script src="fitur/laporan/laporan.js?v=11cc7c02"></script>
     <!-- Jendela Parameter Laporan (dipakai bersama laporan ringkasan). Sesudah fitur/master-data/master-data.js (Divisi, Program). -->
-    <script src="fitur/laporan/parameter.js"></script>
+    <script src="fitur/laporan/parameter.js?v=c872c4bb"></script>
     <!-- Kertas hasil laporan (kepala, filter, kaki, cetak), dipakai bersama laporan ringkasan. -->
-    <script src="fitur/laporan/kertas.js"></script>
-    <script src="fitur/laporan/pdf-laporan.js"></script>
+    <script src="fitur/laporan/kertas.js?v=725ff6c2"></script>
+    <script src="fitur/laporan/pdf-laporan.js?v=126e0a37"></script>
     <!-- Jendela Modifikasi: ukuran kertas dan margin per laporan. -->
-    <script src="fitur/laporan/modifikasi.js"></script>
+    <script src="fitur/laporan/modifikasi.js?v=4bcaab62"></script>
     <!-- Daftar transaksi di balik satu baris laporan (klik baris). -->
-    <script src="fitur/laporan/rincian-baris.js"></script>
+    <script src="fitur/laporan/rincian-baris.js?v=599e9f8b"></script>
     <!-- Pohon akun bertingkat dan tabel laporan (angka "-", kurung, garis akuntansi), dipakai bersama laporan ringkasan. -->
-    <script src="fitur/laporan/pohon.js"></script>
+    <script src="fitur/laporan/pohon.js?v=e9f356e4"></script>
     <!-- Hitungan bersama laporan (saldo per tanggal, aset neto, Pemindahan Dana) dan Laporan Tersimpan. -->
-    <script src="fitur/laporan/hitung.js"></script>
-    <script src="fitur/laporan/tersimpan.js"></script>
+    <script src="fitur/laporan/hitung.js?v=d6d816f7"></script>
+    <script src="fitur/laporan/tersimpan.js?v=e9d8a339"></script>
     <!-- Laporan (PRD 7), masing-masing di foldernya sendiri. Sesudah fitur/laporan/ (alat bersama) dan fitur/akun/akun.js (jurnal, akun). -->
-    <script src="fitur/penghasilan-komprehensif/penghasilan-komprehensif.js"></script>
-    <script src="fitur/posisi-keuangan/posisi-keuangan.js"></script>
-    <script src="fitur/perubahan-aset-neto/perubahan-aset-neto.js"></script>
-    <script src="fitur/arus-kas/arus-kas.js"></script>
-    <script src="fitur/laporan-program/laporan-program.js"></script>
-    <script src="fitur/laporan-rincian/laporan-rincian.js"></script>
+    <script src="fitur/penghasilan-komprehensif/penghasilan-komprehensif.js?v=20e0f9fb"></script>
+    <script src="fitur/posisi-keuangan/posisi-keuangan.js?v=a5f9253d"></script>
+    <script src="fitur/perubahan-aset-neto/perubahan-aset-neto.js?v=3710395f"></script>
+    <script src="fitur/arus-kas/arus-kas.js?v=a72b4073"></script>
+    <script src="fitur/laporan-program/laporan-program.js?v=5fe69be8"></script>
+    <script src="fitur/laporan-rincian/laporan-rincian.js?v=31f3d379"></script>
     <!-- Bukti Pengeluaran (PRD 5.4): sesudah laporan-rincian.js (definisi pengeluaran) dan umum/lampiran.js -->
-    <script src="fitur/laporan-bukti/laporan-bukti.js"></script>
-    <script src="fitur/laporan-kas-donasi/laporan-kas-donasi.js"></script>
-    <script src="fitur/laporan-buku-besar/laporan-buku-besar.js"></script>
+    <script src="fitur/laporan-bukti/laporan-bukti.js?v=f933ca60"></script>
+    <script src="fitur/laporan-kas-donasi/laporan-kas-donasi.js?v=49485ab9"></script>
+    <script src="fitur/laporan-buku-besar/laporan-buku-besar.js?v=91e9423c"></script>
     <!-- Pengaturan (Log Aktivitas, Pengguna, Penomoran), Akses Grup, Desain Cetakan, dan Cadangan Data ada di file sendiri.
          Cadangan Data paling akhir, supaya semua halaman sudah mendaftarkan kunci datanya. -->
-    <script src="fitur/pengaturan/pengaturan.js"></script>
+    <script src="fitur/pengaturan/pengaturan.js?v=4afecd62"></script>
     <!-- Akses Grup (PRD 6.14): sesudah pengaturan.js (memakai modulPengguna dan catatLog) -->
-    <script src="fitur/akses-grup/akses-grup.js"></script>
-    <script src="fitur/cetakan/cetakan.js"></script>
-    <script src="fitur/cadangan/cadangan.js"></script>
+    <script src="fitur/akses-grup/akses-grup.js?v=e482d8ea"></script>
+    <script src="fitur/cetakan/cetakan.js?v=ce3490fe"></script>
+    <script src="fitur/cadangan/cadangan.js?v=2214cecb"></script>
     <!-- Isi/Hapus Data Contoh (PRD 6.13): sesudah semua fitur dan Cadangan Data (memakai muatUlangHalaman) -->
-    <script src="fitur/data-contoh/data-contoh.js"></script>
+    <script src="fitur/data-contoh/data-contoh.js?v=1087598d"></script>
     <!-- Pintasan keyboard (PRD 6.11): sesudah semua halaman dan umum/komponen-daftar.js -->
-    <script src="umum/pintasan.js"></script>
+    <script src="umum/pintasan.js?v=fbd2bd65"></script>
     <!-- Menu pengguna, Keluar, keluar otomatis 40 menit, dan hak akses peran (PRD 6.12, 5.8) -->
-    <script src="umum/sesi-aplikasi.js"></script>
+    <script src="umum/sesi-aplikasi.js?v=90c9a16c"></script>
     <!-- Transaksi Favorit (PRD 6.8): sesudah semua formulir transaksi -->
-    <script src="fitur/favorit/favorit.js"></script>
+    <script src="fitur/favorit/favorit.js?v=5021c21d"></script>
     <!-- Cetak Bukti (PRD 6.9): sesudah semua formulir transaksi dan Desain Cetakan -->
-    <script src="umum/buat-pdf.js"></script>
-    <script src="umum/pdf-tabel.js"></script>
-    <script src="umum/halaman-pdf.js"></script>
-    <script src="fitur/cetak-bukti/pdf-bukti.js"></script>
-    <script src="fitur/cetak-bukti/cetak-bukti.js"></script>
+    <script src="umum/buat-pdf.js?v=f3e69daf"></script>
+    <script src="umum/pdf-tabel.js?v=b87ca5e4"></script>
+    <script src="umum/halaman-pdf.js?v=50875ef5"></script>
+    <script src="fitur/cetak-bukti/pdf-bukti.js?v=92bc0192"></script>
+    <script src="fitur/cetak-bukti/cetak-bukti.js?v=d864f4ec"></script>
     <!-- Dashboard (PRD 6.7): paling akhir, karena langsung menggambar widget memakai alat dari hampir semua fitur -->
-    <script src="fitur/dashboard/dashboard.js"></script>
+    <script src="fitur/dashboard/dashboard.js?v=e7797714"></script>
 </body>
 </html>
