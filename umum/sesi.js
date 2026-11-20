@@ -75,9 +75,15 @@ function adalahAdministrator() {
 // Hanya Administrator yang boleh mengubah data. Operator sementara hanya melihat, sampai hak Akses Grup berlaku (J.31).
 // Belum masuk atau akun tidak dikenal juga hanya melihat (aman).
 function hanyaLihat() { return !adalahAdministrator(); }
-// Halaman yang hanya boleh dibuka Administrator (PRD 6.14): id tab "pengguna", "preferensi", "cadangan"
+// Halaman yang hanya boleh dibuka Administrator (PRD 6.14): id tab "pengguna", "akses-grup", "preferensi", "cadangan"
 var HALAMAN_ADMINISTRATOR = ["pengguna", "akses-grup", "preferensi", "cadangan"];
-function bolehBukaHalaman(nama) { return HALAMAN_ADMINISTRATOR.indexOf(nama) === -1 || adalahAdministrator(); }
+// Halaman lain untuk Operator mengikuti centang Aktif di Akses Grup-nya (bolehHalamanOperator, umum/hak-akses.js).
+// Kalau file itu tidak dimuat, Operator hanya boleh Dashboard (aman).
+function bolehBukaHalaman(nama) {
+    if (adalahAdministrator()) { return true; }
+    if (HALAMAN_ADMINISTRATOR.indexOf(nama) !== -1) { return false; }
+    return typeof bolehHalamanOperator === "function" ? bolehHalamanOperator(nama) : nama === "dashboard";
+}
 
 // Di index.html: periksa sesi sebelum apa pun tampil. Halaman disembunyikan dulu (kelas belum-masuk, umum/dasar.css)
 // supaya isi aplikasi tidak sempat terlihat sebelum pindah.

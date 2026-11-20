@@ -64,7 +64,18 @@ function teksPeriodeLaporan(lap, param) {
 }
 
 // modifikasi = (boleh kosong) isi jendela Modifikasi; kosong = tampilan bawaan
+// Hak Akses Grup (umum/hak-akses.js): kategori laporan ini harus dicentang Aktif. Pengaman di belakang menu yang disaring,
+// dipakai bukaLaporan (juga dari Dashboard) dan tampilkanLaporan (juga dari Laporan Tersimpan). Tidak boleh = pesan, false.
+function bolehLaporan(lap) {
+    if (adalahAdministrator()) { return true; }   // Administrator: semua laporan (juga yang tidak ada di DAFTAR_LAPORAN)
+    var asal = lap ? cariLaporanDaftar(lap.id) : null;   // Operator: laporan tak dikenal ditolak (aman)
+    if (asal && bolehKategoriLaporan(asal.kategori.id)) { return true; }
+    tampilkanNotifikasi("Akses Grup Anda tidak mencakup laporan ini. Hubungi Administrator.", "peringatan");
+    return false;
+}
+
 function tampilkanLaporan(lap, paramAwal, modifikasi) {
+    if (!bolehLaporan(lap)) { return; }
     var param = lap.perBulan === true ? paramBulanPenuh(paramAwal) : paramAwal;
     kolomLengkapLaporan = [];   // laporan tanpa tabel (pesan kosong) tidak punya kolom
     kolomSembunyiLaporan = kolomSembunyiDari(modifikasi);   // Kolom Data; dipakai pembuat tabel (pohon.js)
@@ -99,6 +110,7 @@ function tampilkanLaporan(lap, paramAwal, modifikasi) {
 }
 
 function bukaLaporan(lap, awal, modifikasi) {
+    if (!bolehLaporan(lap)) { return; }
     bukaParameterLaporan(lap, function (param) { tampilkanLaporan(lap, param, modifikasi); }, awal);
 }
 

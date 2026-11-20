@@ -83,6 +83,8 @@ function pasangPopupMenu(panel, idTombol, idTutup, tujuan, saatBuka) {
     // preventDefault() mencegah tautan href="#" menggulir halaman ke atas
     document.getElementById(idTombol).addEventListener("click", function (kejadian) {
         kejadian.preventDefault();
+        // Kotak menu mengikuti hak Akses Grup terbaru (umum/hak-akses.js; dimuat sesudah file ini, jadi dicek dulu)
+        if (typeof terapkanHakMenu === "function") { terapkanHakMenu(); }
         if (saatBuka) { saatBuka(); }
         panel.showModal();
     });
@@ -194,8 +196,14 @@ function tampilkanTab(nama) {
 
 // Buka tab: munculkan tombol tabnya (kalau masih tersembunyi), lalu tampilkan
 function bukaTab(nama) {
-    // Hak akses (PRD 6.14, umum/sesi.js): Pengguna, Akses Grup, Preferensi, Cadangan Data hanya untuk Administrator
-    if (!bolehBukaHalaman(nama)) { tampilkanNotifikasi("Halaman ini hanya untuk Administrator.", "peringatan"); return; }
+    // Hak akses (PRD 6.14, umum/sesi.js): Pengguna, Akses Grup, Preferensi, Cadangan Data hanya untuk Administrator;
+    // halaman lain untuk Operator mengikuti centang Aktif di Akses Grup-nya
+    if (!bolehBukaHalaman(nama)) {
+        tampilkanNotifikasi(HALAMAN_ADMINISTRATOR.indexOf(nama) !== -1
+            ? "Halaman ini hanya untuk Administrator."
+            : "Akses Grup Anda tidak mencakup halaman ini. Hubungi Administrator.", "peringatan");
+        return;
+    }
     var tab = document.getElementById("tab-" + nama);
     if (tab.hidden) {
         tab.hidden = false;

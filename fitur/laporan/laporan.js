@@ -145,11 +145,16 @@ function buatIkonLaporan(isi, kotakLihat, kelas) {
     return wadah;
 }
 
+// Kategori yang boleh dibuka pengguna ini (Operator: centang Aktif kategori laporan di Akses Grup, umum/hak-akses.js)
+function kategoriLaporanBoleh() {
+    return DAFTAR_LAPORAN.filter(function (kat) { return bolehKategoriLaporan(kat.id); });
+}
+
 // Tombol kategori di kiri
 function gambarKategoriLaporan() {
     var nav = document.getElementById("lap-kategori");
     nav.textContent = "";
-    DAFTAR_LAPORAN.forEach(function (kat) {
+    kategoriLaporanBoleh().forEach(function (kat) {
         var tombol = document.createElement("button");
         tombol.type = "button";
         tombol.className = "lap-kat" + (kat.id === kategoriLaporanAktif ? " aktif" : "");
@@ -239,8 +244,12 @@ function kelompokKategoriLaporan(kat) {
 // Isi kanan. Tanpa kata cari: kelompok milik kategori aktif. Dengan kata cari: semua laporan di semua kategori yang nama
 // atau keterangannya memuat kata itu, dikelompokkan menurut kategori (kategori aktif tidak membatasi pencarian).
 function gambarMenuLaporan() {
+    var boleh = kategoriLaporanBoleh();
+    // Kategori aktif yang tidak boleh lagi (misalnya hak baru diubah): pindah ke kategori pertama yang boleh
+    if (boleh.length && !boleh.some(function (k) { return k.id === kategoriLaporanAktif; })) { kategoriLaporanAktif = boleh[0].id; }
     gambarKategoriLaporan();
-    var kat = DAFTAR_LAPORAN.find(function (k) { return k.id === kategoriLaporanAktif; }) || DAFTAR_LAPORAN[0];
+    var kat = boleh.find(function (k) { return k.id === kategoriLaporanAktif; }) || boleh[0];
+    if (!kat) { return; }   // tidak ada kategori yang boleh: halaman ini memang tidak bisa dibuka (bukaTab menolak)
     var kata = kolomCariLaporan.value.trim().toLowerCase();
     var isi = document.getElementById("lap-isi");
     isi.textContent = "";
@@ -251,7 +260,7 @@ function gambarMenuLaporan() {
 
     if (kata) {
         var ada = false;
-        DAFTAR_LAPORAN.forEach(function (k) {
+        boleh.forEach(function (k) {
             var cocok = [];
             kelompokKategoriLaporan(k).forEach(function (kel) {
                 kel.laporan.forEach(function (lap) {

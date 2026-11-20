@@ -44,3 +44,6 @@ body.bukan-administrator .kotak-menu[data-halaman="Pengguna"],
 body.bukan-administrator .kotak-menu[data-halaman="Akses Grup"],
 body.bukan-administrator .kotak-menu[data-halaman="Preferensi"],
 body.bukan-administrator .kotak-menu[data-halaman="Cadangan Data"] { display: none !important; }
+
+/* ----- Operator: kotak menu dan ikon menu samping di luar Akses Grup-nya (centang Aktif) tidak ditampilkan (terapkanHakMenu, umum/hak-akses.js) ----- */
+.tanpa-hak { display: none !important; }

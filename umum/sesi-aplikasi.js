@@ -86,6 +86,10 @@ if (sesiAktif) {
         if (sayaMasuk && jenisAksesPengguna(sayaMasuk) === "administrator" && !sayaMasuk.kodePemulihan) {
             tampilkanNotifikasi("Anda belum punya kode pemulihan. Buat lewat menu pengguna (inisial di kanan atas), Buat Kode Pemulihan.", "peringatan");
         }
+        // Operator tanpa Akses Grup (atau grupnya sudah dihapus) hanya bisa membuka Dashboard (PRD 6.14): diberi tahu sekali
+        if (sayaMasuk && jenisAksesPengguna(sayaMasuk) === "operator" && !namaAksesGrup(sayaMasuk.aksesGrupId)) {
+            tampilkanNotifikasi("Akun Anda belum punya Akses Grup, jadi hanya Dashboard yang bisa dibuka. Hubungi Administrator.", "peringatan");
+        }
     }
 }
 
@@ -231,10 +235,16 @@ document.getElementById("form-kode-pemulihan").addEventListener("submit", functi
     }).catch(function (galat) { sedangBuatKode = false; galatKodePemulihan(galat.message); });
 });
 
-// ----- Hak Jenis Akses (PRD 6.14) -----
+// ----- Hak Jenis Akses dan Akses Grup (PRD 6.14) -----
 if (sesiAktif) {
     // Selain Administrator: tombol yang mengubah data disembunyikan lewat kelas ini (umum/sesi.css)
     document.body.classList.toggle("hanya-lihat", hanyaLihat());
     // Pengguna, Preferensi, Cadangan Data hanya untuk Administrator (kotak menunya disembunyikan; bukaTab juga menolak)
     document.body.classList.toggle("bukan-administrator", !adalahAdministrator());
+    // Operator: menu mengikuti centang Aktif di Akses Grup (umum/hak-akses.js). Diterapkan ulang kalau Administrator mengubah
+    // Pengguna atau Akses Grup di tab lain pada browser yang sama (kejadian "storage" hanya datang dari tab lain).
+    terapkanHakMenu();
+    window.addEventListener("storage", function (k) {
+        if (k.key === "daftarPengguna" || k.key === "daftarAksesGrup") { terapkanHakMenu(); }
+    });
 }

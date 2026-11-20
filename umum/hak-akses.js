@@ -86,3 +86,63 @@ function namaAksesGrup(id) {
     var g = id ? bacaAksesGrup().find(function (x) { return x.id === id; }) : null;
     return g ? teksAman(g.nama) : "";
 }
+
+// ==================== Penerapan hak (J.31) ====================
+// Hak SELALU dibaca langsung dari penyimpanan (bukan disimpan di sesi), supaya perubahan oleh Administrator langsung berlaku.
+// Administrator = semua hak. Operator = hak grupnya; tanpa grup (atau grupnya sudah dihapus) = tidak ada hak, hanya Dashboard.
+
+// Hak pengguna yang sedang masuk: null = Administrator (semua boleh), atau { kunciMenu: ["aktif", ...] }
+function hakSaya() {
+    if (adalahAdministrator()) { return null; }
+    var p = penggunaSesi();
+    var grup = p && p.aksesGrupId ? bacaAksesGrup().find(function (g) { return g.id === p.aksesGrupId; }) : null;
+    return grup ? bersihkanHakGrup(grup.hak) : {};
+}
+
+// Apakah pengguna yang sedang masuk punya hak ini, misalnya punyaHak("divisi", "buat"). Jenis bawaan: "aktif".
+function punyaHak(kunciMenu, jenis) {
+    var hak = hakSaya();
+    if (hak === null) { return true; }
+    return !!hak[kunciMenu] && hak[kunciMenu].indexOf(jenis || "aktif") !== -1;
+}
+
+// Kategori laporan (id di DAFTAR_LAPORAN, fitur/laporan/laporan.js) boleh dibuka: centang Aktif menu "laporan-<id>"
+function bolehKategoriLaporan(idKategori) { return punyaHak("laporan-" + idKategori, "aktif"); }
+function adaLaporanBoleh() {
+    return KELOMPOK_HAK_MENU.some(function (k) {
+        return k.menu.some(function (m) { return m.kunci.indexOf("laporan-") === 0 && punyaHak(m.kunci, "aktif"); });
+    });
+}
+
+// Halaman (id tab) yang boleh dibuka Operator. Dipanggil bolehBukaHalaman (umum/sesi.js) sesudah pemeriksaan Administrator.
+// Dashboard selalu boleh. Halaman yang tidak ada di daftar menu tidak boleh (aman kalau ada halaman baru yang lupa didaftarkan).
+function bolehHalamanOperator(nama) {
+    if (nama === "dashboard") { return true; }
+    if (nama === "laporan" || nama === "hasil-laporan") { return adaLaporanBoleh(); }
+    return !!MENU_HAK[nama] && punyaHak(nama, "aktif");
+}
+
+// Nama kotak menu di popup (data-halaman) -> kunci menu. Laporan tidak punya kotak menu, jadi tidak ikut
+// (namanya juga bisa sama, misalnya "Aset Tetap").
+var KUNCI_MENU_DARI_NAMA = {};
+Object.keys(MENU_HAK).forEach(function (kunci) {
+    if (kunci.indexOf("laporan-") !== 0) { KUNCI_MENU_DARI_NAMA[MENU_HAK[kunci].nama] = kunci; }
+});
+
+// Menyembunyikan kotak menu dan ikon menu samping yang tidak boleh dibuka (kelas tanpa-hak, umum/sesi.css).
+// Ikon menu samping disembunyikan kalau popupnya tidak berisi satu pun kotak yang boleh. Dipanggil saat aplikasi dimuat,
+// setiap popup menu dibuka (umum/inti.js), dan saat data Pengguna/Akses Grup berubah di tab lain (umum/sesi-aplikasi.js).
+function terapkanHakMenu() {
+    var admin = adalahAdministrator();
+    document.querySelectorAll(".kotak-menu[data-halaman]").forEach(function (kotak) {
+        var kunci = KUNCI_MENU_DARI_NAMA[kotak.dataset.halaman];
+        kotak.classList.toggle("tanpa-hak", !admin && !(kunci && punyaHak(kunci, "aktif")));
+    });
+    document.querySelectorAll("dialog[id^='panel-']").forEach(function (panel) {
+        var tombol = document.getElementById("tombol-" + panel.id.slice(6));
+        if (!tombol) { return; }
+        tombol.classList.toggle("tanpa-hak", !panel.querySelector(".kotak-menu[data-halaman]:not(.tanpa-hak)"));
+    });
+    var tombolLaporan = document.getElementById("tombol-laporan");
+    if (tombolLaporan) { tombolLaporan.classList.toggle("tanpa-hak", !admin && !adaLaporanBoleh()); }
+}

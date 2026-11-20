@@ -61,6 +61,7 @@ function kelompokLaporanTersimpan() {
     var kelompok = [];
     bacaLaporanTersimpan().sort(function (a, b) { return a.nama.localeCompare(b.nama, "id"); }).forEach(function (d) {
         var asal = cariLaporanDaftar(d.laporanId);
+        if (!bolehKategoriLaporan(asal.kategori.id)) { return; }   // kategori laporan asalnya di luar hak pengguna ini (umum/hak-akses.js)
         var kel = kelompok.find(function (k) { return k.judul === asal.kategori.nama; });
         if (!kel) { kel = { judul: asal.kategori.nama, laporan: [] }; kelompok.push(kel); }
         kel.laporan.push({ nama: d.nama, label: "", jenis: asal.lap.jenis, tersimpan: d, asal: asal.lap,
