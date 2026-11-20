@@ -1,0 +1,8 @@
+# File yang TIDAK ikut ke GitHub
+# Alat uji: paket Node dan hasil sementara (profil browser, foto uji) yang besar dan bisa dibuat ulang
+alat-cek/node_modules/
+alat-cek/.sementara/
+# Catatan sistem
+*.log
+Thumbs.db
+desktop.ini

@@ -1,0 +1,13 @@
+# Format seragam di semua editor (VS Code membaca file ini lewat ekstensi "EditorConfig for VS Code").
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+# Di Markdown, dua spasi di akhir baris berarti pindah baris, jadi jangan dihapus
+trim_trailing_whitespace = false
