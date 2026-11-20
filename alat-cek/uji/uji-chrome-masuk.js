@@ -1,4 +1,5 @@
-// Uji J.25 dan J.26: Masuk, Keluar, keluar otomatis 40 menit, wajib ganti kata sandi, dan hak akses peran (PRD 6.12, 5.8)
+// Uji J.25, J.26, J.29: Masuk, Keluar, keluar otomatis 40 menit, wajib ganti kata sandi, Jenis Akses Administrator/Operator,
+// pemindahan peran lama, dan kode pemulihan (PRD 6.12, 6.14)
 // di Chrome asli (tanpa jendela, headless). Uji ini SENGAJA tidak memakai alat bantu bantu-sesi.js: semuanya lewat layar Masuk.
 // Data rekaan; kata sandi uji hanya contoh.
 // Pemakaian: node uji-chrome-masuk.js <chrome.exe> <index.html> <folder-profil> <folder-png>
@@ -56,7 +57,7 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await tunggu(800);
     await evalJs("localStorage.clear(); sessionStorage.clear(); true");
 
-    // ---- 1. Pertama kali: akun Finance Yayasan pertama ----
+    // ---- 1. Pertama kali: akun Administrator pertama + kode pemulihan ----
     await buka(INDEX);
     catat("Belum masuk: index.html langsung pindah ke layar Masuk", await tungguHalaman(/login\.html$/));
     catat("Belum ada pengguna: layar 'Buat akun pertama' tampil", await evalJs("!document.getElementById('layar-akun-pertama').hidden && document.getElementById('layar-masuk').hidden"));
@@ -65,13 +66,17 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Kata sandi kurang dari 8 karakter ditolak", /minimal 8/.test(await pesan("pesan-error-akun")), await pesan("pesan-error-akun"));
     await isi({ "ap-sandi": "rahasia-123", "ap-ulang": "rahasia-124" }); await kirimForm("form-akun-pertama"); await tunggu(150);
     catat("Ulangi kata sandi berbeda ditolak", /tepat sama/.test(await pesan("pesan-error-akun")));
-    await isi({ "ap-ulang": "rahasia-123" }); await kirimForm("form-akun-pertama");
-    catat("Akun pertama dibuat lalu langsung masuk ke aplikasi", await tungguHalaman(/index\.html$/));
+    await isi({ "ap-ulang": "rahasia-123" }); await kirimForm("form-akun-pertama"); await tungguPeriksa();
+    const kodeAwal = await evalJs("document.getElementById('layar-kode-pemulihan').hidden ? '' : document.getElementById('kode-pemulihan-baru').textContent");
+    catat("Akun pertama dibuat: kode pemulihan ditampilkan sekali (XXXX-XXXX-XXXX-XXXX) sebelum masuk", /^[A-HJ-NP-Z2-9]{4}(-[A-HJ-NP-Z2-9]{4}){3}$/.test(kodeAwal) && (await evalJs("location.pathname")).endsWith("login.html"), kodeAwal);
+    await foto("masuk-kode-pemulihan.png");
     const akun = JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"));
-    catat("Akun tersimpan sebagai Finance Yayasan, kata sandi teracak (tidak tersimpan apa adanya)", akun.length === 1 && akun[0].peran === "finance-yayasan" && akun[0].sandi.hash.length === 64 && !JSON.stringify(akun).includes("rahasia-123"));
+    catat("Akun tersimpan sebagai Administrator; kata sandi dan kode pemulihan teracak (tidak tersimpan apa adanya)", akun.length === 1 && akun[0].jenisAkses === "administrator" && !("peran" in akun[0]) && akun[0].sandi.hash.length === 64 && akun[0].kodePemulihan.hash.length === 64 && !JSON.stringify(akun).includes("rahasia-123") && !JSON.stringify(akun).includes(kodeAwal.replace(/-/g, "")));
+    await evalJs("document.getElementById('lanjut-sesudah-kode').click(); true");
+    catat("Klik 'Sudah saya catat': masuk ke aplikasi", await tungguHalaman(/index\.html$/));
     catat("Inisial di kanan atas 'SA'; Log Aktivitas mencatat Masuk atas nama Siti Aminah", await evalJs("document.getElementById('tombol-pengguna').textContent==='SA' && JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return l.tindakan==='Masuk' && l.pengguna==='Siti Aminah';})"));
     await evalJs("document.getElementById('tombol-pengguna').click(); true"); await tunggu(150);
-    catat("Menu pengguna: nama, peran Finance Yayasan, Ganti Kata Sandi, Keluar", await evalJs("!document.getElementById('daftar-menu-pengguna').hidden && document.getElementById('menu-pengguna-nama').textContent==='Siti Aminah' && document.getElementById('menu-pengguna-peran').textContent==='Finance Yayasan'"));
+    catat("Menu pengguna: nama, Administrator, Ganti Kata Sandi, Buat Kode Pemulihan, Keluar", await evalJs("!document.getElementById('daftar-menu-pengguna').hidden && document.getElementById('menu-pengguna-nama').textContent==='Siti Aminah' && document.getElementById('menu-pengguna-peran').textContent==='Administrator' && !document.getElementById('menu-kode-pemulihan').hidden"));
     await foto("masuk-menu-pengguna.png");
 
     // ---- 2. Keluar dan Masuk ----
@@ -87,7 +92,7 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Masuk berhasil (nama pengguna tidak membedakan huruf besar/kecil)", await tungguHalaman(/index\.html$/));
     await foto("masuk-aplikasi.png");
 
-    // ---- 3. Tambah pengguna lewat data (sandi teracak dari alat bersama), wajib ganti sandi, Non Aktif, Pengawas, akun lama Finance Sekolah ----
+    // ---- 3. Tambah pengguna lewat data dengan PERAN LAMA (sebelum J.29): wajib ganti sandi, Non Aktif, Pengawas, Finance Sekolah ----
     await evalJs(`(async function(){ var d=JSON.parse(localStorage.getItem('daftarPengguna'));
       var s=await acakKataSandi('awal-1234');
       d.push({id:'u2', nama:'Budi Pengawas', username:'budi', peran:'pengawas', nonAktif:false, sandi:s, wajibGantiSandi:true});
@@ -99,6 +104,11 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Akun yang sedang dipakai tidak bisa dihapus", /sedang Anda pakai tidak bisa dihapus/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && !(await evalJs("document.getElementById('dialog-konfirmasi').open")));
     await evalJs("modulPengguna.bukaUbah(modulPengguna.ambil()[0]); document.getElementById('pg-nonaktif').checked=true; document.getElementById('form-pengguna').requestSubmit(); true"); await tunggu(300);
     catat("Akun yang sedang dipakai tidak bisa dijadikan Non Aktif", /tidak bisa dijadikan Non Aktif/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && !JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"))[0].nonAktif);
+    await evalJs("document.getElementById('area-notifikasi').textContent=''; modulPengguna.bukaUbah(modulPengguna.ambil()[0]); document.getElementById('pg-nonaktif').checked=false; document.getElementById('pg-jenis-operator').click(); document.getElementById('form-pengguna').requestSubmit(); true"); await tunggu(300);
+    catat("Akun yang sedang dipakai tidak bisa diturunkan menjadi Operator", /tidak bisa diturunkan menjadi Operator/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"))[0].jenisAkses === "administrator");
+    await evalJs("modulPengguna.bukaDariMenu(); true"); await tunggu(200);
+    catat("Data Baru: Jenis Akses Operator terpilih, dengan keterangan Akses Grup", await evalJs("document.getElementById('pg-jenis-operator').checked && /Akses Grup/.test(document.getElementById('petunjuk-pg-jenis-akses').textContent) && !document.getElementById('pg-peran')"));
+    await foto("masuk-pengguna-jenis-akses.png");
     await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
 
     await masuk("lama", "awal-1234"); await tungguPeriksa();
@@ -109,24 +119,28 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     catat("Kata sandi baru tidak boleh sama dengan yang lama", /tidak boleh sama/.test(await pesan("pesan-error-ganti")));
     await isi({ "gs-baru": "baru-budi-99", "gs-ulang": "baru-budi-99" }); await kirimForm("form-ganti-sandi");
     catat("Sesudah ganti kata sandi langsung masuk", await tungguHalaman(/index\.html$/));
+    const pindah = JSON.parse(await evalJs("localStorage.getItem('daftarPengguna')"));
+    catat("Peran lama dipindahkan: Pengawas dan Finance Sekolah jadi Operator, Finance Yayasan jadi Administrator, isian peran dibuang",
+      pindah.find(p => p.id === "u2").jenisAkses === "operator" && pindah.find(p => p.id === "u3").jenisAkses === "operator" && pindah.find(p => p.id === "u4").jenisAkses === "administrator" && pindah.every(p => !("peran" in p)), JSON.stringify(pindah.map(p => [p.id, p.jenisAkses, p.peran])));
+    catat("Pemindahan dicatat di Log Aktivitas", await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return /Peran lama diganti Jenis Akses \\(3 pengguna\\)/.test(l.referensi);})"));
 
-    // ---- 4. Pengawas: hanya melihat ----
+    // ---- 4. Operator (dulu Pengawas): hanya melihat, sampai hak Akses Grup berlaku (J.31) ----
     const pengawas = JSON.parse(await evalJs(`JSON.stringify({kelas: document.body.classList.contains('hanya-lihat'),
       simpanTerlihat: [...document.querySelectorAll('.tombol-simpan-besar')].some(function(b){return b.getClientRects().length>0;}),
       kotakPengguna: (function(){ var k=document.querySelector('.kotak-menu[data-halaman="Pengguna"]'); return getComputedStyle(k).display; })(),
       simpan: modulDivisi.simpan([{id:'x',nama:'Coba'}]), divisi: localStorage.getItem('daftarDivisi')})`).catch(() => "{}"));
-    catat("Pengawas: kelas hanya-lihat, tombol Simpan tidak terlihat, penyimpanan ditolak (pengaman kedua)", pengawas.kelas && !pengawas.simpanTerlihat && pengawas.simpan === false && pengawas.divisi === null, JSON.stringify(pengawas));
-    catat("Pengawas: kotak Pengguna tidak tampil di Pengaturan", pengawas.kotakPengguna === "none", pengawas.kotakPengguna);
+    catat("Operator: kelas hanya-lihat, tombol Simpan tidak terlihat, penyimpanan ditolak (pengaman kedua)", pengawas.kelas && !pengawas.simpanTerlihat && pengawas.simpan === false && pengawas.divisi === null, JSON.stringify(pengawas));
+    catat("Operator: kotak Pengguna tidak tampil di Pengaturan; menu tanpa Buat Kode Pemulihan", pengawas.kotakPengguna === "none" && await evalJs("document.getElementById('menu-kode-pemulihan').hidden && document.getElementById('menu-pengguna-peran').textContent==='Operator'"), pengawas.kotakPengguna);
     await evalJs("document.getElementById('area-notifikasi').textContent=''; bukaTab('preferensi'); true"); await tunggu(150);
-    catat("Pengawas membuka Preferensi lewat kode: ditolak 'hanya untuk Finance Yayasan'", /hanya untuk Finance Yayasan/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && await evalJs("document.getElementById('isi-preferensi').hidden"));
+    catat("Operator membuka Preferensi lewat kode: ditolak 'hanya untuk Administrator'", /hanya untuk Administrator/.test(await evalJs("document.getElementById('area-notifikasi').textContent")) && await evalJs("document.getElementById('isi-preferensi').hidden"));
     await evalJs("modulDivisi.bukaDariMenu(); true"); await tunggu(200);
     await foto("masuk-pengawas.png");
-    // Ganti Kata Sandi sendiri tetap boleh untuk Pengawas
+    // Ganti Kata Sandi sendiri tetap boleh untuk Operator
     await evalJs("document.getElementById('tombol-pengguna').click(); document.getElementById('menu-ganti-sandi').click(); true"); await tunggu(150);
     await isi({ "gsa-lama": "salah-salah", "gsa-baru": "budi-baru-77", "gsa-ulang": "budi-baru-77" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
     catat("Ganti Kata Sandi: kata sandi sekarang salah ditolak", /salah/.test(await evalJs("document.getElementById('galat-ganti-sandi').textContent")));
     await isi({ "gsa-lama": "baru-budi-99" }); await kirimForm("form-ganti-sandi-app"); await tungguGantiSandi();
-    catat("Ganti Kata Sandi berhasil (juga untuk Pengawas)", await evalJs("!document.getElementById('dialog-ganti-sandi').open && /diganti/.test(document.getElementById('area-notifikasi').textContent)"));
+    catat("Ganti Kata Sandi berhasil (juga untuk Operator)", await evalJs("!document.getElementById('dialog-ganti-sandi').open && /diganti/.test(document.getElementById('area-notifikasi').textContent)"));
 
     // ---- 5. Keluar otomatis 40 menit ----
     await evalJs("var s=JSON.parse(sessionStorage.getItem('sesiMasuk')); s.terakhirAktif=Date.now()-41*60*1000; sessionStorage.setItem('sesiMasuk', JSON.stringify(s)); document.dispatchEvent(new MouseEvent('mousemove')); true");
@@ -146,17 +160,49 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await buka(INDEX);
     catat("Membuka ulang aplikasi dengan sesi yang sudah lewat 40 menit: ke layar Masuk", await tungguHalaman(/login\.html$/));
 
-    // ---- 6. Akun lama Finance Sekolah (pembukuan Sekolah dihapus di J.28): tetap bisa masuk, hanya melihat ----
+    // ---- 6. Akun lama Finance Sekolah, sekarang Operator: tetap bisa masuk, hanya melihat ----
     await masuk("rina", "awal-1234");
     await tungguHalaman(/index\.html$/);
-    const sekolah = JSON.parse(await evalJs("JSON.stringify({pilihan: !!document.querySelector('.pembukuan'), lihat: document.body.classList.contains('hanya-lihat'), kelas: document.body.classList.contains('bukan-finance-yayasan'), peran: document.getElementById('menu-pengguna-peran').textContent})"));
-    catat("Akun lama Finance Sekolah: tanpa pilihan pembukuan, hanya melihat, menu Pengguna/Preferensi/Cadangan tersembunyi", !sekolah.pilihan && sekolah.lihat && sekolah.kelas && /peran lama/.test(sekolah.peran), JSON.stringify(sekolah));
+    const sekolah = JSON.parse(await evalJs("JSON.stringify({pilihan: !!document.querySelector('.pembukuan'), lihat: document.body.classList.contains('hanya-lihat'), kelas: document.body.classList.contains('bukan-administrator'), peran: document.getElementById('menu-pengguna-peran').textContent})"));
+    catat("Akun lama Finance Sekolah: Operator, hanya melihat, menu Pengguna/Preferensi/Cadangan tersembunyi", !sekolah.pilihan && sekolah.lihat && sekolah.kelas && sekolah.peran === "Operator", JSON.stringify(sekolah));
+    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
+
+    // ---- 6b. Lupa kata sandi dengan kode pemulihan (khusus Administrator) ----
+    await evalJs("document.getElementById('lupa-sandi').click(); true"); await tunggu(150);
+    catat("Lupa kata sandi?: layar pemulihan tampil", await evalJs("!document.getElementById('layar-lupa-sandi').hidden && document.getElementById('layar-masuk').hidden"));
+    await foto("masuk-lupa-sandi.png");
+    const pulih = async (nama, kode, sandi) => { await isi({ "ls-username": nama, "ls-kode": kode, "ls-baru": sandi, "ls-ulang": sandi }); await kirimForm("form-lupa-sandi"); await tungguPeriksa(); };
+    await pulih("siti", "AAAA-BBBB-CCCC-DDDD", "siti-baru-123");
+    catat("Kode salah: 'Nama pengguna atau kode pemulihan salah.'", await pesan("pesan-error-lupa") === "Nama pengguna atau kode pemulihan salah.", await pesan("pesan-error-lupa"));
+    await pulih("rina", kodeAwal, "rina-baru-123");
+    catat("Operator (tanpa kode): pesan yang sama, tidak bisa memakai pemulihan", await pesan("pesan-error-lupa") === "Nama pengguna atau kode pemulihan salah.");
+    await pulih("SITI", kodeAwal.toLowerCase().replace(/-/g, " "), "siti-baru-123");
+    const kodeKedua = await evalJs("document.getElementById('layar-kode-pemulihan').hidden ? '' : document.getElementById('kode-pemulihan-baru').textContent");
+    catat("Kode benar (huruf kecil/spasi boleh): kata sandi baru disimpan, kode BARU ditampilkan (kode lama tidak berlaku)", /^[A-HJ-NP-Z2-9]{4}(-[A-HJ-NP-Z2-9]{4}){3}$/.test(kodeKedua) && kodeKedua !== kodeAwal, kodeKedua);
+    await evalJs("document.getElementById('lanjut-sesudah-kode').click(); true");
+    catat("Lanjut: masuk ke aplikasi; Log Aktivitas mencatat atur ulang dengan kode pemulihan", await tungguHalaman(/index\.html$/) && await evalJs("JSON.parse(localStorage.getItem('logAktivitas')).some(function(l){return /kode pemulihan/.test(l.referensi) && l.pengguna==='Siti Aminah';})"));
+    // Buat Kode Pemulihan dari menu pengguna
+    await evalJs("document.getElementById('tombol-pengguna').click(); document.getElementById('menu-kode-pemulihan').click(); true"); await tunggu(150);
+    await isi({ "kp-sandi": "salah-salah" }); await kirimForm("form-kode-pemulihan"); await tungguGantiSandi().catch(() => true);
+    for (let i = 0; i < 60 && await evalJs("sedangBuatKode"); i++) { await tunggu(100); }
+    catat("Buat Kode Pemulihan: kata sandi salah ditolak", /salah/.test(await evalJs("document.getElementById('galat-kode-pemulihan').textContent")) && await evalJs("document.getElementById('kp-langkah-kode').hidden"));
+    const hashSebelum = await evalJs("JSON.parse(localStorage.getItem('daftarPengguna'))[0].kodePemulihan.hash");
+    await isi({ "kp-sandi": "siti-baru-123" }); await kirimForm("form-kode-pemulihan");
+    await tunggu(100); for (let i = 0; i < 100 && await evalJs("sedangBuatKode"); i++) { await tunggu(100); }
+    const kodeKetiga = await evalJs("document.getElementById('kp-kode').textContent");
+    catat("Buat Kode Pemulihan: kode baru tampil, simpanan berganti", /^[A-HJ-NP-Z2-9]{4}(-[A-HJ-NP-Z2-9]{4}){3}$/.test(kodeKetiga) && hashSebelum !== await evalJs("JSON.parse(localStorage.getItem('daftarPengguna'))[0].kodePemulihan.hash"), kodeKetiga);
+    await foto("masuk-buat-kode-pemulihan.png");
+    catat("Saat kode tampil hanya ada tombol 'Sudah Saya Catat'; tombol itu menutup dan menghapus kode dari halaman", await evalJs("document.getElementById('batal-kode-pemulihan').hidden && document.getElementById('buat-kode-pemulihan').hidden && document.getElementById('tutup-kode-pemulihan').hidden") && await evalJs("document.getElementById('selesai-kode-pemulihan').click(); !document.getElementById('dialog-kode-pemulihan').open && document.getElementById('kp-kode').textContent===''"));
+    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
+    await evalJs("document.getElementById('lupa-sandi').click(); true"); await tunggu(150);
+    await pulih("siti", kodeKedua, "siti-lagi-123");
+    catat("Kode yang sudah diganti tidak berlaku lagi", await pesan("pesan-error-lupa") === "Nama pengguna atau kode pemulihan salah.");
+    await evalJs("document.getElementById('kembali-masuk').click(); true"); await tunggu(150);
 
     // ---- 7. Lima kali salah: tunggu 1 menit ----
-    await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
     for (let i = 0; i < 5; i++) { await masuk("siti", "salah-" + i); await tunggu(700); }
     catat("Lima kali salah: 'Terlalu banyak percobaan'", /Terlalu banyak percobaan/.test(await pesan("pesan-error")), await pesan("pesan-error"));
-    await masuk("siti", "rahasia-123"); await tunggu(400);
+    await masuk("siti", "siti-baru-123"); await tunggu(400);
     catat("Selama ditahan, kata sandi benar pun belum bisa masuk", /Terlalu banyak percobaan/.test(await pesan("pesan-error")) && (await evalJs("location.pathname")).endsWith("login.html"));
     catat("Tidak ada galat skrip di Console", galat.filter(x => !/favicon/i.test(x)).length === 0, JSON.stringify(galat.slice(0, 3)));
   } catch (e) {

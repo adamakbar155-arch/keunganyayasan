@@ -183,7 +183,7 @@ pasangTampilan("isi-preferensi", /*html*/ `
                                         </li>
                                         <li>
                                             <label class="saklar"><input type="radio" name="batas-akses" value="semua"> <span>Dibatasi semua</span></label>
-                                            <small>Semua pengguna selain Finance Yayasan tidak bisa membuka pembukuan ini. Berguna saat tutup buku atau pemeriksaan.</small>
+                                            <small>Semua pengguna selain Administrator tidak bisa membuka pembukuan ini. Berguna saat tutup buku atau pemeriksaan.</small>
                                         </li>
                                     </ul>
                                 </div>

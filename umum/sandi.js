@@ -52,3 +52,20 @@ function cocokKataSandi(sandi, simpanan) {
         return beda === 0;
     }).catch(function () { return false; });
 }
+
+// ----- Kode pemulihan Administrator (PRD 6.14) -----
+// Dipakai saat Administrator lupa kata sandi. Ditampilkan sekali saja; yang disimpan hanya acakannya (sama seperti kata sandi).
+// Huruf yang mirip (I, O, 0, 1) tidak dipakai supaya tidak salah baca saat mencatat. 16 huruf dari 32 macam = 80 bit acak.
+var HURUF_KODE_PEMULIHAN = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+// Kode baru, misalnya "K7QM-3XRT-PW9D-HC4N"
+function buatKodePemulihan() {
+    var acak = window.crypto.getRandomValues(new Uint8Array(16));
+    var huruf = Array.from(acak).map(function (b) { return HURUF_KODE_PEMULIHAN[b % 32]; }).join("");   // 256 habis dibagi 32: tidak berat sebelah
+    return huruf.match(/.{4}/g).join("-");
+}
+
+// Bentuk baku sebelum diacak/dicocokkan: huruf besar, tanpa spasi dan tanda hubung (boleh diketik "k7qm 3xrt ...")
+function bakukanKodePemulihan(kode) {
+    return String(kode || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+}

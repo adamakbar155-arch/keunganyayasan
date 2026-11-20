@@ -193,8 +193,8 @@ function tampilkanTab(nama) {
 
 // Buka tab: munculkan tombol tabnya (kalau masih tersembunyi), lalu tampilkan
 function bukaTab(nama) {
-    // Hak akses (PRD 5.8, umum/sesi.js): Pengguna, Preferensi, Cadangan Data hanya untuk Finance Yayasan
-    if (!bolehBukaHalaman(nama)) { tampilkanNotifikasi("Halaman ini hanya untuk Finance Yayasan.", "peringatan"); return; }
+    // Hak akses (PRD 6.14, umum/sesi.js): Pengguna, Preferensi, Cadangan Data hanya untuk Administrator
+    if (!bolehBukaHalaman(nama)) { tampilkanNotifikasi("Halaman ini hanya untuk Administrator.", "peringatan"); return; }
     var tab = document.getElementById("tab-" + nama);
     if (tab.hidden) {
         tab.hidden = false;

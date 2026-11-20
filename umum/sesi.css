@@ -1,4 +1,4 @@
-/* umum/sesi.css: belum masuk, menu pengguna, dan hak akses peran (PRD 6.12, 5.8). Logika: umum/sesi.js dan umum/sesi-aplikasi.js. */
+/* umum/sesi.css: belum masuk, menu pengguna, kode pemulihan, dan hak Jenis Akses (PRD 6.12, 6.14). Logika: umum/sesi.js dan umum/sesi-aplikasi.js. */
 
 /* Belum masuk: isi aplikasi tidak ditampilkan sama sekali sementara pindah ke layar Masuk */
 html.belum-masuk body { visibility: hidden; }
@@ -14,12 +14,20 @@ button.avatar:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .menu-pengguna-peran { margin: 0 8px 8px; font-size: 12px; color: #6b7280; }
 .daftar-menu-pengguna button { display: block; width: 100%; padding: 9px 10px; border: 0; border-radius: 6px; background: none;
                                text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.daftar-menu-pengguna button[hidden] { display: none; }   /* Buat Kode Pemulihan: hanya Administrator */
 .daftar-menu-pengguna button:hover, .daftar-menu-pengguna button:focus-visible { background: #eef3fa; }
 .daftar-menu-pengguna .menu-keluar { color: #b91c1c; font-weight: 600; border-top: 1px solid #e5e7eb; border-radius: 0 0 6px 6px; }
 
 .dialog-ganti-sandi { width: min(440px, calc(100vw - 32px)); }
+.dialog-ganti-sandi [hidden] { display: none; }
+/* Popup kecil (Ganti Kata Sandi, Kode Pemulihan): tinggi mengikuti isi, tanpa ruang kosong (pola sama dengan popup laporan) */
+.dialog-ganti-sandi .dialog-detail-isi { min-height: 0; padding-top: 18px; }
+/* Kode pemulihan: huruf rata lebar, besar, mudah disalin dengan sekali klik tiga kali */
+.kode-pemulihan { margin: 12px 0 4px; padding: 14px 10px; border: 1px dashed #94a3b8; border-radius: 8px; background: #f8fafc;
+                  font-family: Consolas, "Courier New", monospace; font-size: 1.25rem; font-weight: 700; letter-spacing: 2px;
+                  text-align: center; color: #0b2a5b; user-select: all; overflow-wrap: anywhere; }
 
-/* ----- Pengawas: hanya melihat (PRD 5.8). Tombol yang mengubah data tidak ditampilkan. ----- */
+/* ----- Operator: hanya melihat (sementara sampai hak Akses Grup berlaku, J.31). Tombol yang mengubah data tidak ditampilkan. ----- */
 body.hanya-lihat .tombol-simpan-besar,
 body.hanya-lihat .tombol-hapus-besar,
 body.hanya-lihat [data-aksi="hapus"],
@@ -31,7 +39,7 @@ body.hanya-lihat #daftar-lampiran .tombol-garis-bahaya,
 body.hanya-lihat #lap-simpan,
 body.hanya-lihat #ec-simpan { display: none !important; }
 
-/* ----- Pengguna, Preferensi, Cadangan Data hanya untuk Finance Yayasan ----- */
-body.bukan-finance-yayasan .kotak-menu[data-halaman="Pengguna"],
-body.bukan-finance-yayasan .kotak-menu[data-halaman="Preferensi"],
-body.bukan-finance-yayasan .kotak-menu[data-halaman="Cadangan Data"] { display: none !important; }
+/* ----- Pengguna, Preferensi, Cadangan Data hanya untuk Administrator (PRD 6.14) ----- */
+body.bukan-administrator .kotak-menu[data-halaman="Pengguna"],
+body.bukan-administrator .kotak-menu[data-halaman="Preferensi"],
+body.bukan-administrator .kotak-menu[data-halaman="Cadangan Data"] { display: none !important; }

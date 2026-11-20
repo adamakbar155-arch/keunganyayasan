@@ -68,7 +68,7 @@ pasangTampilan("isi-pengguna", /*html*/ `
                                     <label for="pg-kontak">Email/No Handphone</label>
                                     <div>
                                         <input id="pg-kontak" type="text" autocomplete="off">
-                                        <p class="petunjuk">Boleh dikosongkan. Kalau diisi, boleh dipakai untuk masuk juga.</p>
+                                        <p class="petunjuk">Boleh dikosongkan. Hanya untuk kontak; masuk tetap memakai Nama Pengguna.</p>
                                         <p id="galat-pg-kontak" class="pesan-galat-kolom" role="alert" hidden></p>
                                     </div>
                                 </div>
@@ -82,12 +82,15 @@ pasangTampilan("isi-pengguna", /*html*/ `
                                     </div>
                                 </div>
 
+                                <!-- Jenis Akses seperti Accurate (PRD 6.14): Operator (bawaan) atau Administrator -->
                                 <div class="baris-form">
-                                    <label for="pg-peran">Peran <span class="wajib" aria-hidden="true">*</span></label>
-                                    <div>
-                                        <select id="pg-peran" aria-required="true"></select>
-                                        <p id="petunjuk-pg-peran" class="petunjuk">Peran menentukan apa yang boleh dilakukan.</p>
-                                        <p id="galat-pg-peran" class="pesan-galat-kolom" role="alert" hidden></p>
+                                    <span class="label-kelompok" id="label-pg-jenis-akses">Jenis Akses <span class="wajib" aria-hidden="true">*</span></span>
+                                    <div role="radiogroup" aria-labelledby="label-pg-jenis-akses">
+                                        <ul class="fitur-daftar">
+                                            <li><label class="saklar"><input type="radio" id="pg-jenis-operator" name="pg-jenis-akses" value="operator" checked> <span>Operator</span></label></li>
+                                            <li><label class="saklar"><input type="radio" id="pg-jenis-administrator" name="pg-jenis-akses" value="administrator"> <span>Administrator</span></label></li>
+                                        </ul>
+                                        <p id="petunjuk-pg-jenis-akses" class="petunjuk"></p>
                                     </div>
                                 </div>
 

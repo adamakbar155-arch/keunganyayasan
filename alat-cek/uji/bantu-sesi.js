@@ -6,7 +6,7 @@
 //   Chrome: await require("./bantu-sesi.js").masukChrome(kirim, alamatIndex)  (sesudah Page.enable)
 const SKRIP = `(function () {
   try {
-    var uji = { id: "u-uji", nama: "Pengguna", username: "pengguna-uji", kontak: "", peran: "finance-yayasan",
+    var uji = { id: "u-uji", nama: "Pengguna", username: "pengguna-uji", kontak: "", jenisAkses: "administrator",
                 nonAktif: false, wajibGantiSandi: false,
                 sandi: { garam: "00", hash: "00", iterasi: 1 } };
     var daftar;
@@ -15,9 +15,9 @@ const SKRIP = `(function () {
       daftar.push(uji);
       localStorage.setItem("daftarPengguna", JSON.stringify(daftar));
     }
-    // Sesi lama yang sudah ada (misalnya uji peran Pengawas) dibiarkan; kalau belum ada, masuk sebagai pengguna uji
+    // Sesi lama yang sudah ada (misalnya uji Operator) dibiarkan; kalau belum ada, masuk sebagai pengguna uji
     if (!sessionStorage.getItem("sesiMasuk")) {
-      sessionStorage.setItem("sesiMasuk", JSON.stringify({ penggunaId: "u-uji", nama: "Pengguna", peran: "finance-yayasan",
+      sessionStorage.setItem("sesiMasuk", JSON.stringify({ penggunaId: "u-uji", nama: "Pengguna",
         terakhirAktif: Date.now(), baruMasuk: false }));
     } else {
       var s = JSON.parse(sessionStorage.getItem("sesiMasuk")); s.terakhirAktif = Date.now();

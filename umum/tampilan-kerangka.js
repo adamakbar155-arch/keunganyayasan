@@ -31,6 +31,8 @@ pasangTampilan("bilah-atas", /*html*/ `
                     <p class="menu-pengguna-nama" id="menu-pengguna-nama"></p>
                     <p class="menu-pengguna-peran" id="menu-pengguna-peran"></p>
                     <button type="button" id="menu-ganti-sandi" role="menuitem">Ganti Kata Sandi</button>
+                    <!-- Hanya untuk Administrator (PRD 6.14): kode untuk "Lupa kata sandi?" di layar Masuk -->
+                    <button type="button" id="menu-kode-pemulihan" role="menuitem" hidden>Buat Kode Pemulihan</button>
                     <button type="button" id="menu-keluar" class="menu-keluar" role="menuitem">Keluar</button>
                 </div>
             </div>

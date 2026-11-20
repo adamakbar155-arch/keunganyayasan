@@ -7,7 +7,7 @@
 
 // ---------- Log Aktivitas ----------
 // Catatan siapa melakukan apa dan kapan. Terisi otomatis setiap kali data dibuat, diubah, atau dihapus.
-// Penting karena Finance Yayasan berhak penuh: apa pun yang diubah tetap bisa ditelusuri.
+// Penting karena Administrator berhak penuh: apa pun yang diubah tetap bisa ditelusuri.
 var KUNCI_LOG = "logAktivitas";
 var BATAS_LOG = 2000;   // paling banyak 2000 catatan terakhir, supaya penyimpanan browser tidak penuh
 // Sementara belum ada login, semua aktivitas ditulis atas nama "Pengguna". Nanti diganti nama dari login.
@@ -144,37 +144,23 @@ var kolomPengguna = {
     nama: "pg-nama", username: "pg-username", kontak: "pg-kontak"
 };
 var kolomSandiPengguna = document.getElementById("pg-sandi");
-var pilihPeranPengguna = document.getElementById("pg-peran");
+var pilihanJenisAkses = document.querySelectorAll("input[name='pg-jenis-akses']");
 
-// Peran tetap (sementara, sampai J.29 menggantinya dengan Administrator / Operator + Akses Grup, PRD 6.14).
-// Aplikasi hanya untuk pembukuan Yayasan (J.28). Peran "lama" hanya untuk menampilkan nama peran akun lama;
-// tidak bisa dipilih lagi, dan akun lama dengan peran itu hanya bisa melihat (umum/sesi.js, hanyaLihat).
-var peranPengguna = {
-    "finance-yayasan": {
-        label: "Finance Yayasan",
-        keterangan: "Hak penuh, termasuk mengelola pengguna."
-    },
-    "pengawas": {
-        label: "Pengawas",
-        keterangan: "Melihat semua data. Tidak mengubah data."
-    },
-    "finance-sekolah": { label: "Finance Sekolah (peran lama)", lama: true },
-    "finance-unit-usaha": { label: "Finance Unit usaha (peran lama)", lama: true }
+// Jenis Akses seperti Accurate (PRD 6.14). Nama tampilannya NAMA_JENIS_AKSES (umum/sesi.js).
+var keteranganJenisAkses = {
+    operator: "Pengguna tipe Operator dapat melihat dan membuka data. Hak menunya ditentukan melalui Akses Grup.",
+    administrator: "Pengguna tipe Administrator memiliki semua akses, termasuk mengelola pengguna, Preferensi, dan Cadangan Data."
 };
-
-// Isi pilihan peran dari tabel di atas (sekali saja, daftarnya tetap); peran lama tidak ditawarkan
-isiPilihan(pilihPeranPengguna, Object.keys(peranPengguna).filter(function (k) { return !peranPengguna[k].lama; }), {
-    nilai: function (kunci) { return kunci; },
-    teks: function (kunci) { return peranPengguna[kunci].label; },
-    kosong: "Pilih peran..."
-});
+function jenisAksesDipilih() {
+    var dipilih = Array.from(pilihanJenisAkses).find(function (r) { return r.checked; });
+    return dipilih ? dipilih.value : "operator";
+}
 var kotakNonAktifPengguna = document.getElementById("pg-nonaktif");
 var galatPengguna = {
     nama: document.getElementById("galat-pg-nama"),
     username: document.getElementById("galat-pg-username"),
     kontak: document.getElementById("galat-pg-kontak"),
-    sandi: document.getElementById("galat-pg-sandi"),
-    peran: document.getElementById("galat-pg-peran")
+    sandi: document.getElementById("galat-pg-sandi")
 };
 
 // Mengacak kata sandi: alat bersama umum/sandi.js (acakKataSandi), dipakai juga layar Masuk.
@@ -189,17 +175,11 @@ function tampilkanGalatPengguna(nama, pesan, kolomFokus) {
     if (kolomFokus) { kolomFokus.focus(); }
 }
 
-// Petunjuk di bawah pilihan peran mengikuti peran yang dipilih
-function terapkanPeran() {
-    var peran = peranPengguna[pilihPeranPengguna.value];
-    document.getElementById("petunjuk-pg-peran").textContent = peran && peran.keterangan
-        ? peran.keterangan
-        : "Peran menentukan apa yang boleh dilakukan.";
+// Keterangan di bawah Jenis Akses mengikuti pilihan (seperti Accurate)
+function terapkanJenisAkses() {
+    document.getElementById("petunjuk-pg-jenis-akses").textContent = keteranganJenisAkses[jenisAksesDipilih()];
 }
-pilihPeranPengguna.addEventListener("change", function () {
-    galatPengguna.peran.hidden = true;
-    terapkanPeran();
-});
+pilihanJenisAkses.forEach(function (r) { r.addEventListener("change", terapkanJenisAkses); });
 
 // Label dan petunjuk kolom kata sandi berbeda saat menambah dan saat mengubah
 function aturKolomSandi(sedangMengubah) {
@@ -214,10 +194,10 @@ function aturKolomSandi(sedangMengubah) {
 // yang dicatat hanya KAPAN terakhir diatur.
 var labelPengguna = {
     nama: "Nama Lengkap", username: "Nama Pengguna", kontak: "Email/No Handphone",
-    peran: "Peran", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
+    jenisAkses: "Jenis Akses", nonAktif: "Non Aktif", sandiDiatur: "Kata Sandi Terakhir Diatur"
 };
 var formatPengguna = {
-    peran: function (kunci) { return peranPengguna[kunci] ? peranPengguna[kunci].label : kunci; },
+    jenisAkses: function (kunci) { return NAMA_JENIS_AKSES[kunci] || kunci; },
     nonAktif: function (nilai) { return nilai ? "Ya" : "Tidak"; },
     sandiDiatur: function (waktu) { return teksWaktuLog(waktu); }
 };
@@ -232,14 +212,14 @@ var modulPengguna = buatModulDaftar({
         { kunci: "nama", judul: "Nama" },
         { kunci: "username", judul: "Nama Pengguna" },
         { kunci: "kontak", judul: "Email/No Handphone" },
-        { kunci: "peran", judul: "Peran", tampil: function (p) { return peranPengguna[p.peran] ? peranPengguna[p.peran].label : ""; } },
+        { kunci: "jenisAkses", judul: "Jenis Akses", tampil: function (p) { return NAMA_JENIS_AKSES[jenisAksesPengguna(p)]; } },
         { kunci: "nonAktif", judul: "Non Aktif", tampil: function (p) { return p.nonAktif ? "Ya" : "Tidak"; } }
     ],
-    // Pengaman akun (PRD 6.12): akun sendiri dan Finance Yayasan aktif terakhir tidak bisa dihapus
+    // Pengaman akun (PRD 6.12, 6.14): akun sendiri dan Administrator aktif terakhir tidak bisa dihapus
     alasanTolakHapus: function (p) {
         var s = bacaSesi();
         if (s && p.id === s.penggunaId) { return "Akun yang sedang Anda pakai tidak bisa dihapus."; }
-        if (!adaFinanceYayasanAktif(bacaPengguna().filter(function (x) { return x.id !== p.id; }))) { return "Harus ada minimal satu Finance Yayasan yang aktif, jadi akun ini tidak bisa dihapus."; }
+        if (!adaAdministratorAktif(bacaPengguna().filter(function (x) { return x.id !== p.id; }))) { return "Harus ada minimal satu Administrator yang aktif, jadi akun ini tidak bisa dihapus."; }
         return "";
     },
     isiForm: function (pengguna) {
@@ -248,17 +228,18 @@ var modulPengguna = buatModulDaftar({
         });
         kolomSandiPengguna.value = "";   // kata sandi tidak pernah ditampilkan kembali
         aturKolomSandi(!!pengguna);
-        // Peran lama tidak ada di pilihan, jadi pilihan kosong: Finance Yayasan wajib memilih peran baru saat menyimpan
-        pilihPeranPengguna.value = pengguna && peranPengguna[pengguna.peran] && !peranPengguna[pengguna.peran].lama ? pengguna.peran : "";
-        terapkanPeran();
+        // Data Baru: Operator (bawaan Accurate). Ubah: Jenis Akses pengguna itu.
+        var jenis = pengguna ? jenisAksesPengguna(pengguna) : "operator";
+        pilihanJenisAkses.forEach(function (r) { r.checked = r.value === jenis; });
+        terapkanJenisAkses();
         kotakNonAktifPengguna.checked = pengguna ? !!pengguna.nonAktif : false;
         sembunyikanGalatPengguna();
     }
 });
 
-// Apakah di daftar ini masih ada Finance Yayasan yang aktif (PRD 6.12)
-function adaFinanceYayasanAktif(daftar) {
-    return daftar.some(function (p) { return p && p.peran === "finance-yayasan" && !p.nonAktif; });
+// Apakah di daftar ini masih ada Administrator yang aktif (PRD 6.14); tanpa itu tidak ada lagi yang bisa mengelola pengguna
+function adaAdministratorAktif(daftar) {
+    return daftar.some(function (p) { return p && jenisAksesPengguna(p) === "administrator" && !p.nonAktif; });
 }
 
 // Daftar pengguna (layar Masuk membaca data yang sama lewat umum/sesi.js)
@@ -324,23 +305,23 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
         tampilkanGalatPengguna("sandi", "Kata sandi awal wajib diisi.", kolomSandiPengguna);
         return;
     }
-    if (pilihPeranPengguna.value === "") {
-        tampilkanGalatPengguna("peran", "Peran wajib dipilih.", pilihPeranPengguna);
-        return;
-    }
-
-    data.peran = pilihPeranPengguna.value;
+    data.jenisAkses = jenisAksesDipilih();
     data.nonAktif = kotakNonAktifPengguna.checked;
 
-    // Pengaman akun (PRD 6.12): akun yang sedang dipakai tidak bisa dijadikan Non Aktif, dan harus tetap ada
-    // minimal satu Finance Yayasan aktif (kalau tidak, tidak ada lagi yang bisa mengelola pengguna)
+    // Pengaman akun (PRD 6.12, 6.14): akun yang sedang dipakai tidak bisa dijadikan Non Aktif atau diturunkan menjadi
+    // Operator (Anda akan terkunci dari halaman ini), dan harus tetap ada minimal satu Administrator aktif
     var sesiSaya = bacaSesi();
-    if (sedangMengubah && sesiSaya && modulPengguna.idDiubah === sesiSaya.penggunaId && data.nonAktif) {
+    var akunSendiri = sedangMengubah && sesiSaya && modulPengguna.idDiubah === sesiSaya.penggunaId;
+    if (akunSendiri && data.nonAktif) {
         tampilkanNotifikasi("Akun yang sedang Anda pakai tidak bisa dijadikan Non Aktif.", "peringatan");
         return;
     }
-    if (!adaFinanceYayasanAktif(daftar.filter(function (p) { return p.id !== modulPengguna.idDiubah; }).concat([data]))) {
-        tampilkanNotifikasi("Harus ada minimal satu Finance Yayasan yang aktif.", "peringatan");
+    if (akunSendiri && data.jenisAkses !== "administrator") {
+        tampilkanNotifikasi("Akun yang sedang Anda pakai tidak bisa diturunkan menjadi Operator.", "peringatan");
+        return;
+    }
+    if (!adaAdministratorAktif(daftar.filter(function (p) { return p.id !== modulPengguna.idDiubah; }).concat([data]))) {
+        tampilkanNotifikasi("Harus ada minimal satu Administrator yang aktif.", "peringatan");
         return;
     }
 
@@ -374,6 +355,7 @@ document.getElementById("form-pengguna").addEventListener("submit", async functi
             if (p.id === modulPengguna.idDiubah) {
                 Object.assign(p, data);   // kata sandi lama tetap kalau kolom sandi dikosongkan
                 delete p.pembukuan;       // isian lama (Yayasan/Sekolah/Unit usaha), tidak dipakai lagi sejak J.28
+                delete p.peran;           // isian lama, diganti Jenis Akses sejak J.29
             }
         });
     } else {

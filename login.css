@@ -303,6 +303,56 @@ button[type="submit"]:hover {
     color: var(--teks-redup);
 }
 
+/* ---------- Lupa kata sandi dan kode pemulihan (PRD 6.14) ---------- */
+
+.tautan-kembali {
+    display: block;
+    margin-top: 18px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--biru);
+    text-decoration: none;
+}
+
+.tautan-kembali:hover {
+    text-decoration: underline;
+}
+
+/* Kode pemulihan: huruf rata lebar dan besar supaya mudah dicatat; sekali klik tiga kali = terpilih semua */
+.kode-pemulihan {
+    margin: 0 0 24px;
+    padding: 16px 10px;
+    border: 1px dashed #94a3b8;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-align: center;
+    color: var(--biru-tua);
+    user-select: all;
+    overflow-wrap: anywhere;
+}
+
+/* Tombol lanjut (bukan tombol kirim formulir), tampilannya sama dengan tombol Masuk */
+.tombol-lanjut {
+    width: 100%;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--biru-tua);
+    background-color: var(--aksen);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.tombol-lanjut:hover {
+    background-color: var(--aksen-gelap);
+}
+
 /* Tombol sedang memeriksa kata sandi */
 button[type="submit"]:disabled {
     opacity: 0.6;

@@ -54,7 +54,6 @@
                         </div>
                         <div id="peringatan-caps" class="peringatan-caps" hidden>Caps Lock sedang menyala</div>
                         <a href="#" id="lupa-sandi" class="lupa-sandi">Lupa kata sandi?</a>
-                        <p id="petunjuk-lupa" class="petunjuk-kecil" hidden>Minta Finance Yayasan mengatur ulang kata sandi Anda di Pengaturan, Pengguna.</p>
                         <button type="submit" id="tombol-masuk">Masuk</button>
                     </form>
                 </section>
@@ -62,7 +61,7 @@
                 <!-- ===== Akun pertama: hanya saat belum ada pengguna sama sekali ===== -->
                 <section id="layar-akun-pertama" hidden>
                     <h2>Buat akun pertama</h2>
-                    <p class="sapaan">Belum ada pengguna. Buat akun <strong>Finance Yayasan</strong> pertama; akun ini bisa menambah pengguna lain.</p>
+                    <p class="sapaan">Belum ada pengguna. Buat akun <strong>Administrator</strong> pertama; akun ini bisa menambah pengguna lain.</p>
                     <div id="pesan-error-akun" class="pesan-error" role="alert" hidden></div>
                     <form id="form-akun-pertama" novalidate>
                         <label for="ap-nama">Nama lengkap</label>
@@ -77,7 +76,7 @@
                     </form>
                 </section>
 
-                <!-- ===== Ganti kata sandi: wajib sesudah akun dibuat atau diatur ulang Finance Yayasan ===== -->
+                <!-- ===== Ganti kata sandi: wajib sesudah akun dibuat atau diatur ulang Administrator ===== -->
                 <section id="layar-ganti-sandi" hidden>
                     <h2>Ganti kata sandi</h2>
                     <p class="sapaan">Kata sandi Anda baru dibuat atau diatur ulang. Buat kata sandi baru sebelum melanjutkan.</p>
@@ -89,6 +88,35 @@
                         <input id="gs-ulang" type="password" autocomplete="new-password" maxlength="200">
                         <button type="submit">Simpan dan masuk</button>
                     </form>
+                </section>
+
+                <!-- ===== Lupa kata sandi (PRD 6.14): Administrator memakai kode pemulihan; Operator minta Administrator ===== -->
+                <section id="layar-lupa-sandi" hidden>
+                    <h2>Lupa kata sandi</h2>
+                    <p class="sapaan">Khusus <strong>Administrator</strong>: isi kode pemulihan yang dulu Anda catat, lalu buat kata sandi baru.
+                        Operator: minta Administrator mengatur ulang kata sandi Anda di Pengaturan, Pengguna.</p>
+                    <div id="pesan-error-lupa" class="pesan-error" role="alert" hidden></div>
+                    <form id="form-lupa-sandi" novalidate>
+                        <label for="ls-username">Nama pengguna</label>
+                        <input id="ls-username" type="text" autocomplete="username" maxlength="60">
+                        <label for="ls-kode">Kode pemulihan</label>
+                        <input id="ls-kode" type="text" autocomplete="off" spellcheck="false" maxlength="40" placeholder="XXXX-XXXX-XXXX-XXXX">
+                        <label for="ls-baru">Kata sandi baru (minimal 8 karakter)</label>
+                        <input id="ls-baru" type="password" autocomplete="new-password" maxlength="200">
+                        <label for="ls-ulang">Ulangi kata sandi baru</label>
+                        <input id="ls-ulang" type="password" autocomplete="new-password" maxlength="200">
+                        <button type="submit" id="tombol-pulihkan-sandi">Atur kata sandi baru</button>
+                    </form>
+                    <a href="#" id="kembali-masuk" class="tautan-kembali">Kembali ke Masuk</a>
+                </section>
+
+                <!-- ===== Kode pemulihan baru: ditampilkan SEKALI (akun pertama, dan sesudah kode lama dipakai) ===== -->
+                <section id="layar-kode-pemulihan" hidden>
+                    <h2>Kode pemulihan</h2>
+                    <p class="sapaan">Catat kode ini dan simpan di tempat aman, misalnya ditulis di buku. Kode ini dipakai kalau Anda
+                        lupa kata sandi, dan <strong>hanya ditampilkan sekali</strong>.</p>
+                    <p id="kode-pemulihan-baru" class="kode-pemulihan"></p>
+                    <button type="button" id="lanjut-sesudah-kode" class="tombol-lanjut">Sudah saya catat, lanjut masuk</button>
                 </section>
             </div>
         </main>

@@ -11,7 +11,7 @@ Rencana kerja dan keputusan ada di [PLAN.md](PLAN.md). Aturan kerja bersama Clau
 
 1. Buka `index.html` di Chrome (klik dua kali file-nya, atau lewat Live Server di VS Code).
 2. Tidak perlu memasang apa pun dan tidak perlu internet.
-3. Buka `index.html`; kalau belum masuk, aplikasi pindah ke `login.html`. Pertama kali dipakai, buat akun Finance Yayasan pertama di sana. Tidak ada aktivitas 40 menit = keluar otomatis.
+3. Buka `index.html`; kalau belum masuk, aplikasi pindah ke `login.html`. Pertama kali dipakai, buat akun Administrator pertama di sana dan catat kode pemulihannya (untuk "Lupa kata sandi?"). Tidak ada aktivitas 40 menit = keluar otomatis.
 
 Penting: folder `umum/` dan `fitur/` harus selalu ikut kalau aplikasi disalin. `index.html` saja tidak cukup.
 
@@ -49,7 +49,7 @@ umum/                     dipakai semua fitur
   komponen-histori.js       logika bersama halaman histori: Saldo Awal, saldo berjalan, Total, ceklis, ekspor CSV
   histori.css               gaya bersama halaman histori (juga baris atas Rekonsiliasi Bank)
   sesi.js                   sesi masuk (dimuat paling awal; belum masuk/40 menit diam = ke login.html), hak akses dasar
-  sesi-aplikasi.js, sesi.css menu pengguna (Ganti Kata Sandi, Keluar), keluar otomatis 40 menit, Log Masuk/Keluar, peran
+  sesi-aplikasi.js, sesi.css menu pengguna (Ganti Kata Sandi, Buat Kode Pemulihan, Keluar), keluar otomatis 40 menit, Log Masuk/Keluar, Jenis Akses
   sandi.js                  mengacak dan mencocokkan kata sandi (PBKDF2), dipakai layar Masuk dan halaman Pengguna
   pintasan.js               pintasan keyboard (Ctrl+S, Alt+N, Alt+D, Alt+W, Ctrl+P, Alt+L, F1) dan popup daftarnya; hanya menekan tombol yang ada
   *.css                     gaya bersama (dasar, popup, halaman daftar, kalender, layar sempit)

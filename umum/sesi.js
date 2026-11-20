@@ -1,8 +1,9 @@
-// ==================== Sesi masuk (PRD 6.12) ====================
+// ==================== Sesi masuk (PRD 6.12, 6.14) ====================
 // Dimuat PALING AWAL di index.html (di <head>) dan juga oleh login.html. Belum masuk, sesinya rusak, penggunanya sudah
 // dihapus/Non Aktif, atau 40 menit tanpa aktivitas = pindah ke layar Masuk (login.html), sebelum aplikasi sempat tampil.
 // Sesi disimpan di sessionStorage: berlaku per jendela/tab browser dan hilang saat browser ditutup.
-// Bentuk sesi: { penggunaId, nama, peran, terakhirAktif: angka waktu (ms), baruMasuk: true/false }
+// Bentuk sesi: { penggunaId, nama, terakhirAktif: angka waktu (ms), baruMasuk: true/false, lewatKodePemulihan: true/false }
+// Jenis Akses TIDAK disimpan di sesi: selalu dibaca dari data Pengguna, supaya perubahan oleh Administrator langsung berlaku.
 // CATATAN: tanpa server, sesi ini kunci layar dan pencatat siapa yang bekerja, bukan pengaman penuh (PRD 6.12, Batasan).
 
 var KUNCI_SESI = "sesiMasuk";
@@ -15,6 +16,15 @@ function bacaPenggunaTersimpan() {
         return Array.isArray(daftar) ? daftar.filter(function (p) { return p && typeof p === "object" && typeof p.id === "string"; }) : [];
     } catch (galat) { return []; }
 }
+
+// Jenis Akses pengguna (PRD 6.14): "administrator" atau "operator".
+// Data lama yang masih memakai peran (sebelum J.29, misalnya dari cadangan lama): Finance Yayasan = Administrator,
+// peran lain (Pengawas, Finance Sekolah, Finance Unit usaha) = Operator.
+function jenisAksesPengguna(p) {
+    if (p && (p.jenisAkses === "administrator" || p.jenisAkses === "operator")) { return p.jenisAkses; }
+    return p && p.peran === "finance-yayasan" ? "administrator" : "operator";
+}
+var NAMA_JENIS_AKSES = { administrator: "Administrator", operator: "Operator" };
 
 function bacaSesi() {
     try {
@@ -29,10 +39,11 @@ function hapusSesi() {
     try { sessionStorage.removeItem(KUNCI_SESI); } catch (galat) { /* biarkan */ }
 }
 
-// Membuat sesi untuk pengguna yang baru masuk (dipanggil layar Masuk)
-function mulaiSesi(pengguna) {
-    simpanSesi({ penggunaId: pengguna.id, nama: String(pengguna.nama || pengguna.username || ""), peran: String(pengguna.peran || ""),
-                 terakhirAktif: Date.now(), baruMasuk: true });
+// Membuat sesi untuk pengguna yang baru masuk (dipanggil layar Masuk).
+// lewatKodePemulihan: masuk sesudah mengatur ulang kata sandi dengan kode pemulihan (dicatat di Log Aktivitas)
+function mulaiSesi(pengguna, lewatKodePemulihan) {
+    simpanSesi({ penggunaId: pengguna.id, nama: String(pengguna.nama || pengguna.username || ""),
+                 terakhirAktif: Date.now(), baruMasuk: true, lewatKodePemulihan: !!lewatKodePemulihan });
 }
 
 // Sesi yang sah: ada, penggunanya masih ada dan aktif, belum wajib ganti sandi, dan belum 40 menit tanpa aktivitas.
@@ -52,14 +63,21 @@ function keLayarMasuk(alasan) {
     location.replace("login.html" + (alasan ? "?alasan=" + encodeURIComponent(alasan) : ""));
 }
 
-// Peran pengguna yang sedang masuk ("" kalau belum masuk)
-function peranSesi() { var s = bacaSesi(); return s ? s.peran : ""; }
-// Hanya Finance Yayasan yang boleh mengubah data. Pengawas hanya melihat (PRD 5.8); peran lama Finance Sekolah dan
-// Finance Unit usaha juga hanya melihat, karena pembukuannya sudah dihapus (J.28). Peran tak dikenal juga hanya melihat (aman).
-function hanyaLihat() { return peranSesi() !== "finance-yayasan"; }
-// Halaman yang hanya boleh dibuka Finance Yayasan (PRD 5.8): id tab "pengguna", "preferensi", "cadangan"
-var HALAMAN_FINANCE_YAYASAN = ["pengguna", "preferensi", "cadangan"];
-function bolehBukaHalaman(nama) { return HALAMAN_FINANCE_YAYASAN.indexOf(nama) === -1 || peranSesi() === "finance-yayasan"; }
+// Data pengguna yang sedang masuk (null kalau belum masuk atau akunnya sudah tidak ada)
+function penggunaSesi() {
+    var s = bacaSesi();
+    return s ? (bacaPenggunaTersimpan().find(function (x) { return x.id === s.penggunaId; }) || null) : null;
+}
+function adalahAdministrator() {
+    var p = penggunaSesi();
+    return !!p && jenisAksesPengguna(p) === "administrator";
+}
+// Hanya Administrator yang boleh mengubah data. Operator sementara hanya melihat, sampai hak Akses Grup berlaku (J.31).
+// Belum masuk atau akun tidak dikenal juga hanya melihat (aman).
+function hanyaLihat() { return !adalahAdministrator(); }
+// Halaman yang hanya boleh dibuka Administrator (PRD 6.14): id tab "pengguna", "preferensi", "cadangan"
+var HALAMAN_ADMINISTRATOR = ["pengguna", "preferensi", "cadangan"];
+function bolehBukaHalaman(nama) { return HALAMAN_ADMINISTRATOR.indexOf(nama) === -1 || adalahAdministrator(); }
 
 // Di index.html: periksa sesi sebelum apa pun tampil. Halaman disembunyikan dulu (kelas belum-masuk, umum/dasar.css)
 // supaya isi aplikasi tidak sempat terlihat sebelum pindah.

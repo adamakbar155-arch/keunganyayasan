@@ -425,3 +425,34 @@ pasangTampilan("dialog-ganti-sandi", /*html*/ `
         </footer>
     </dialog>
 `);
+
+pasangTampilan("dialog-kode-pemulihan", /*html*/ `
+    <!-- ===== Popup Buat Kode Pemulihan (menu pengguna, khusus Administrator, PRD 6.14; logika umum/sesi-aplikasi.js) =====
+         Langkah 1: konfirmasi kata sandi sekarang. Langkah 2: kode ditampilkan SEKALI. -->
+    <dialog id="dialog-kode-pemulihan" class="dialog-detail dialog-ganti-sandi" aria-labelledby="judul-kode-pemulihan">
+        <header class="dialog-detail-kepala">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg>
+            <h2 id="judul-kode-pemulihan">Kode Pemulihan</h2>
+            <button type="button" id="tutup-kode-pemulihan" class="dialog-detail-tutup" aria-label="Tutup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+        </header>
+        <form id="form-kode-pemulihan" class="dialog-detail-isi" novalidate>
+            <div id="kp-langkah-sandi">
+                <p class="petunjuk">Kode pemulihan dipakai kalau Anda lupa kata sandi (tautan "Lupa kata sandi?" di layar Masuk).
+                    Membuat kode baru membuat kode lama tidak berlaku lagi.</p>
+                <div class="baris-form"><label for="kp-sandi">Kata sandi sekarang</label><input id="kp-sandi" type="password" autocomplete="current-password" maxlength="200"></div>
+                <p id="galat-kode-pemulihan" class="pesan-galat-kolom" role="alert" hidden></p>
+            </div>
+            <div id="kp-langkah-kode" hidden>
+                <p>Catat kode ini dan simpan di tempat aman, misalnya ditulis di buku. Kode ini <strong>hanya ditampilkan sekali</strong>.</p>
+                <p id="kp-kode" class="kode-pemulihan"></p>
+            </div>
+        </form>
+        <footer class="dialog-detail-kaki">
+            <button type="button" id="batal-kode-pemulihan" class="tombol tombol-garis">Batal</button>
+            <button type="submit" form="form-kode-pemulihan" id="buat-kode-pemulihan" class="tombol tombol-utama">Buat Kode</button>
+            <button type="button" id="selesai-kode-pemulihan" class="tombol tombol-utama" hidden>Sudah Saya Catat</button>
+        </footer>
+    </dialog>
+`);
