@@ -106,7 +106,24 @@ if (sesiAktif) {
 // ----- Menu pengguna -----
 var tombolPengguna = document.getElementById("tombol-pengguna");
 var menuPengguna = document.getElementById("daftar-menu-pengguna");
-tombolPengguna.textContent = inisialNama(penggunaAktif);   // textContent: aman dari kode HTML
+// Lingkaran akun: logo yayasan dari Preferensi kalau ada (PRD 6.15, Temuan 54), kalau tidak inisial nama pengguna.
+// Logo dibaca lewat logoAman (umum/preferensi.js): hanya data gambar yang diterima, isi lain diabaikan.
+function gambarAvatar() {
+    var logo = logoAman(bacaPengaturan(KUNCI_YAYASAN, {}).logo);
+    tombolPengguna.textContent = "";
+    tombolPengguna.classList.toggle("avatar-logo", !!logo);
+    if (logo) {
+        var gambar = document.createElement("img");
+        gambar.src = logo;
+        gambar.alt = "";   // nama pengguna sudah ada di title dan aria-label tombol
+        tombolPengguna.appendChild(gambar);
+    } else {
+        tombolPengguna.textContent = inisialNama(penggunaAktif);   // textContent: aman dari kode HTML
+    }
+}
+gambarAvatar();
+// Logo diganti di tab lain pada browser yang sama: lingkaran ikut berganti
+window.addEventListener("storage", function (k) { if (k.key === KUNCI_YAYASAN) { gambarAvatar(); } });
 tombolPengguna.title = penggunaAktif;
 document.getElementById("menu-pengguna-nama").textContent = penggunaAktif;
 document.getElementById("menu-pengguna-peran").textContent = penggunaSesi() ? NAMA_JENIS_AKSES[jenisAksesPengguna(penggunaSesi())] : "";

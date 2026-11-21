@@ -656,6 +656,8 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
 ### 6.15 Nama dan logo aplikasi — disetujui 2026-11-21 (Temuan 53)
 - Nama aplikasi: **Amana**, dengan logo dari pengguna (pita hijau zamrud dan emas berbentuk huruf A, dengan bintang kecil).
   Slogan **"Manage • Account • Grow"** hanya tampil di layar Masuk (keputusan pengguna; slogan merek berbahasa Inggris).
+- Lingkaran akun di kanan atas (menu pengguna) memakai **logo yayasan dari Preferensi** (keputusan pengguna, Temuan 54); kalau logo
+  belum diunggah, tetap inisial nama pengguna. Berganti langsung sesudah Data di Preferensi disimpan.
 - Tempat: judul tab browser ("Dashboard – Amana", "Masuk - Amana"), ikon tab, bilah atas (ikon + nama), layar Masuk (logo,
   nama, slogan), README. Penanda di dalam file Cadangan Data tetap "Aplikasi Keuangan" supaya file cadangan lama tetap bisa dipulihkan.
 - Catatan: nama "Amana" sudah dipakai beberapa produk keuangan syariah di luar negeri (Amana Bank, AmanaPay, Amana Funds) dan

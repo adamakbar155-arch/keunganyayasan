@@ -150,7 +150,8 @@ document.getElementById("form-yayasan").addEventListener("submit", function (kej
         data[nama] = document.getElementById(kolomYayasan[nama]).value.trim();
     });
     data.logo = logoTersimpan;
-    simpanPengaturan(KUNCI_YAYASAN, data, "Data telah berhasil disimpan", "Data");
+    // Lingkaran akun di kanan atas ikut memakai logo terbaru (gambarAvatar, umum/sesi-aplikasi.js, dimuat sesudah file ini)
+    if (simpanPengaturan(KUNCI_YAYASAN, data, "Data telah berhasil disimpan", "Data") && typeof gambarAvatar === "function") { gambarAvatar(); }
 });
 
 // ---------- Saklar Fitur ----------

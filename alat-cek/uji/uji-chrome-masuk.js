@@ -233,9 +233,9 @@ const masuk = async (nama, sandi) => { await isi({ username: nama, password: san
     await evalJs("document.getElementById('menu-keluar').click(); true"); await tungguHalaman(/login\.html$/);
 
     // ---- 7. Lima kali salah: tunggu 1 menit ----
-    for (let i = 0; i < 5; i++) { await masuk("siti", "salah-" + i); await tunggu(700); }
+    for (let i = 0; i < 5; i++) { await masuk("siti", "salah-" + i); await tungguPeriksa(); }   // tunggu tiap pemeriksaan selesai (kata sandi diacak, bisa lama saat komputer sibuk)
     catat("Lima kali salah: 'Terlalu banyak percobaan'", /Terlalu banyak percobaan/.test(await pesan("pesan-error")), await pesan("pesan-error"));
-    await masuk("siti", "siti-baru-123"); await tunggu(400);
+    await masuk("siti", "siti-baru-123"); await tungguPeriksa();
     catat("Selama ditahan, kata sandi benar pun belum bisa masuk", /Terlalu banyak percobaan/.test(await pesan("pesan-error")) && (await evalJs("location.pathname")).endsWith("login.html"));
     catat("Tidak ada galat skrip di Console", galat.filter(x => !/favicon/i.test(x)).length === 0, JSON.stringify(galat.slice(0, 3)));
   } catch (e) {
