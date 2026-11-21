@@ -380,7 +380,7 @@ Anggaran, Monitor Anggaran, dan Transfer Anggaran mengikuti Accurate (keputusan 
 - [x] J.32 [CLAUDE] Kata sandi Operator hanya diatur Administrator (PRD 6.14, Temuan 52): menu Ganti Kata Sandi dan wajib ganti hanya untuk Administrator; "Minta atur ulang ke Administrator" di layar Lupa kata sandi, muncul sebagai pemberitahuan untuk Administrator.
 - [x] J.33 [CLAUDE] (Temuan 53, PRD 6.15) Nama aplikasi menjadi Amana dan logo dari pengguna: judul tab, ikon tab, bilah atas, layar Masuk (dengan slogan), README; penanda file cadangan tetap.
 - [x] J.34 [CLAUDE] (Temuan 54, PRD 6.15) Lingkaran akun di kanan atas memakai logo yayasan dari Preferensi; tanpa logo tetap inisial; langsung berganti sesudah Preferensi disimpan.
-- [ ] J.35 [CLAUDE] (Temuan 55, PRD 6.16) Tombol lampu Petunjuk Penggunaan dan popup bantuan (topik kiri, isi kanan), dengan contoh lengkap halaman Divisi.
+- [x] J.35 [CLAUDE] (Temuan 55, PRD 6.16) Tombol lampu Petunjuk Penggunaan dan popup bantuan (topik kiri, isi kanan), dengan contoh lengkap halaman Divisi.
 - [ ] J.36 [CLAUDE] Petunjuk Penggunaan: Program, Karyawan, Gaji/Tunjangan, Dashboard.
 - [ ] J.37 [CLAUDE] Petunjuk Penggunaan: Akun Perkiraan, Jurnal Umum, Pencatatan Gaji, Anggaran, Monitor Anggaran, Transfer Anggaran, Histori Akun, Log Aktifitas Jurnal.
 - [ ] J.38 [CLAUDE] Petunjuk Penggunaan: Pembayaran, Penerimaan, Transfer Bank, Histori Bank, Rekonsiliasi Bank.
