@@ -198,7 +198,7 @@
 
 /* ---------- Bilah atas di layar sempit ----------
    Sebelumnya nama aplikasi dan semua ikon tidak mau mengecil, jadi di HP bilah atas lebih lebar dari layar (±73 px) dan
-   seluruh halaman bisa digeser ke samping. Sekarang: nama aplikasi boleh terpotong ("Aplikasi Ke..."), kanan tidak
+   seluruh halaman bisa digeser ke samping. Sekarang: nama aplikasi boleh terpotong ("Ama..."), kanan tidak
    pernah mengecil, dan ukuran diperkecil bertahap. */
 .bar-atas {
     gap: 8px;
@@ -209,7 +209,7 @@
     flex: 0 1 auto;
 }
 
-.merek-titik {
+.merek-logo {
     flex-shrink: 0;
 }
 

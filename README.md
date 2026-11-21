@@ -1,4 +1,8 @@
-# Aplikasi Keuangan Yayasan
+# Amana — Aplikasi Keuangan Yayasan
+
+<img src="umum/logo/amana-logo.png" alt="Logo Amana" width="240">
+
+*Manage • Account • Grow*
 
 Aplikasi keuangan untuk yayasan: donasi per Program dan Divisi, kas dan bank, jurnal, gaji, dan (nanti) laporan.
 Alurnya meniru Accurate, tetapi memakai istilah yayasan, tanpa logo, nama, atau data Accurate.

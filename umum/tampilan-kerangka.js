@@ -9,8 +9,9 @@ pasangTampilan("bilah-atas", /*html*/ `
     <header class="bar-atas">
         <div class="merek">
             <!-- Penanda kecil buatan sendiri (bukan logo pihak lain) -->
-            <span class="merek-titik" aria-hidden="true"></span>
-            <span class="merek-nama">Aplikasi Keuangan</span>
+            <!-- Logo Amana (PRD 6.15) di ubin putih kecil -->
+            <span class="merek-logo" aria-hidden="true"><img src="umum/logo/amana-ikon.png" alt="" width="28" height="28"></span>
+            <span class="merek-nama">Amana</span>
         </div>
 
         <div class="bar-kanan">

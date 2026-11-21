@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Sama dengan index.html: skrip, gaya, dan huruf hanya dari folder aplikasi (tanpa kode di dalam halaman) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Masuk - Aplikasi Keuangan</title>
-    <link rel="icon" type="image/svg+xml" href="ikon.svg?v=1ee502ca">
-    <link rel="stylesheet" href="login.css?v=6fa1f274">
+    <title>Masuk - Amana</title>
+    <link rel="icon" type="image/png" href="umum/logo/amana-tab.png?v=ec7cde3d">
+    <link rel="stylesheet" href="login.css?v=1660f9d9">
     <!-- Alat bersama dengan aplikasi: sesi masuk dan kata sandi (PRD 6.12) -->
     <script src="umum/sesi.js?v=c53f93d5"></script>
     <script src="umum/sandi.js?v=d105415f"></script>
@@ -16,15 +16,20 @@
     <!-- Pembungkus utama: dua kolom (kiri panel biru, kanan kotak isian) -->
     <div class="halaman-login">
 
-        <!-- Kolom kiri: panel biru berisi nama aplikasi dan tagline -->
+        <!-- Kolom kiri: panel biru berisi logo, nama aplikasi, slogan, dan keterangan (PRD 6.15) -->
         <aside class="panel-kiri">
-            <h1 class="nama-aplikasi">Aplikasi Keuangan</h1>
-            <p class="tagline">Catat, pantau, dan laporkan keuangan Anda dengan rapi.</p>
+            <div class="logo-aplikasi"><img src="umum/logo/amana-ikon.png" alt="" width="76" height="76"></div>
+            <h1 class="nama-aplikasi">Amana</h1>
+            <!-- Slogan merek dari logo pengguna (berbahasa Inggris, keputusan pengguna) -->
+            <p class="slogan">Manage • Account • Grow</p>
+            <p class="tagline">Catat, pantau, dan laporkan keuangan yayasan dengan rapi.</p>
         </aside>
 
         <!-- Kolom kanan: satu kotak, isinya berganti menurut keadaan (Masuk, Akun pertama, Ganti kata sandi) -->
         <main class="panel-kanan">
             <div class="kotak-login">
+                <!-- Logo dan nama khusus layar HP: di HP panel kiri disembunyikan (login.css) -->
+                <div class="merek-hp" aria-hidden="true"><img src="umum/logo/amana-ikon.png" alt="" width="40" height="40"><span>Amana</span></div>
                 <!-- Pesan biru: misalnya keluar otomatis karena 40 menit tanpa aktivitas -->
                 <p id="pesan-info" class="pesan-info" role="status" hidden></p>
 

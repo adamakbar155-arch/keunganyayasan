@@ -8,14 +8,14 @@
          plugin, bingkai (iframe), atau form yang terkirim ke alamat lain. Lapisan pengaman kedua: kalau suatu hari ada
          isian yang tidak sengaja dipasang sebagai HTML, skrip di dalamnya tetap tidak bisa berjalan. -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; frame-src blob:; base-uri 'none'; form-action 'none'">
-    <title>Dashboard – Aplikasi Keuangan</title>
-    <!-- Ikon tab (Temuan 49) -->
-    <link rel="icon" type="image/svg+xml" href="ikon.svg?v=1ee502ca">
+    <title>Dashboard – Amana</title>
+    <!-- Ikon tab: logo Amana (PRD 6.15) -->
+    <link rel="icon" type="image/png" href="umum/logo/amana-tab.png?v=ec7cde3d">
     <!-- Huruf Inter disimpan di umum/huruf/ (tanpa internet). Kalau gagal dimuat, browser memakai system-ui -->
     <link rel="stylesheet" href="umum/huruf.css?v=46d13d0e">
     <!-- Gaya tampilan: umum/ = dipakai bersama, fitur/<nama>/ = khusus satu fitur.
          URUTAN tag link di bawah menentukan aturan mana yang menang, jadi jangan ditukar. -->
-    <link rel="stylesheet" href="umum/dasar.css?v=fda4dc27">
+    <link rel="stylesheet" href="umum/dasar.css?v=017da462">
     <link rel="stylesheet" href="umum/popup-dan-preferensi.css?v=b40f324a">
     <link rel="stylesheet" href="umum/halaman-daftar.css?v=ba162769">
     <link rel="stylesheet" href="fitur/pengaturan/penomoran.css?v=2bdd1c29">
@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="umum/isi-halaman.css?v=29a1208d">
     <link rel="stylesheet" href="fitur/dashboard/dashboard.css?v=6bff96a2">
     <link rel="stylesheet" href="fitur/jurnal/jurnal.css?v=66fb0402">
-    <link rel="stylesheet" href="umum/kalender.css?v=e991fb21">
+    <link rel="stylesheet" href="umum/kalender.css?v=9ce1f36f">
     <link rel="stylesheet" href="umum/lampiran.css?v=30264107">
     <link rel="stylesheet" href="fitur/gaji/gaji.css?v=356bae16">
     <link rel="stylesheet" href="umum/transaksi-kas.css?v=f8b430dc">
@@ -207,7 +207,7 @@
          Semua file memakai skrip biasa (bukan module) supaya tetap jalan saat index.html dibuka langsung dari komputer. ===== -->
     <!-- Pemasang tampilan fitur: harus paling awal (lihat penjelasan di dalam filenya). -->
     <script src="umum/pasang-tampilan.js?v=d2f321b0"></script>
-    <script src="umum/tampilan-kerangka.js?v=64d57838"></script>
+    <script src="umum/tampilan-kerangka.js?v=21d034e2"></script>
     <script src="umum/tampilan-popup.js?v=1a04758a"></script>
     <!-- Cetakan HTML bersama transaksi Kas/Bank: harus sebelum tampilan.js Pembayaran dan Penerimaan -->
     <script src="umum/tampilan-transaksi-kas.js?v=8b33d1dd"></script>
@@ -337,7 +337,7 @@
     <!-- Akses Grup (PRD 6.14): sesudah pengaturan.js (memakai modulPengguna dan catatLog) -->
     <script src="fitur/akses-grup/akses-grup.js?v=e482d8ea"></script>
     <script src="fitur/cetakan/cetakan.js?v=ce3490fe"></script>
-    <script src="fitur/cadangan/cadangan.js?v=2214cecb"></script>
+    <script src="fitur/cadangan/cadangan.js?v=1763dd57"></script>
     <!-- Isi/Hapus Data Contoh (PRD 6.13): sesudah semua fitur dan Cadangan Data (memakai muatUlangHalaman) -->
     <script src="fitur/data-contoh/data-contoh.js?v=1087598d"></script>
     <!-- Pintasan keyboard (PRD 6.11): sesudah semua halaman dan umum/komponen-daftar.js -->

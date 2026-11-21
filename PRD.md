@@ -653,6 +653,14 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
   dan datanya tetap tersimpan. Tanggal tidak boleh sebelum bulan penyusutan terakhir aset itu. Membatalkan = menghapus data Lepas Aset.
 - **Belum termasuk:** Pindah Aset, Perubahan Aset Tetap, aset dari donasi (bersama donasi barang), Kategori Aset Tetap Pajak.
 
+### 6.15 Nama dan logo aplikasi — disetujui 2026-11-21 (Temuan 53)
+- Nama aplikasi: **Amana**, dengan logo dari pengguna (pita hijau zamrud dan emas berbentuk huruf A, dengan bintang kecil).
+  Slogan **"Manage • Account • Grow"** hanya tampil di layar Masuk (keputusan pengguna; slogan merek berbahasa Inggris).
+- Tempat: judul tab browser ("Dashboard – Amana", "Masuk - Amana"), ikon tab, bilah atas (ikon + nama), layar Masuk (logo,
+  nama, slogan), README. Penanda di dalam file Cadangan Data tetap "Aplikasi Keuangan" supaya file cadangan lama tetap bisa dipulihkan.
+- Catatan: nama "Amana" sudah dipakai beberapa produk keuangan syariah di luar negeri (Amana Bank, AmanaPay, Amana Funds) dan
+  "Ammana" di Indonesia; untuk pemakaian sendiri tidak masalah, tetapi perlu dicek di PDKI sebelum dipakai publik.
+
 ### 6.14 Pengguna dan Akses Grup — disetujui 2026-11-20 (dari foto Accurate 2026-11-20, Temuan 50; menggantikan 4 peran di 1.3 dan 5.8)
 - **Satu pembukuan saja: Yayasan.** Pembukuan Sekolah dan Unit usaha dihilangkan, termasuk pilihan pembukuan di bilah atas dan centang Pembukuan
   di formulir Pengguna (Temuan 48 tidak diperlukan lagi).

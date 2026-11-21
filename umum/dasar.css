@@ -53,13 +53,22 @@ body {
     gap: 10px;
 }
 
-/* Penanda kecil: lingkaran amber bergradasi, dibuat murni dengan CSS */
-.merek-titik {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ffd27a, var(--aksen));
-    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.25);
+/* Logo Amana (PRD 6.15) di ubin putih membulat, supaya hijau dan emasnya jelas di atas bilah biru */
+.merek-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--putih);
+    box-shadow: 0 2px 8px rgba(6, 20, 50, 0.25);
+}
+
+.merek-logo img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
 }
 
 .merek-nama {

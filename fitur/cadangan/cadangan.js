@@ -7,6 +7,8 @@
 // Cadangan = satu file JSON berisi semua data aplikasi. Pulihkan = mengganti semua data dengan isi file.
 // Yang disentuh HANYA kunci milik aplikasi ini (daftar di jenisKunciCadangan), supaya proyek lain
 // yang kebetulan memakai penyimpanan browser yang sama (alamat 127.0.0.1:5500) tidak ikut terbaca atau terhapus.
+// Penanda di dalam file cadangan. Sengaja TETAP "Aplikasi Keuangan" walaupun aplikasi sekarang bernama Amana (PRD 6.15):
+// kalau diganti, file cadangan lama tidak bisa dipulihkan lagi.
 var FORMAT_CADANGAN = { aplikasi: "Aplikasi Keuangan", versi: 1 };
 var KUNCI_CADANGAN_TERAKHIR = "cadanganTerakhirDibuat";   // catatan kapan cadangan terakhir dibuat (bukan bagian cadangan)
 
@@ -94,7 +96,7 @@ function periksaIsiCadangan(teks) {
         return { ok: false, galat: "File ini bukan file cadangan yang benar (isinya bukan JSON)." };
     }
     if (!isi || typeof isi !== "object" || Array.isArray(isi) || isi.aplikasi !== FORMAT_CADANGAN.aplikasi) {
-        return { ok: false, galat: "File ini bukan cadangan Aplikasi Keuangan." };
+        return { ok: false, galat: "File ini bukan cadangan aplikasi Amana." };
     }
     if (isi.versiFormat !== FORMAT_CADANGAN.versi) {
         return { ok: false, galat: "Versi file cadangan (" + isi.versiFormat + ") tidak dikenali oleh aplikasi ini." };
