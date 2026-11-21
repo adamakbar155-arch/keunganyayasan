@@ -33,7 +33,13 @@ const muatUlang = async () => { await kirim("Page.reload"); await siapUji(evalJs
     const lampu = JSON.parse(await evalJs("JSON.stringify((function(){var l=document.querySelector('#isi-divisi .modul-bar .tombol-lampu'); if(!l){return null;} var b=l.getBoundingClientRect(), bar=l.parentElement.getBoundingClientRect(); return {title:l.title, label:l.getAttribute('aria-label'), kanan:Math.round(bar.right-b.right), terlihat:b.width>0};})())"));
     catat("Divisi: tombol lampu ada di baris tombol hijau, menempel di kanan, tulisan 'Petunjuk Penggunaan'",
       lampu && lampu.terlihat && lampu.kanan <= 2 && lampu.title === "Petunjuk Penggunaan" && lampu.label === "Petunjuk Penggunaan Divisi", JSON.stringify(lampu));
-    catat("Halaman tanpa petunjuk (Program, untuk sementara) tidak punya lampu", await evalJs("!document.querySelector('#isi-program .tombol-lampu')"));
+    catat("Halaman tanpa petunjuk (Akun Perkiraan, untuk sementara) tidak punya lampu", await evalJs("!document.querySelector('#isi-akun .tombol-lampu')"));
+    // J.36: Program, Karyawan, Gaji/Tunjangan, Dashboard punya lampu dan petunjuknya terbuka dengan judul yang benar
+    for (const [kunci, judul] of [["program", "Program"], ["karyawan", "Karyawan"], ["gaji", "Gaji/Tunjangan"], ["dashboard", "Dashboard"]]) {
+      const ok = await evalJs("(function(){var l=document.querySelector('#isi-" + kunci + " .tombol-lampu'); if(!l){return false;} l.click(); var d=document.getElementById('dialog-bantuan'); var hasil=d.open && document.getElementById('judul-bantuan').textContent==='Petunjuk Penggunaan · " + judul + "' && document.querySelectorAll('#bantuan-topik button').length>=5 && document.querySelector('#bantuan-isi h3').textContent.length>0; d.close(); return hasil;})()");
+      catat("Petunjuk " + judul + ": lampu ada dan popup terbuka dengan topik", ok);
+    }
+    catat("Dashboard: lampu di baris atas sesudah tombol + Widget", await evalJs("(function(){var l=document.querySelector('#isi-dashboard .dash-atas .tombol-lampu'); return !!l && l.previousElementSibling && l.previousElementSibling.id==='tombol-widget';})()"));
     await foto("bantuan-lampu.png");
 
     // 2) Popup: judul, topik kiri, isi kanan (topik pertama)

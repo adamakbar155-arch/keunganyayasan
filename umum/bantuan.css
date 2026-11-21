@@ -33,6 +33,11 @@
     outline-offset: 2px;
 }
 
+/* Di Dashboard lampu berada di baris atas, sesudah tombol + Widget (bukan didorong ke kanan) */
+.dash-atas .tombol-lampu {
+    margin: 0 0 0 10px;
+}
+
 /* Popup: daftar topik di kiri, isi topik di kanan */
 .dialog-bantuan {
     width: min(940px, calc(100vw - 24px));

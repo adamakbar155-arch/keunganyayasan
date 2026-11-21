@@ -381,7 +381,7 @@ Anggaran, Monitor Anggaran, dan Transfer Anggaran mengikuti Accurate (keputusan 
 - [x] J.33 [CLAUDE] (Temuan 53, PRD 6.15) Nama aplikasi menjadi Amana dan logo dari pengguna: judul tab, ikon tab, bilah atas, layar Masuk (dengan slogan), README; penanda file cadangan tetap.
 - [x] J.34 [CLAUDE] (Temuan 54, PRD 6.15) Lingkaran akun di kanan atas memakai logo yayasan dari Preferensi; tanpa logo tetap inisial; langsung berganti sesudah Preferensi disimpan.
 - [x] J.35 [CLAUDE] (Temuan 55, PRD 6.16) Tombol lampu Petunjuk Penggunaan dan popup bantuan (topik kiri, isi kanan), dengan contoh lengkap halaman Divisi.
-- [ ] J.36 [CLAUDE] Petunjuk Penggunaan: Program, Karyawan, Gaji/Tunjangan, Dashboard.
+- [x] J.36 [CLAUDE] Petunjuk Penggunaan: Program, Karyawan, Gaji/Tunjangan, Dashboard.
 - [ ] J.37 [CLAUDE] Petunjuk Penggunaan: Akun Perkiraan, Jurnal Umum, Pencatatan Gaji, Anggaran, Monitor Anggaran, Transfer Anggaran, Histori Akun, Log Aktifitas Jurnal.
 - [ ] J.38 [CLAUDE] Petunjuk Penggunaan: Pembayaran, Penerimaan, Transfer Bank, Histori Bank, Rekonsiliasi Bank.
 - [ ] J.39 [CLAUDE] Petunjuk Penggunaan: Kategori Donasi, Donatur, Pencatatan Donasi, Target Donasi, Pemindahan Dana.
