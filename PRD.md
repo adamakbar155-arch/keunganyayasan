@@ -653,6 +653,15 @@ Kategori Aset, Proses Penyusutan, dan Lepas Aset.
   dan datanya tetap tersimpan. Tanggal tidak boleh sebelum bulan penyusutan terakhir aset itu. Membatalkan = menghapus data Lepas Aset.
 - **Belum termasuk:** Pindah Aset, Perubahan Aset Tetap, aset dari donasi (bersama donasi barang), Kategori Aset Tetap Pajak.
 
+### 6.16 Petunjuk Penggunaan (lampu) — disetujui 2026-11-21 (Temuan 55, dari foto Accurate)
+- Setiap halaman punya **tombol lampu jingga** di kanan atas (seperti Accurate), tulisan saat disentuh: "Petunjuk Penggunaan".
+- Klik = popup **Petunjuk Penggunaan** halaman itu: kiri daftar topik, kanan isi topik (susunan seperti pusat bantuan Accurate,
+  tetapi teksnya ditulis sendiri untuk aplikasi ini). Topik umum: Tentang (fungsi menu), Membuat, Mengubah, Menghapus, Isian
+  (tabel tiap kolom: nama, wajib atau tidak, penjelasan), Tombol, Hal penting (jurnal otomatis, hak Akses Grup, kunci periode, dll.).
+- Isi **lengkap per isian** (keputusan pengguna), bahasa Indonesia sederhana, tanpa data asli. Teks disimpan per fitur
+  (fitur/<nama>/bantuan.js) supaya mudah ikut diperbarui saat fiturnya berubah. Halaman tanpa teks bantuan tidak menampilkan lampu.
+- Dikerjakan bertahap per kelompok menu (PLAN J.35 sampai J.42).
+
 ### 6.15 Nama dan logo aplikasi — disetujui 2026-11-21 (Temuan 53)
 - Nama aplikasi: **Amana**, dengan logo dari pengguna (pita hijau zamrud dan emas berbentuk huruf A, dengan bintang kecil).
   Slogan **"Manage • Account • Grow"** hanya tampil di layar Masuk (keputusan pengguna; slogan merek berbahasa Inggris).

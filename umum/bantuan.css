@@ -1,0 +1,181 @@
+/* umum/bantuan.css: tombol lampu dan popup Petunjuk Penggunaan (PRD 6.16). Logika: umum/bantuan.js. */
+
+/* Tombol lampu jingga di kanan baris tombol hijau Daftar (seperti Accurate) */
+.tombol-lampu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin: 0 0 6px auto;   /* auto = terdorong ke kanan baris */
+    align-self: center;
+    padding: 0;
+    color: var(--putih);
+    background-color: #f59e0b;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(180, 83, 9, 0.3);
+    cursor: pointer;
+}
+
+.tombol-lampu svg {
+    width: 22px;
+    height: 22px;
+}
+
+.tombol-lampu:hover {
+    background-color: #d97706;
+}
+
+.tombol-lampu:focus-visible {
+    outline: 3px solid var(--biru);
+    outline-offset: 2px;
+}
+
+/* Popup: daftar topik di kiri, isi topik di kanan */
+.dialog-bantuan {
+    width: min(940px, calc(100vw - 24px));
+    height: min(640px, calc(100vh - 24px));
+}
+
+.dialog-bantuan .dialog-detail-isi {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 0;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.bantuan-topik {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 14px 10px;
+    overflow-y: auto;
+    background: #f3f6fb;
+    border-right: 1px solid var(--garis);
+}
+
+.bantuan-topik button {
+    padding: 9px 12px;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--teks);
+    text-align: left;
+    background: none;
+    border: none;
+    border-left: 3px solid transparent;
+    border-radius: 0 6px 6px 0;
+    cursor: pointer;
+}
+
+.bantuan-topik button:hover {
+    background: #e6edf7;
+}
+
+.bantuan-topik button[aria-current="true"] {
+    font-weight: 600;
+    color: var(--biru-tua);
+    background: #ffffff;
+    border-left-color: #f59e0b;
+}
+
+.bantuan-topik button:focus-visible {
+    outline: 2px solid var(--biru);
+    outline-offset: -2px;
+}
+
+.bantuan-isi {
+    padding: 18px 24px 24px;
+    overflow-y: auto;
+    font-size: 0.93rem;
+    line-height: 1.6;
+}
+
+.bantuan-isi h3 {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+    color: var(--biru-tua);
+}
+
+.bantuan-isi p {
+    margin: 0 0 12px;
+}
+
+.bantuan-isi ol,
+.bantuan-isi ul {
+    margin: 0 0 14px;
+    padding-left: 22px;
+}
+
+.bantuan-isi li {
+    margin-bottom: 6px;
+}
+
+.tabel-bantuan {
+    width: 100%;
+    margin: 0 0 14px;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.tabel-bantuan th,
+.tabel-bantuan td {
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabel-bantuan th {
+    font-weight: 600;
+    color: var(--biru-tua);
+    background: #eef3fa;
+}
+
+.tabel-bantuan td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Catatan penting: kotak kuning lembut */
+.catatan-bantuan {
+    padding: 10px 14px;
+    color: #78350f;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid #f59e0b;
+    border-radius: 6px;
+}
+
+/* Layar sempit: topik berderet di atas, isi di bawah */
+@media (max-width: 640px) {
+    .dialog-bantuan .dialog-detail-isi {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .bantuan-topik {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 8px;
+        border-right: none;
+        border-bottom: 1px solid var(--garis);
+    }
+
+    .bantuan-topik button {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .bantuan-topik button[aria-current="true"] {
+        border-bottom-color: #f59e0b;
+    }
+
+    .tabel-bantuan td:first-child {
+        white-space: normal;
+    }
+}

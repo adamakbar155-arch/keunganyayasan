@@ -410,6 +410,27 @@ pasangTampilan("dialog-pintasan", /*html*/ `
     </dialog>
 `);
 
+pasangTampilan("dialog-bantuan", /*html*/ `
+    <!-- ===== Popup Petunjuk Penggunaan (lampu jingga di tiap halaman, PRD 6.16; logika umum/bantuan.js) ===== -->
+    <dialog id="dialog-bantuan" class="dialog-detail dialog-bantuan" aria-labelledby="judul-bantuan">
+        <header class="dialog-detail-kepala">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2V16h5v-.2c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3z"/></svg>
+            <h2 id="judul-bantuan">Petunjuk Penggunaan</h2>
+            <button type="button" id="tutup-bantuan" class="dialog-detail-tutup" aria-label="Tutup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+        </header>
+        <div class="dialog-detail-isi">
+            <!-- Kiri: daftar topik; kanan: isi topik yang dipilih (diisi umum/bantuan.js) -->
+            <nav id="bantuan-topik" class="bantuan-topik" aria-label="Topik petunjuk"></nav>
+            <article id="bantuan-isi" class="bantuan-isi" aria-live="polite"></article>
+        </div>
+        <footer class="dialog-detail-kaki">
+            <button type="button" id="selesai-bantuan" class="tombol tombol-utama">Tutup</button>
+        </footer>
+    </dialog>
+`);
+
 pasangTampilan("dialog-ganti-sandi", /*html*/ `
     <!-- ===== Popup Ganti Kata Sandi (menu pengguna, PRD 6.12; logika umum/sesi-aplikasi.js) ===== -->
     <dialog id="dialog-ganti-sandi" class="dialog-detail dialog-ganti-sandi" aria-labelledby="judul-ganti-sandi">
